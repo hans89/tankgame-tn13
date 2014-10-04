@@ -1,9 +1,9 @@
-Biển:
+Biển: 0
 
-Đất:
+Đất: ' ' (space)
 
-Chướng ngại vật:
+Chướng ngại vật: U V W X Y Z
 
-Cầu:
+Cầu: - |
 
-Tăng:
+Tăng: a b A B
