@@ -7,7 +7,7 @@
 #include <map>
 
 #include "TileManager.h"
-#include "includes/CImg.h"
+#include "include/CImg.h"
 
 using namespace std;
 

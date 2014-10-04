@@ -51,7 +51,7 @@ ifeq ($(config),release)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L/usr/X11R6/lib -L. -Wl,-x
+  ALL_LDFLAGS   += $(LDFLAGS) -L/usr/X11R6/lib -L.
   LDDEPS    +=
   LIBS      += $(LDDEPS) -lm -lpthread -lX11 -lpng -lz
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)

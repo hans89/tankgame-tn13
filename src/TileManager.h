@@ -5,7 +5,7 @@
 #include <map>
 #include <iostream>
 
-#include "includes/CImg.h"
+#include "include/CImg.h"
 
 
 using namespace std;
