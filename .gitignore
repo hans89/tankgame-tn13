@@ -4,7 +4,7 @@ bin/
 
 ipch/
 
-Makefile
+# Makefile
 # *.make
 
 # Visual Studio
