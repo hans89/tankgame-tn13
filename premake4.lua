@@ -10,7 +10,11 @@ solution "tankgame-tn13"
       targetdir "bin"
       
       configuration "windows"
-         links { "user32", "gdi32" }
+         -- buildoptions { "/MD" }
+         defines { "cimg_use_png" }
+         links { "user32", "gdi32", "shell32", "libpng16", "zlib" }
+         includedirs { "lib/win32/include" }
+         libdirs { "lib/win32" }
  
       configuration "linux"
          links { "pthread", "X11" }

@@ -1,5 +1,19 @@
+!lib/
 obj/
 bin/
+
+ipch/
+
+Makefile
+# *.make
+
+# Visual Studio
+*.opensdf
+# *.sln
+# *.vcxproj*
+*.vcxproj.*
+*.sdf
+*.suo
 
 # Compiled Object files
 *.slo
@@ -23,7 +37,7 @@ bin/
 *.lai
 *.la
 *.a
-*.lib
+# *.lib
 
 # Executables
 *.exe
