@@ -5,11 +5,13 @@
 #include <string>
 #include <sstream>
 
+using namespace std;
+
 namespace Utils {
-	std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-	    std::stringstream ss(s);
-	    std::string item;
-	    while (std::getline(ss, item, delim)) {
+	vector<string> &split(const string &s, char delim, vector<string> &elems) {
+	    stringstream ss(s);
+	    string item;
+	    while (getline(ss, item, delim)) {
 	    	if (!item.empty())
 	        	elems.push_back(item);
 	    }
@@ -17,10 +19,30 @@ namespace Utils {
 	}
 
 
-	std::vector<std::string> split(const std::string &s, char delim) {
-	    std::vector<std::string> elems;
+	vector<string> split(const string &s, char delim) {
+	    vector<string> elems;
 	    split(s, delim, elems);
 	    return elems;
+	}
+
+	/**
+	 * Parse (int, int) string into pair<int,int>
+	 */
+	pair<int, int> parseIntPair(string intPair) {
+
+		// replace with space
+		for (int i = 0; i < intPair.size(); i++) {
+			if (intPair[i] == '(' || intPair[i] == ')' || intPair[i] == ',')
+				intPair[i] = ' ';
+		}
+
+		istringstream iss(intPair);
+
+		int f, s;
+
+		iss >> f >> s;
+
+		return pair<int,int>(f,s);
 	}
 }
 
