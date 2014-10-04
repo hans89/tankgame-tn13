@@ -1,7 +1,8 @@
 #include <iostream>
-#include "includes/CImg.h"
+#include "include/CImg.h"
 #include "TileManager.h"
 #include "TerrainMap.h"
+#include "AppConfig.h"
 
 using namespace cimg_library;
 using namespace std;
@@ -21,7 +22,9 @@ int main() {
   TileManager manager;
   TerrainMap tMap;
 
-  tMap.loadMap("data/map.txt");
+  AppConfig::loadConfig("app.config");
+
+  tMap.loadMap(AppConfig::getConfig("map").c_str());
 
   CImg<unsigned char> image(tMap.getWidth() * TileManager::TileSize, 
   		tMap.getHeight() * TileManager::TileSize, 1, 3, 0);

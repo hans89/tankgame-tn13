@@ -32,7 +32,7 @@ public:
 		addCharTileMapping('b', TileManager::BRIDGE_U);
 	}
 
-	void loadMap(char * file) {
+	void loadMap(const char * file) {
 		ifstream inStream(file);
 
 		string line;
