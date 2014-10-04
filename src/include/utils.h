@@ -38,7 +38,7 @@ namespace Utils {
 
 		istringstream iss(intPair);
 
-		int f, s;
+		int f = 0, s = 0;
 
 		iss >> f >> s;
 

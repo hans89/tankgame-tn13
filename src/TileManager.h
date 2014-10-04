@@ -4,8 +4,11 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <sstream>
 
 #include "include/CImg.h"
+#include "include/utils.h"
+#include "AppConfig.h"
 
 
 using namespace std;
@@ -13,67 +16,55 @@ using namespace cimg_library;
 
 class TileManager {
 public:
-	static int const TileSize = 24;
+	
+	TileManager(string tileRes) : 
+			tileResourceFile(tileRes),
+			tileImage(tileRes.c_str()) {
+			
+			string tileSizeStr = AppConfig::getConfig("tile_size");
+			istringstream iss(tileSizeStr);
+			iss >> tileSize;
 
-	enum Tile { 
-		LAND,
-		WATER,
-		GRASS,
-		BRIDGE_L,
-		BRIDGE_U,
-		WALL,
-		GREEN_TANK_L,
-		GREEN_TANK_R,
-		GREEN_TANK_U,
-		GREEN_TANK_D,
-		BLUE_TANK_L,
-		BLUE_TANK_R,
-		BLUE_TANK_U,
-		BLUE_TANK_D,
-		FIRE_S,
-		FIRE_M
-	};
+			string tileResource = AppConfig::getConfig("tile_list");
 
-	TileManager() : 
-		tileImage(TileResourceFile.c_str()) {
-			addTileMap(LAND, 4, 3);
-			addTileMap(WATER, 6, 3);
-			addTileMap(GRASS, 5, 3);
-			addTileMap(BRIDGE_L, 8, 6);
-			addTileMap(BRIDGE_U, 2, 4);
+			vector<string> tiles = Utils::split(tileResource, ',');
 
-			addTileMap(WALL, 10, 1);
-			addTileMap(GREEN_TANK_L, 19, 3);
-			addTileMap(GREEN_TANK_R, 16, 2);
-			addTileMap(GREEN_TANK_U, 14, 1);
-			addTileMap(GREEN_TANK_D, 15, 1);
-			addTileMap(BLUE_TANK_L, 19, 8);
-			// addTileMap(BLUE_TANK_R, , );
-			// addTileMap(BLUE_TANK_U, , );
-			// addTileMap(BLUE_TANK_D, , );
-			addTileMap(FIRE_M, 1, 0);
-			addTileMap(FIRE_S, 0, 0);
-
+			for (int i = 0; i < tiles.size(); i++) {
+				pair<int,int> offset = Utils::parseIntPair(AppConfig::getConfig(tiles[i]));
+				addTileMap(tiles[i], offset.first, offset.second);				
+			}
 	}
 
-	CImg<unsigned char>& getTile(Tile t) {
+	CImg<unsigned char>& getTile(string t) {
 		return tilesMap[t];
 	}
 
+	CImg<unsigned char>& getCharTile(char t) {
+		return tilesMap[CHAR_TILE_PREFIX + t];
+	}
+
+	string getCharTileName(char t) {
+		return CHAR_TILE_PREFIX + t;
+	}
+	static int getTileSize() {
+		return tileSize;
+	}
+
 private:
-
+	static int tileSize;
+	string tileResourceFile;
+	static string const CHAR_TILE_PREFIX;
 	CImg<unsigned char>	tileImage;
-	map<Tile, CImg<unsigned char> > tilesMap;
+	map<string, CImg<unsigned char> > tilesMap;
+	
 
-	static string const TileResourceFile;
+	void addTileMap(string t, int offsetX, int offsetY) {
+		int startX = offsetX * tileSize,
+				startY = offsetY * tileSize,
+				endX = startX + tileSize - 1,
+				endY = startY + tileSize - 1;
 
-	void addTileMap(Tile t, int offsetX, int offsetY) {
-		int startX = offsetX * TileSize,
-				startY = offsetY * TileSize,
-				endX = startX + TileSize - 1,
-				endY = startY + TileSize - 1;
-
-		tilesMap.insert(pair<Tile, CImg<unsigned char> >(
+		tilesMap.insert(pair<string, CImg<unsigned char> >(
 						t, 
 						tileImage.get_crop(startX, startY, endX, endY)
 		));
@@ -81,7 +72,7 @@ private:
 
 };
 
-string const TileManager::TileResourceFile = "res/tilesx24.png";
-
+string const TileManager::CHAR_TILE_PREFIX = "CHAR.";
+int TileManager::tileSize = 16;
 
 #endif

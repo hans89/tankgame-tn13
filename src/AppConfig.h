@@ -30,14 +30,7 @@ public:
 				#ifdef DEBUG
 					#include <iostream>
 					cout << "AppConfig: " << configPair[0] << " = " << configPair[1] << endl;
-
-					if (configPair[0].find("CHAR") != string::npos) {
-						pair<int,int> p = Utils::parseIntPair(configPair[1]);
-
-						cout << "Pair " << p.first << " " << p.second << endl;
-					}
 				#endif
-
 			}
 		}
 	}
