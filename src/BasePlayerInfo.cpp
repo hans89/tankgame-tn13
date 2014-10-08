@@ -1,0 +1,82 @@
+#include "IPlayerInfo.h"
+#include <algorithm>
+
+using namespace std;
+class BasePlayerInfo : IPlayerInfo {
+private:
+  char _mapID;
+  Command _lastMove;
+  list<ITank*> _aliveTanks;
+  list<ITank*> _deadTanks;
+  pair<int, int> _headquarterPosition;
+  vector<BaseTank*> _baseTanks;
+
+public:
+  #pragma region IPlayerInfoImplementation
+  char getPlayerMapID() const {
+    return _mapID;
+  }
+
+  list<ITank*> getAliveTanks() const {
+    return _aliveTanks;
+  }
+
+  list<ITank*> getDeadTanks() const {
+    return _deadTanks;
+  }
+
+  pair<int, int> getHeadquarterPosition() const {
+    return _headquarterPosition;
+  }
+
+  Command getLastMove() const {
+    return _lastMove;
+  }
+
+  bool isPlayable() const {
+    return !_aliveTanks.empty();
+  }
+
+  #pragma endregion
+
+  #pragma region ControllerImplementation
+  bool isOwnerOf(ITank* tank) const {
+    return this == tank->getOwner();
+  }
+
+  bool getHit(ITank* tank) {
+    list<ITank*>::iterator it 
+      = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
+
+    if (it != _aliveTanks.end()) {
+      tank->decreaseHP();
+      if (!tank->isAlive()) {
+        _deadTanks.push_back(tank);
+        _aliveTanks.erase(it);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  void updateLastMove(const Command& cmd) {
+    _lastMove = cmd;
+  }
+
+  void addTank(int hp, int ammo, pair<int,int> pos) {
+    BaseTank* newTank = new BaseTank(hp, ammo, pos, this);
+
+    _baseTanks.push_back(newTank);
+    _aliveTanks.push_back(newTank);
+  }
+
+  BasePlayerInfo(char id, pair<int,int> head) :
+    _mapID(id), _headquarterPosition(head) {}
+
+  ~BasePlayerInfo() {
+    for (int i = 0; i < _baseTanks.size(); i++)
+      delete _baseTanks[i];
+  }
+
+  #pragma endregion
+}
