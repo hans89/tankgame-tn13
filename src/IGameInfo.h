@@ -1,8 +1,12 @@
 #ifndef __TANKGAME_IGAMEINFO__
 #define __TANKGAME_IGAMEINFO__
 
+#include <vector>
+
 #include "IMap.h"
 #include "IPlayer.h"
+
+using namespace std;
 
 class IGameInfo {
 protected:

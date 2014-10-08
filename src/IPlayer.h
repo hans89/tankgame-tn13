@@ -2,7 +2,7 @@
 #define __TANKGAME_IPLAYER__
 
 class IPlayerInfo;
-class IController;
+class IGameInfo;
 
 #include "Command.h"
 /**
@@ -28,7 +28,7 @@ public:
 
   // Provide the info of the current user
   // Player must implement this method
-  virtual void getPlayerInfo() const = 0;
+  virtual IPlayerInfo* getPlayerInfo() const = 0;
 
   // onStart will be called by the framework before the game begins
   // for the player to set up information.

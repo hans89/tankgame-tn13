@@ -3,7 +3,7 @@
 
 #include "ITank.h"
 
-class BaseTank : ITank {
+class BaseTank : public ITank {
 private:
   int _HP, _ammo, _range;
   pair<int, int> _pos;
@@ -27,7 +27,7 @@ public:
   pair<int, int> getPosition() const {
     if (isAlive())
       return _pos;
-    return nopos;
+    return IMap::nopos;
   }
 
   bool isAlive() const {

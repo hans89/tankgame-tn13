@@ -72,7 +72,7 @@ int main() {
   int fireTypesNo = fireTypes.size();
 
   while (!main_disp.is_closed()) {
-    main_disp.wait(300);
+    main_disp.wait(100);
 
 
     // undo last fires

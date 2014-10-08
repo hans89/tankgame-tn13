@@ -1,12 +1,17 @@
-#include "IGameInfo.h"
-
 #include <list>
 #include <vector>
 #include <map>
+#include <cstdlib>
+
+#include "IGameInfo.h"
+#include "BaseMap.h"
+#include "BasePlayerInfo.h"
+#include "BaseTank.h"
+
+using namespace std;
 
 #define STARTID 'A'
 
-using namespace std;
 class BaseGameModel : IGameInfo {
 private:
   BaseMap* _map;
@@ -37,14 +42,14 @@ public:
  
   IPlayer* registerPlayer(IPlayer* newPlayer) {
     char id = _newPlayerID;
-    int idNo = teamID - _startID;
+    int idNo = id - _startID;
 
-    if (idNo < headquarters.size())
+    if (idNo < _headquarters.size())
     {
       _newPlayerID++;
 
       BasePlayerInfo* newBaseInfo 
-        = new BasePlayerInfo(id, headquarters[idNo]);
+        = new BasePlayerInfo(id, _headquarters[idNo]);
 
       // save for later uses
       _playersInfo.push_back(newBaseInfo);
@@ -56,7 +61,7 @@ public:
       for (int j = 0; j < h; j++) {
         for (int i = 0; i < w; i++) {
           // there is a tank here for id
-          if ((*map)(i,j) == id) {
+          if ((*_map)(i,j) == id) {
             newBaseInfo->addTank(_defaultHP, _defaultAmmo, 
                         _defaultRange, pair<int,int>(i,j));
           }
@@ -76,9 +81,9 @@ public:
 
   bool isValidMove(IPlayer* player, const Command& move) {
     IPlayerInfo* playerInfo = player->getPlayerInfo();
-    ITank* tank = move.receivingObject;
+    ITank* tank = move.getReceivingObject();
 
-    switch (move.actionType) {
+    switch (move.getActionType()) {
       case Command::SURRENDER:
       case Command::SKIP:
         return true;
@@ -115,9 +120,9 @@ public:
     vector<pair<int, int> > changes;
 
     BasePlayerInfo* playerInfo = (BasePlayerInfo*)(player->getPlayerInfo());
-    BaseTank* tank = (BaseTank*)(move.receivingObject);
+    BaseTank* tank = (BaseTank*)(move.getReceivingObject());
 
-    switch (move.actionType) {
+    switch (move.getActionType()) {
       case Command::SURRENDER: {
         list<ITank*> aliveTanks = playerInfo->getAliveTanks();
 
@@ -128,8 +133,8 @@ public:
 
           _map->removeTank(tank);
 
-          playerInfo->removeTank(*it);
-          changes.push_back((it*)->getPosition());
+          playerInfo->removeTank((BaseTank*)*it);
+          changes.push_back((*it)->getPosition());
         }
       }
         break;

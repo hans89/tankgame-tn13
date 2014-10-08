@@ -1,9 +1,12 @@
 #ifndef __TANKGAME_BASEMAP__
 #define __TANKGAME_BASEMAP__ 
 
-#include "IMap.h"
+#include <string>
 
-class BaseMap : IMap {
+#include "IMap.h"
+#include "BaseTank.h"
+
+class BaseMap : public IMap {
 private:
   vector<string> charMap;
 public:

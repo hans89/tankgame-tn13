@@ -1,10 +1,9 @@
 #ifndef __TANKGAME_IPLAYERINFO__
 #define __TANKGAME_IPLAYERINFO__ 
 
-#include <vector>
+#include <list>
 
 #include "Command.h"
-#include "ITank.h"
 
 using namespace std;
 
@@ -22,10 +21,10 @@ public:
   virtual char getPlayerMapID() const = 0;
 
   // get list of running tanks of the player
-  virtual vector<ITank*> getAliveTanks() const = 0;
+  virtual list<ITank*> getAliveTanks() const = 0;
 
   // get list of dead tanks of the player
-  virtual vector<ITank*> getDeadTanks() const = 0;
+  virtual list<ITank*> getDeadTanks() const = 0;
 
   // get the position of the headquarter of the player
   virtual pair<int, int> getHeadquarterPosition() const = 0;

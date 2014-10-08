@@ -51,7 +51,7 @@ ifeq ($(config),release)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L/usr/X11R6/lib -L.
+  ALL_LDFLAGS   += $(LDFLAGS) -L/usr/X11R6/lib -L. -Wl,-x
   LDDEPS    +=
   LIBS      += $(LDDEPS) -lm -lpthread -lX11 -lpng -lz
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
@@ -64,6 +64,8 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/BaseGameModel.o \
+	$(OBJDIR)/GameMain.o \
 	$(OBJDIR)/main.o \
 
 RESOURCES := \
@@ -123,6 +125,14 @@ $(GCH): $(PCH)
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -MMD -MP $(DEFINES) $(INCLUDES) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
+
+$(OBJDIR)/BaseGameModel.o: src/BaseGameModel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/GameMain.o: src/GameMain.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/main.o: src/main.cpp
 	@echo $(notdir $<)

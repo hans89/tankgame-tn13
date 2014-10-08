@@ -1,7 +1,8 @@
 #ifndef __TANKGAME_ITANK__
 #define __TANKGAME_ITANK__
 
-#include "IPlayerInfo.h"
+
+class IPlayerInfo;
 
 class ITank {
 protected:

@@ -1,6 +1,10 @@
 #ifndef __TANKGAME_COMMAND__
 #define __TANKGAME_COMMAND__
 
+#include <utility>
+#include "ITank.h"
+
+using namespace std;
 /**
  * This struct defines the command the player want to make on the next move
  * Player must define which tank will do what, only one tank and one action
@@ -11,17 +15,21 @@
  * In case the player want to surrender, assign the actionType as SURRENDER.
  */
 struct Command {
-private:
-  ITank* receivingObject;
-  Action actionType;
-  pair<int, int> targetPosition;
 public:
   enum Action {
     MOVE,
     FIRE,
     SKIP,
-    SURRENDER,
-  }
+    SURRENDER
+  };
+
+private:
+  ITank* receivingObject;
+  Action actionType;
+  pair<int, int> targetPosition;
+  
+public:
+
   Command() : 
     receivingObject(NULL), actionType(SKIP), targetPosition(IMap::nopos) {}
 

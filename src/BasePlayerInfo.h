@@ -1,8 +1,11 @@
+#ifndef __TANKGAME_BASEPLAYERINFO__
+#define __TANKGAME_BASEPLAYERINFO__ value
+
 #include "IPlayerInfo.h"
 #include <algorithm>
 
 using namespace std;
-class BasePlayerInfo : IPlayerInfo {
+class BasePlayerInfo : public IPlayerInfo {
 private:
   char _mapID;
   Command _lastMove;
@@ -75,8 +78,8 @@ public:
     _lastMove = cmd;
   }
 
-  void addTank(int hp, int ammo, pair<int,int> pos) {
-    BaseTank* newTank = new BaseTank(hp, ammo, pos, this);
+  void addTank(int hp, int ammo, int range, pair<int,int> pos) {
+    BaseTank* newTank = new BaseTank(hp, ammo, range, pos, this);
 
     _baseTanks.push_back(newTank);
     _aliveTanks.push_back(newTank);
@@ -91,4 +94,6 @@ public:
   }
 
   #pragma endregion
-}
+};
+
+#endif

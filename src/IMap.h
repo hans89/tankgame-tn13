@@ -1,11 +1,15 @@
 #ifndef __TANKGAME_IMAP__
 #define __TANKGAME_IMAP__
 
+#include <utility>
+using namespace std;
+
 class IMap {
 protected:
 	virtual ~IMap() {}
 public:
   const static pair<int, int> nopos;
+  
   // return the width (x-coordinate) of this map
 	virtual int getWidth() const = 0;
 
