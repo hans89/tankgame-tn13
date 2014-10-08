@@ -29,8 +29,8 @@ public:
     receivingObject(receivObj), 
     targetPosition(pair<int,int>(targetX, targetY)) {}
 
-  const pair<int, int>* getTargetPosition() const {
-    return &targetPosition;
+  pair<int, int> getTargetPosition() const {
+    return targetPosition;
   }
 
   ITank* getReceivingObject() const {

@@ -14,6 +14,9 @@ public:
   // return the amount of ammo left, in range [0, MAXAMMO]
   virtual int getAmmoNumber() const = 0;
 
+  // return the maximum range, in range [0, MAXRANGE]
+  virtual int getRange() const = 0;
+
   // return the current position, if isAlive == false, return (-1,-1)
   virtual pair<int, int> getPosition() const = 0;
 

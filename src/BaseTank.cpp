@@ -5,7 +5,7 @@
 
 class BaseTank : ITank {
 private:
-  int _HP, _ammo;
+  int _HP, _ammo, _range;
   pair<int, int> _pos;
   IPlayerInfo* _ownerInfo;
 public:
@@ -18,6 +18,10 @@ public:
   
   int getAmmoNumber() const {
     return _ammo;
+  }
+
+  int getRange() const {
+    return _range;
   }
 
   pair<int, int> getPosition() const {
@@ -46,9 +50,17 @@ public:
     if (_ammo > 0)
       _ammo--;
   }
+
+  void kill() {
+    _HP = 0;
+  }
+
+  void move(const pair<int, int>& newPost) {
+    _pos = newPost;
+  }
   
-  BaseTank(int hp, int ammo, pair<int,int> pos, IPlayerInfo* owner)
-    : _HP(hp), _ammo(ammo), _pos(pos), _ownerInfo(owner) {}
+  BaseTank(int hp, int ammo, int range, pair<int,int> pos, IPlayerInfo* owner)
+    : _HP(hp), _ammo(ammo), _range(range), _pos(pos), _ownerInfo(owner) {}
     
   #pragma endregion
 };

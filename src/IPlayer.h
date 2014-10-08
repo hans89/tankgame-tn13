@@ -26,6 +26,10 @@ public:
   // Player must implement this method
   virtual void onBindGameInfo(IGameInfo* gameInfo) = 0;
 
+  // Provide the info of the current user
+  // Player must implement this method
+  virtual void getPlayerInfo() const = 0;
+
   // onStart will be called by the framework before the game begins
   // for the player to set up information.
   // Player must implement this method
@@ -42,7 +46,7 @@ public:
   // If the command is invalid, the framework will consider that the player
   // skip this turn.
   // Player must implement this method
-  virtual Command onNextMove() = 0;
+  virtual Command nextMove() = 0;
 };
 
 #endif

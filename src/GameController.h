@@ -7,18 +7,19 @@ class GameController {
 private:
   GameView* _view;
   GameModel* _model;
-  list<IPlayer*> _players;
+  CImgDisplay& _mainDisplay;
+  vector<IPlayer*> _players;
+  int _currentPlayerTurn;
 
   bool _autoMode;
   bool _ended;
   bool _ending;
 
-  int _currentPlayerTurn;
-
 public:
-  GameController(GameView* v, GameModel* m, autoM = true) 
-    : _view(v), _model(m), _autoMode(autoM), 
-      _ended(false), _ending(false) {}
+  GameController(GameView* v, GameModel* m, CImgDisplay& dis, autoM = true) 
+    : _view(v), _model(m), _mainDisplay(dis),
+      _autoMode(autoM), _ended(false), _ending(false),
+      _currentPlayerTurn(0) {}
 
   bool registerPlayer(IPlayer* player) {
     IPlayer* newPlayer = _model->registerPlayer(player);
@@ -33,14 +34,15 @@ public:
 
   // the controller makes the next turn
   bool nextTurn() {
-    int size = _model->getPlayers().size();
+  
+    IPlayer* currentPlayer = _model->getPlayer(currentPlayerTurn++);
+    // reduce down:
+    currentPlayerTurn %= _players.size();
 
-    IPlayer* currentPlayer = _model->getPlayer(currentPlayerTurn++ %= size);
+    Command nextMove = currentPlayer->nextMove();
 
-    Command nextMove = currentPlayer->onNextMove();
-
-    if (_model->isValidMove(nextMove)) {
-      pair<int,int> changes = _model->applyMove(nextMove);
+    if (_model->isValidMove(currentPlayer, nextMove)) {
+      vector<pair<int,int>> changes = _model->applyMove(currentPlayer, nextMove);
 
       _view->update(changes);
 
@@ -83,8 +85,8 @@ public:
     return _ended;
   }
 
-  void updateDisplay(CImgDisplay& main_disp) {
-    _view->updateDisplay(main_disp);
+  void updateDisplay() {
+    _view->updateDisplay(_mainDisplay);
   }
 };
 #endif

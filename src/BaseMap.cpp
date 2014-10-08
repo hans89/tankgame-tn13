@@ -22,11 +22,30 @@ public:
   char operator()(int x, int y) const {
     return charMap[y][x];
   }
+
+  bool isWalkable(int x, int y) const {
+
+  }
+
   #pragma endregion
 
   #pragma region ControllerImplementation
   char& operator()(int x, int y) {
     return charMap[y][x];
+  }
+
+  void removeTank(BaseTank* tank) {
+    pair<int,int> curPost = tank->getPosition();
+
+    (*this)(curPost.first, curPost.second) = IMap::LAND;
+  }
+
+  void moveTank(BaseTank* tank, const pair<int,int>& newPost) {
+    pair<int,int> curPost = tank->getPosition();
+    tank->move(newPost);
+
+    (*this)(curPost.first, curPost.second) = IMap::LAND;
+    (*this)(newPost.first, newPost.second) = tank->getOwner()->getPlayerMapID();
   }
 
   BaseMap(const vector<string>& cMap) : charMap(cMap) {}

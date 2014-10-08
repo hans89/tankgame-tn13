@@ -40,11 +40,23 @@ public:
   #pragma endregion
 
   #pragma region ControllerImplementation
-  bool isOwnerOf(ITank* tank) const {
+  bool isOwnerOf(const BaseTank* tank) const {
     return this == tank->getOwner();
   }
 
-  bool getHit(ITank* tank) {
+  bool removeTank(BaseTank* tank) {
+    list<ITank*>::iterator it 
+      = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
+    if (it != _aliveTanks.end()) {
+      tank->kill();
+      _deadTanks.push_back(tank);
+      _aliveTanks.erase(it);
+      return true;
+    }
+    return false;
+  }
+
+  bool getHit(BaseTank* tank) {
     list<ITank*>::iterator it 
       = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
 
