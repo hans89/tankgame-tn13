@@ -1,9 +1,10 @@
 #ifndef __TANKGAME_GAMECONTROLLER__
 #define __TANKGAME_GAMECONTROLLER__
 
+#include "IController.h"
 #include "Command.h"
 
-class GameController {
+class GameController : public IController {
 private:
   GameView* _view;
   GameModel* _model;
@@ -73,15 +74,15 @@ public:
     _autoMode = !_autoMode;
   }
 
-  bool isInAutoMode() {
+  bool isInAutoMode() const {
     return _autoMode;
   }
 
-  bool isEnding() {
+  bool isEnding() const {
     return _ending;
   }
 
-  bool isEnded() {
+  bool isEnded() const {
     return _ended;
   }
 

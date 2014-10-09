@@ -1,5 +1,5 @@
-#ifndef __APPCONFIG__
-#define __APPCONFIG__
+#ifndef __TANKGAME_APPCONFIG__
+#define __TANKGAME_APPCONFIG__
 
 #include <map>
 #include <fstream>
@@ -13,6 +13,10 @@ class AppConfig {
 private:
 	static map<string, string> configValues;
 public:
+
+	AppConfig(const char* configFile) {
+		AppConfig::loadConfig(configFile);
+	}
 
 	static void loadConfig(const char* configFile) {
 		ifstream inStream(configFile);
@@ -33,6 +37,8 @@ public:
 				#endif
 			}
 		}
+		
+		inStream.close();
 	}
 
 	static string getConfig(string configKey) {

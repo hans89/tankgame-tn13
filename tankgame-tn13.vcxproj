@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{91F10429-CF67-A44D-88D3-2654E8136990}</ProjectGuid>
+    <ProjectGuid>{53FBADBB-6871-EB50-A24E-69D615D21B1D}</ProjectGuid>
     <RootNamespace>tankgame-tn13</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -110,11 +110,29 @@
     <ClInclude Include="lib\win32\include\pngconf.h" />
     <ClInclude Include="lib\win32\include\pnglibconf.h" />
     <ClInclude Include="lib\win32\include\zlib.h" />
+    <ClInclude Include="src\AppConfig.h" />
+    <ClInclude Include="src\BaseMap.h" />
+    <ClInclude Include="src\BasePlayerInfo.h" />
+    <ClInclude Include="src\BaseTank.h" />
+    <ClInclude Include="src\Command.h" />
+    <ClInclude Include="src\GameController.h" />
+    <ClInclude Include="src\GameModelView.h" />
+    <ClInclude Include="src\GameView.h" />
+    <ClInclude Include="src\IGameInfo.h" />
+    <ClInclude Include="src\IMap.h" />
+    <ClInclude Include="src\IPlayer.h" />
+    <ClInclude Include="src\IPlayerInfo.h" />
+    <ClInclude Include="src\ITank.h" />
     <ClInclude Include="src\TerrainMap.h" />
     <ClInclude Include="src\TileManager.h" />
-    <ClInclude Include="src\includes\CImg.h" />
+    <ClInclude Include="src\include\CImg.h" />
+    <ClInclude Include="src\include\utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BaseGameModel.cpp">
+    </ClCompile>
+    <ClCompile Include="src\GameMain.cpp">
+    </ClCompile>
     <ClCompile Include="src\main.cpp">
     </ClCompile>
   </ItemGroup>

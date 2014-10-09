@@ -7,22 +7,32 @@
 #include "BaseMap.h"
 #include "BasePlayerInfo.h"
 #include "BaseTank.h"
+#include "BaseBlock.h"
+#include "BaseBridge.h"
 
 using namespace std;
 
 #define STARTID 'A'
 
-class BaseGameModel : IGameInfo {
-private:
+class BaseGameModel : public IGameInfo {
+protected:
   BaseMap* _map;
-  vector<pair<int,int> > _headquarters;
+  vector<BaseBlock*> _blocks;
+  vector<BaseBridge*> _bridges;
+  
   int _defaultHP, _defaultAmmo, _defaultRange;
+  vector<pair<int,int> > _headquarters;
+
   char _newPlayerID;
   const char _startID;
-  
   vector<BasePlayerInfo*> _playersInfo;
-  vector<IPlayerInfo*> _iPlayersInfo;
   map<char, BasePlayerInfo*> _playersInfoIDMap;
+
+  // maintaining public interfaces to internal objects
+  // to support IGameInfo interfaces
+  vector<IPlayerInfo*> _iPlayersInfo;
+  list<IBlock*> _onMapBlocks;
+  list<IBridge*> _onMapBridges;
 
 public:
 
@@ -32,13 +42,33 @@ public:
     return _map;
   }
 
+  // get the available bridges on map
+  list<IBridge*> getOnMapBridges() const {
+    return _onMapBridges;
+  }
+
+  // get the available blocks on map
+  list<IBlock*> getOnMapBlocks() const {
+    return _onMapBlocks;
+  }
+
   // get list of current players information
   vector<IPlayerInfo*> getPlayersInfo() const {
     return _iPlayersInfo;
   }
+
+  IPlayerInfo* getPlayerByID(char id) const {
+    map<char, BasePlayerInfo*>::const_iterator it = _playersInfoIDMap.find(id);
+
+    if (it != _playersInfoIDMap.end())
+      return it->second;
+    
+    return NULL;
+  }
+
   #pragma endregion
 
-  #pragma region ControllerImplementation 
+  #pragma region ModelPreservedInterfaces 
  
   IPlayer* registerPlayer(IPlayer* newPlayer) {
     char id = _newPlayerID;
@@ -103,7 +133,7 @@ public:
         pair<int, int> e = move.getTargetPosition();
 
         if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive()
-            || !_map->isWalkable(e.first, e.second))
+            || !_map->isEmptySpace(e.first, e.second))
           return false;
 
         pair<int, int> s = tank->getPosition();
@@ -131,7 +161,7 @@ public:
         for (list<ITank*>::iterator it = aliveTanks.begin(); 
               it != aliveTanks.end(); ++it) {
 
-          _map->removeTank(tank);
+          _map->remove(tank);
 
           playerInfo->removeTank((BaseTank*)*it);
           changes.push_back((*it)->getPosition());
@@ -147,7 +177,7 @@ public:
         pair<int,int> s = tank->getPosition(),
                       e = move.getTargetPosition();
 
-        _map->moveTank(tank, e);
+        _map->move(tank, e);
 
         changes.push_back(s);
         changes.push_back(e);
@@ -166,12 +196,42 @@ public:
     : _map(new BaseMap(charMap)), 
       _headquarters(heads),
       _defaultHP(defHP), _defaultAmmo(defAmmo), _defaultRange(defRange),
-      _startID(startId), _newPlayerID(startId) {}
+      _startID(startId), _newPlayerID(startId) {
+
+    // set up the bridges and blocks
+    int w = _map->getWidth(), h = _map->getHeight();
+    char blockID = BaseBlock::getID();
+    char bridgeID = BaseBridge::getID();
+
+    for (int j = 0; j < h; j++) {
+      for (int i = 0; i < w; i++) {
+        // there is a tank here for id
+        if ((*_map)(i,j) == blockID) {
+          BaseBlock* newBlock = new BaseBlock(pair<int,int>(i,j));
+          _blocks.push_back(newBlock);
+          _onMapBlocks.push_back(newBlock);
+        } else if ((*_map)(i,j) == bridgeID) {
+          BaseBridge* newBridge = new BaseBridge(pair<int,int>(i,j));
+          _bridges.push_back(newBridge);
+          _onMapBridges.push_back(newBridge);
+        }
+      }
+    }
+  }
 
   ~BaseGameModel() {
     delete _map;
-    for (int i = 0; i < _playersInfo.size(); i++) {
+    int i;
+    for (i = 0; i < _playersInfo.size(); i++) {
       delete _playersInfo[i];
+    }
+
+    for (i = 0; i < _bridges.size(); i++) {
+      delete _bridges[i];
+    }
+
+    for (i = 0; i < _blocks.size(); i++) {
+      delete _blocks[i];
     }
   }
   #pragma endregion;

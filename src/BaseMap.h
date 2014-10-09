@@ -26,7 +26,7 @@ public:
     return charMap[y][x];
   }
 
-  bool isWalkable(int x, int y) const {
+  bool isEmptySpace(int x, int y) const {
 
   }
 
@@ -37,18 +37,20 @@ public:
     return charMap[y][x];
   }
 
-  void removeTank(BaseTank* tank) {
-    pair<int,int> curPost = tank->getPosition();
+  void remove(BaseMapObject* obj) {
+    pair<int,int> lastPos = obj->getPosition();
 
-    (*this)(curPost.first, curPost.second) = IMap::LAND;
+    obj->removeFromMap();
+
+    (*this)(lastPos.first, lastPos.second) = IMap::LAND;
   }
 
-  void moveTank(BaseTank* tank, const pair<int,int>& newPost) {
-    pair<int,int> curPost = tank->getPosition();
-    tank->move(newPost);
+  void move(BaseMapObject* obj, const pair<int,int>& newPos) {
+    pair<int,int> lastPos = obj->getPosition();
+    obj->move(newPos);
 
-    (*this)(curPost.first, curPost.second) = IMap::LAND;
-    (*this)(newPost.first, newPost.second) = tank->getOwner()->getPlayerMapID();
+    (*this)(lastPos.first, lastPos.second) = IMap::LAND;
+    (*this)(newPos.first, newPos.second) = obj->getMapID();
   }
 
   BaseMap(const vector<string>& cMap) : charMap(cMap) {}

@@ -2,19 +2,22 @@
 #define __TANKGAME_BASETANK__ 
 
 #include "ITank.h"
+#include "BaseMapObject.h"
 
-class BaseTank : public ITank {
-private:
-  int _HP, _ammo, _range;
-  pair<int, int> _pos;
+class BaseTank : public BaseMapObject, public ITank {
+protected:
+  int _ammo, _range;
   IPlayerInfo* _ownerInfo;
 public:
 
-  #pragma region ITankImplementation
-  
-  int getHP() const {
-    return _HP;
+  #pragma region IMapObjectImplementation
+  // return the char ID of this object on the map
+  char getMapID() const {
+    return _ownerInfo->getPlayerMapID();
   }
+  #pragma endregion
+
+  #pragma region ITankImplementation
   
   int getAmmoNumber() const {
     return _ammo;
@@ -22,12 +25,6 @@ public:
 
   int getRange() const {
     return _range;
-  }
-
-  pair<int, int> getPosition() const {
-    if (isAlive())
-      return _pos;
-    return IMap::nopos;
   }
 
   bool isAlive() const {
@@ -40,27 +37,15 @@ public:
 
   #pragma endregion
 
-  #pragma region ControllerImplementation
-  void decreaseHP() {
-    if (_HP > 0)
-      _HP--;
-  }
+  #pragma region ModelPreservedInterface
 
   void decreaseAmmo() {
     if (_ammo > 0)
       _ammo--;
   }
-
-  void kill() {
-    _HP = 0;
-  }
-
-  void move(const pair<int, int>& newPost) {
-    _pos = newPost;
-  }
   
-  BaseTank(int hp, int ammo, int range, pair<int,int> pos, IPlayerInfo* owner)
-    : _HP(hp), _ammo(ammo), _range(range), _pos(pos), _ownerInfo(owner) {}
+  BaseTank(int hp, int ammo, int range, const pair<int,int>& pos, IPlayerInfo* owner)
+    : BaseMapObject(hp, pos), _ammo(ammo), _range(range), _ownerInfo(owner) {}
     
   #pragma endregion
 };

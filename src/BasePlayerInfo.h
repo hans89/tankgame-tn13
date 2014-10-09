@@ -42,7 +42,7 @@ public:
 
   #pragma endregion
 
-  #pragma region ControllerImplementation
+  #pragma region ModelPreservedInterface
   bool isOwnerOf(const BaseTank* tank) const {
     return this == tank->getOwner();
   }

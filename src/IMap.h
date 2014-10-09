@@ -8,7 +8,7 @@ class IMap {
 protected:
 	virtual ~IMap() {}
 public:
-  const static pair<int, int> nopos;
+  const static pair<int, int> npos;
   
   // return the width (x-coordinate) of this map
 	virtual int getWidth() const = 0;
@@ -20,9 +20,9 @@ public:
   // (0,0) is at the left-top corner
 	virtual char operator()(int x, int y) const = 0;
 
-  // return if the cell is empty and can be occupied
-  virtual bool isWalkable(int x, int y) const = 0;
+  // return if the cell is on land, empty and can be occupied
+  virtual bool isEmptySpace(int x, int y) const = 0;
 };
 
-const pair<int, int> IMap::nopos = pair<int,int>(-1,-1);
+const pair<int, int> IMap::npos = pair<int,int>(-1,-1);
 #endif

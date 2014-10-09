@@ -1,5 +1,5 @@
-#ifndef __TILE_MANAGER__
-#define __TILE_MANAGER__
+#ifndef __TANKGAME_TILE_MANAGER__
+#define __TANKGAME_TILE_MANAGER__
 
 #include <string>
 #include <map>
@@ -16,21 +16,19 @@ using namespace cimg_library;
 
 class TileManager {
 public:
-	
-	TileManager(string tileRes) : 
-			tileResourceFile(tileRes),
-			tileImage(tileRes.c_str()) {
+	TileManager(AppConfig* config) : 
+			tileImage(config->getConfig("tile").c_str()) {
 			
-			string tileSizeStr = AppConfig::getConfig("tile_size");
+			string tileSizeStr = config->getConfig("tile_size");
 			istringstream iss(tileSizeStr);
 			iss >> tileSize;
 
-			string tileResource = AppConfig::getConfig("tile_list");
+			string tileResource = config->getConfig("tile_list");
 
 			vector<string> tiles = Utils::split(tileResource, ',');
 
 			for (int i = 0; i < tiles.size(); i++) {
-				pair<int,int> offset = Utils::parseIntPair(AppConfig::getConfig(tiles[i]));
+				pair<int,int> offset = Utils::parseIntPair(config->getConfig(tiles[i]));
 				addTileMap(tiles[i], offset.first, offset.second);				
 			}
 	}
@@ -52,7 +50,6 @@ public:
 
 private:
 	static int tileSize;
-	string tileResourceFile;
 	static string const CHAR_TILE_PREFIX;
 	CImg<unsigned char>	tileImage;
 	map<string, CImg<unsigned char> > tilesMap;
