@@ -19,12 +19,12 @@ protected:
   BaseMap* _map;
   vector<BaseBlock*> _blocks;
   vector<BaseBridge*> _bridges;
-  
-  int _defaultHP, _defaultAmmo, _defaultRange;
-  vector<pair<int,int> > _headquarters;
 
-  char _newPlayerID;
-  const char _startID;
+  const MapInfo _mapInfo;
+  
+  map<char, pair<int,int> > _headquarters;
+  int _nextRegisterPlayer;
+
   vector<BasePlayerInfo*> _playersInfo;
   map<char, BasePlayerInfo*> _playersInfoIDMap;
 
@@ -69,17 +69,18 @@ public:
   #pragma endregion
 
   #pragma region ModelPreservedInterfaces 
- 
-  IPlayer* registerPlayer(IPlayer* newPlayer) {
-    char id = _newPlayerID;
-    int idNo = id - _startID;
+  
+  const MapInfo& getMapInfo() {
+    return _mapInfo;
+  }
 
-    if (idNo < _headquarters.size())
-    {
-      _newPlayerID++;
+  IPlayer* registerPlayer(IPlayer* newPlayer) {
+    if (_nextRegisterPlayer < _mapInfo.playersID.size()) {
+      
+      char id = _mapInfo.playersID[_nextRegisterPlayer++];
 
       BasePlayerInfo* newBaseInfo 
-        = new BasePlayerInfo(id, _headquarters[idNo]);
+        = new BasePlayerInfo(id, _headquarters[id]);
 
       // save for later uses
       _playersInfo.push_back(newBaseInfo);
@@ -92,8 +93,8 @@ public:
         for (int i = 0; i < w; i++) {
           // there is a tank here for id
           if ((*_map)(i,j) == id) {
-            newBaseInfo->addTank(_defaultHP, _defaultAmmo, 
-                        _defaultRange, pair<int,int>(i,j));
+            newBaseInfo->addTank(_mapInfo.tankHP, _mapInfo.tankAmmo, 
+                        _mapInfo.tankRange, pair<int,int>(i,j));
           }
         }
       }
@@ -190,30 +191,37 @@ public:
     return changes;
   }
 
-  BaseGameModel(const vector<string>& charMap, 
-                const vector<pair<int,int> >& heads,
-                int defHP, int defAmmo, int defRange, char startId = STARTID) 
-    : _map(new BaseMap(charMap)), 
-      _headquarters(heads),
-      _defaultHP(defHP), _defaultAmmo(defAmmo), _defaultRange(defRange),
-      _startID(startId), _newPlayerID(startId) {
+  BaseGameModel(const MapInfo& info) 
+    : _mapInfo(info),
+      _map(new BaseMap(info.charMap)),
+      _nextRegisterPlayer(0) {
 
-    // set up the bridges and blocks
+    // set up the bridges, blocks and headquarters
     int w = _map->getWidth(), h = _map->getHeight();
-    char blockID = BaseBlock::getID();
-    char bridgeID = BaseBridge::getID();
 
     for (int j = 0; j < h; j++) {
       for (int i = 0; i < w; i++) {
-        // there is a tank here for id
-        if ((*_map)(i,j) == blockID) {
-          BaseBlock* newBlock = new BaseBlock(pair<int,int>(i,j));
+        char c = (*_map)(i,j)
+        
+        if (_mapInfo.blockIDs.find(c) != string::npos) {
+        // there is a block here
+
+          BaseBlock* newBlock 
+              = new BaseBlock(c, _mapInfo.blockHP, pair<int,int>(i,j));
           _blocks.push_back(newBlock);
           _onMapBlocks.push_back(newBlock);
-        } else if ((*_map)(i,j) == bridgeID) {
-          BaseBridge* newBridge = new BaseBridge(pair<int,int>(i,j));
+        } else if (_mapInfo.bridgeIDs.find(c) != string::npos) {
+        // there is a bridge here
+
+          BaseBridge* newBridge 
+              = new BaseBridge(c, _mapInfo.bridgeHP, pair<int,int>(i,j));
           _bridges.push_back(newBridge);
           _onMapBridges.push_back(newBridge);
+        } else if (_mapInfo.headquarterIDs.find(c) != string::npos
+            && _headquarters.find(c) == _headquarters.end()) {
+        // there is a headquarter here
+
+          _headquarters.insert(pair<char, pair<int,int> >(c, pair<int,int>(i,j)));
         }
       }
     }

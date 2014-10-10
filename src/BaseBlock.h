@@ -8,34 +8,23 @@
 using namespace std;
 
 class BaseBlock : public BaseMapObject, public IBlock {
-private:
-  static int _mapID;
-  static int _defaultHP;
+protected:
+  char _mapID;
 public:
   #pragma region IMapObjectImplementation
   
   char getMapID() const {
-    return getID();
+    return _mapID;
   }
 
   #pragma endregion
 
   #pragma region ModelPreservedInterfaces 
 
-  BaseBlock(const pair<int,int>& pos) : BaseMapObject(_defaultHP, pos) {}
-
-  static int getID() {
-    return _mapID;
-  }
-
-  static int getDefaultHP() {
-    return _defaultHP;
-  }
+  BaseBlock(char id, int hp, const pair<int,int>& pos) 
+    : BaseMapObject(hp, pos), _mapID(id) {}
 
   #pragma endregion
 };
-
-int BaseBlock::_mapID = 0;
-int BaseBlock::_defaultHP = 0;
 
 #endif

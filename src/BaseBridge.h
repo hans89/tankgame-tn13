@@ -8,34 +8,24 @@
 using namespace std;
 
 class BaseBridge : public BaseMapObject, public IBridge {
-private:
-  static int _mapID;
-  static int _defaultHP;
+protected:
+  char _mapID;
 public:
   #pragma region IMapObjectImplementation
   
   char getMapID() const {
-    return getID();
+    return _mapID;
   }
 
   #pragma endregion
 
   #pragma region ModelPreservedInterfaces 
 
-  BaseBridge(const pair<int,int>& pos) : BaseMapObject(_defaultHP, pos) {}
+  BaseBridge(char id, int hp, const pair<int,int>& pos)
+     : BaseMapObject(hp, pos), _mapID(id) {}
 
-  static int getID() {
-    return _mapID;
-  }
-
-  static int getDefaultHP() {
-    return _defaultHP;
-  }
 
   #pragma endregion
 };
-
-int BaseBridge::_mapID = 0;
-int BaseBridge::_defaultHP = 0;
 
 #endif

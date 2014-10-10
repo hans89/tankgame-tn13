@@ -18,8 +18,7 @@ int main2(void) {
   // 2. set up display
   CImgDisplay main_disp(image, "Run");
 
-  gameController->setDisplayImage(&image);
-  gameController->setDisplay(&main_disp);
+  gameController->setView(&image, &main_disp);
 
   // 3. load players and bind with controller
   IPlayer* player1 =  new Player1();

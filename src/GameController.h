@@ -3,6 +3,7 @@
 
 #include "IController.h"
 #include "Command.h"
+#include "MapLoader.h"
 
 class GameController : public IController {
 private:
@@ -15,8 +16,6 @@ private:
   #pragma region IController Data
   AppConfig* _appConfig;
   TileManager* _tileManager;
-  CImgDisplay* _mainDisplay;
-  CImg<unsigned char>* _displayImage;
 
   bool _autoMode;
   bool _ended;
@@ -31,19 +30,8 @@ protected:
 
 public:
   #pragma region IControllerImplementation
-  void setConfig(AppConfig* config) {
-    _appConfig = config;
-  }
-
-  void setTileManager(TileManager* tileManager) {
-    _tileManager = tileManager;
-  }
-
-  void setDisplayImage(CImg<unsigned char>* image) {
-    _displayImage = image;
-  }
-  void setDisplay(CImgDisplay* display) {
-    _mainDisplay = display;
+  void setView(CImg<unsigned char>* image, CImgDisplay* display) {
+    _view->setDisplay(image, display);
   }
 
   bool registerPlayer(IPlayer* player) {
@@ -56,18 +44,6 @@ public:
 
     return false;
   }
-
-  ~GameController() {
-    delete _appConfig;
-    delete _tileManager;
-  }
-
-  #pragma endregion
-
-  GameController(GameView* v, GameModel* m, CImgDisplay& dis, autoM = true) 
-    : _view(v), _model(m), _mainDisplay(dis),
-      _autoMode(autoM), _ended(false), _ending(false),
-      _currentPlayerTurn(0) {}
 
   // the controller makes the next turn
   bool nextTurn() {
@@ -127,7 +103,43 @@ public:
   }
 
   void updateDisplay() {
-    _view->updateDisplay(_mainDisplay);
+    _view->updateDisplay();
+  }
+
+  ~GameController() {
+    delete _appConfig;
+    delete _tileManager;
+    delete _model;
+    delete _view;
+  }
+
+  #pragma endregion
+
+  #pragma region InternalPreservedInterfaces
+  // GameController(GameView* v, GameModel* m, CImgDisplay& dis, autoM = true) 
+  //   : _view(v), _model(m), _mainDisplay(dis),
+  //     _autoMode(autoM), _ended(false), _ending(false),
+  //     _currentPlayerTurn(0) {}
+
+  void setConfig(AppConfig* config) {
+    _appConfig = config;
+  }
+
+  void setTileManager(TileManager* tileManager) {
+    _tileManager = tileManager;
+  }
+
+  void createGameModel() {
+    MapInfo mapInfo;
+
+    MapLoader::loadMap(_appConfig->getConfig("map"), mapInfo);
+
+    _model = new BaseGameModel(mapInfo);
+
+  }
+
+  void createGameView() {
+
   }
 };
 #endif

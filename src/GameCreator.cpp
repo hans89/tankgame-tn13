@@ -13,10 +13,11 @@ IController* GameCreator::createGame(const char* configFile) {
   TileManager* tileManager = new TileManager(configFile);
   controller->setTileManager(tileManager);
 
-  // 3. load map and map id's
+  // 3. load map and map id's, set up model
+  controller->createGameModel();
 
-
-  // 4. set up model
+  // 4. create view
+  controller->createGameView();
 
   return controller;
 }
