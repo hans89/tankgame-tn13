@@ -1,5 +1,5 @@
-#include "player1.h"
-#include "player2.h"
+// #include "player1.h"
+// #include "player2.h"
 
 #include "include/CImg.h"
 #include "GameCreator.h"
@@ -12,26 +12,26 @@ int main(void) {
   // 1. create game controller
   IController* gameController = GameCreator::createGame("app.config");
 
-  CImg<unsigned char> image(gameController->getDisplayWidth(), 
-      gameController->getDisplayHeight(), 1, 3, 0);
+  CImg<unsigned char> image(gameController->getMapWidth(), 
+      gameController->getMapHeight(), 1, 3, 0);
 
   // 2. set up display
   CImgDisplay main_disp(image, "Run");
 
-  gameController->setView(&image, &main_disp);
+  gameController->setDisplay(&image, &main_disp);
 
   // 3. load players and bind with controller
-  IPlayer* player1 =  new Player1();
-  IPlayer* player2 =  new Player2();
+  // IPlayer* player1 =  new Player1();
+  // IPlayer* player2 =  new Player2();
 
-  gameController->registerPlayer(player1);
-  gameController->registerPlayer(player2);
+  // gameController->registerPlayer(player1);
+  // gameController->registerPlayer(player2);
   
   // 4. start game
   // 4a. inform players' onStart
   gameController->start();
 
-  int waitTime = Utils::parseInt(config.getConfig("delay"));
+  int waitTime = Utils::parseInt(gameController->getConfig("delay"));
 
   // main loop
   while (!main_disp.is_closed()) {
@@ -67,6 +67,6 @@ int main(void) {
   }
 
   delete gameController;
-  delete player1;
-  delete player2;
+  // delete player1;
+  // delete player2;
 }

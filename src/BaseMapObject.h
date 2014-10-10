@@ -6,22 +6,16 @@
 class BaseMapObject : virtual public IMapObject {
 protected:
   int _HP;
-  pair<int, int> _pos;
+  std::pair<int, int> _pos;
 public:
   #pragma region IMapObjectImplementation
   
-  int getHP() const {
-    return _HP;
-  }
+  int getHP() const;
   
-  pair<int, int> getPosition() const {
-    return _pos;
-  }
+  std::pair<int, int> getPosition() const;
 
   // return if the Object in on map
-  bool isOnMap() const {
-    return _pos == IMap::npos;
-  }
+  bool isOnMap() const;
   #pragma endregion
 
   #pragma region YetToDefineInterface
@@ -32,28 +26,15 @@ public:
   #pragma endregion
 
   #pragma region ModelPreservedInterfaces
-  void decreaseHP(int amount = 1) {
-    _HP -= amount;
+  void decreaseHP(int amount = 1);
 
-    if (_HP <= 0) {
-      kill();
-    }
-  }
+  void kill();
 
-  void kill() {
-    _HP = 0;
-    removeFromMap();
-  }
+  void move(const std::pair<int, int>& newPost);
 
-  void move(const pair<int, int>& newPost) {
-    _pos = newPost;
-  }
+  void removeFromMap();
 
-  void removeFromMap() {
-    _pos = IMap::npos;
-  }
-
-  BaseMapObject(int HP, const pair<int,int>& pos) : _HP(HP), _pos(pos) {}
+  BaseMapObject(int HP, const std::pair<int,int>& pos);
   #pragma endregion
 };
 #endif

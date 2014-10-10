@@ -1,3 +1,6 @@
+#ifndef __TANKGAME_BASEGAMEMODEL__
+#define __TANKGAME_BASEGAMEMODEL__ 
+
 #include <list>
 #include <vector>
 #include <map>
@@ -71,9 +74,10 @@ public:
   #pragma region ModelPreservedInterfaces 
   
   bool isEndGame() {
-
+    //TODO
+    return false;
   }
-  
+
   const MapInfo& getMapInfo() {
     return _mapInfo;
   }
@@ -248,3 +252,5 @@ public:
   }
   #pragma endregion;
 };
+
+#endif

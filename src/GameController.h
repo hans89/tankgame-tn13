@@ -29,7 +29,7 @@ private:
 protected:
   // prevent copy
   GameController(const GameController& g) {}
-  GameController& operator=(const GameController& g) {}
+  GameController& operator=(const GameController& g) { return *this; }
 
 public:
   GameController() {}
@@ -44,6 +44,10 @@ public:
 
   int getMapHeight() const {
     return _model->getMap()->getHeight();
+  }
+
+  string getConfig(string key) const {
+    return _appConfig->getConfig(key);
   }
 
   bool registerPlayer(IPlayer* player) {
@@ -102,9 +106,10 @@ public:
       _players[i]->onFinish();
     }
     _ended = true;
+    return _ended;
   }
 
-  bool toggleMode() {
+  void toggleMode() {
     _autoMode = !_autoMode;
   }
 

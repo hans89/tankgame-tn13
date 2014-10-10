@@ -3,9 +3,9 @@
 
 #include <utility>
 #include "IMap.h"
-#include "ITank.h"
 
-using namespace std;
+class ITank;
+
 /**
  * This struct defines the command the player want to make on the next move
  * Player must define which tank will do what, only one tank and one action
@@ -27,7 +27,7 @@ public:
 private:
   ITank* receivingObject;
   Action actionType;
-  pair<int, int> targetPosition;
+  std::pair<int, int> targetPosition;
   
 public:
 
@@ -36,9 +36,9 @@ public:
 
   Command(ITank* receivObj, int targetX, int targetY) : 
     receivingObject(receivObj), 
-    targetPosition(pair<int,int>(targetX, targetY)) {}
+    targetPosition(std::pair<int,int>(targetX, targetY)) {}
 
-  pair<int, int> getTargetPosition() const {
+  std::pair<int, int> getTargetPosition() const {
     return targetPosition;
   }
 

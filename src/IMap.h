@@ -2,13 +2,12 @@
 #define __TANKGAME_IMAP__
 
 #include <utility>
-using namespace std;
 
 class IMap {
 protected:
 	virtual ~IMap() {}
 public:
-  const static pair<int, int> npos;
+  const static std::pair<int, int> npos;
   
   // return the width (x-coordinate) of this map
 	virtual int getWidth() const = 0;
@@ -24,5 +23,4 @@ public:
   virtual bool isEmptySpace(int x, int y) const = 0;
 };
 
-const pair<int, int> IMap::npos = pair<int,int>(-1,-1);
 #endif

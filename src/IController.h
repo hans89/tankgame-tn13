@@ -17,6 +17,7 @@ public:
 
   virtual int getMapHeight() const = 0;
   virtual int getMapWidth() const = 0;
+  virtual string getConfig(string key) const = 0;
 
   // Game controls
   virtual bool start() = 0;
@@ -24,7 +25,7 @@ public:
   virtual bool isEnding() const = 0;
   virtual bool isEnded() const = 0;
   virtual bool isInAutoMode() const = 0;
-  virtual bool toggleMode() = 0;
+  virtual void toggleMode() = 0;
   virtual bool nextTurn() = 0;
   virtual void updateDisplay() = 0;
 

@@ -9,43 +9,29 @@ protected:
   int _ammo, _range;
   IPlayerInfo* _ownerInfo;
 public:
-
   #pragma region IMapObjectImplementation
-  // return the char ID of this object on the map
-  char getMapID() const {
-    return _ownerInfo->getPlayerMapID();
-  }
+
+  char getMapID() const;
   #pragma endregion
 
   #pragma region ITankImplementation
   
-  int getAmmoNumber() const {
-    return _ammo;
-  }
+  int getAmmoNumber() const;
 
-  int getRange() const {
-    return _range;
-  }
+  int getRange() const;
 
-  bool isAlive() const {
-    return _HP != 0;
-  }
+  bool isAlive() const;
 
-  IPlayerInfo* getOwner() const {
-    return _ownerInfo;
-  }
+  IPlayerInfo* getOwner() const;
 
   #pragma endregion
 
   #pragma region ModelPreservedInterface
 
-  void decreaseAmmo() {
-    if (_ammo > 0)
-      _ammo--;
-  }
+  void decreaseAmmo();
   
-  BaseTank(int hp, int ammo, int range, const pair<int,int>& pos, IPlayerInfo* owner)
-    : BaseMapObject(hp, pos), _ammo(ammo), _range(range), _ownerInfo(owner) {}
+  BaseTank(int hp, int ammo, int range, 
+      const std::pair<int,int>& pos, IPlayerInfo* owner);
     
   #pragma endregion
 };

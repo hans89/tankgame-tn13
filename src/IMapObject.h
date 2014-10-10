@@ -1,6 +1,8 @@
 #ifndef __TANKGAME_IMAPOBJECT__
 #define __TANKGAME_IMAPOBJECT__
 
+#include <utility>
+
 class IMapObject {
 protected:
   virtual ~IMapObject() {}
@@ -9,7 +11,7 @@ public:
   virtual int getHP() const = 0;
 
   // return the current position, if isOnMap() == false, return (-1,-1)
-  virtual pair<int, int> getPosition() const = 0;
+  virtual std::pair<int, int> getPosition() const = 0;
 
   // return if the Object in on map
   virtual bool isOnMap() const = 0;

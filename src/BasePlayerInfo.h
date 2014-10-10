@@ -1,7 +1,8 @@
 #ifndef __TANKGAME_BASEPLAYERINFO__
-#define __TANKGAME_BASEPLAYERINFO__ value
+#define __TANKGAME_BASEPLAYERINFO__
 
 #include "IPlayerInfo.h"
+#include "BaseTank.h"
 #include <algorithm>
 
 using namespace std;

@@ -2,58 +2,35 @@
 #define __TANKGAME_BASEMAP__ 
 
 #include <string>
+#include <vector>
 
 #include "IMap.h"
-#include "BaseTank.h"
+#include "BaseMapObject.h"
 
 class BaseMap : public IMap {
 private:
-  vector<string> charMap;
+  std::vector<std::string> charMap;
 public:
   #pragma region IMapImplementation
-  int getWidth() const {
-    return charMap[0].size();
-  }
+  
+  int getWidth() const;
 
-  // return the height (y-coordinate) of this map
-  int getHeight() const {
-    return charMap.size();
-  }
+  int getHeight() const;
 
-  // return the cell value as char at (x,y)
-  // (0,0) is at the left-top corner
-  char operator()(int x, int y) const {
-    return charMap[y][x];
-  }
+  char operator()(int x, int y) const;
 
-  bool isEmptySpace(int x, int y) const {
-
-  }
-
+  // return if the cell is on land, empty and can be occupied
+  bool isEmptySpace(int x, int y) const;
   #pragma endregion
 
-  #pragma region ControllerImplementation
-  char& operator()(int x, int y) {
-    return charMap[y][x];
-  }
+  #pragma region ModelPreservedInterfaces
+  char& operator()(int x, int y);
 
-  void remove(BaseMapObject* obj) {
-    pair<int,int> lastPos = obj->getPosition();
+  void remove(BaseMapObject* obj);
 
-    obj->removeFromMap();
+  void move(BaseMapObject* obj, const std::pair<int,int>& newPos);
 
-    (*this)(lastPos.first, lastPos.second) = IMap::LAND;
-  }
-
-  void move(BaseMapObject* obj, const pair<int,int>& newPos) {
-    pair<int,int> lastPos = obj->getPosition();
-    obj->move(newPos);
-
-    (*this)(lastPos.first, lastPos.second) = IMap::LAND;
-    (*this)(newPos.first, newPos.second) = obj->getMapID();
-  }
-
-  BaseMap(const vector<string>& cMap) : charMap(cMap) {}
+  BaseMap(const std::vector<std::string>& cMap);
   #pragma endregion
 };
 

@@ -38,7 +38,7 @@ protected:
 
 public:
 
-	BaseGameView(const TileManager* tileManager, const BaseGameModel* model) 
+	BaseGameView(TileManager* tileManager, const BaseGameModel* model) 
 		: _tileManager(tileManager), _model(model) {}
 
 	const CImg<unsigned char>* getDisplayImage() const {

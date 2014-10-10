@@ -5,8 +5,6 @@
 #include "BaseMapObject.h"
 #include "IBridge.h"
 
-using namespace std;
-
 class BaseBridge : public BaseMapObject, public IBridge {
 protected:
   char _mapID;
@@ -21,7 +19,7 @@ public:
 
   #pragma region ModelPreservedInterfaces 
 
-  BaseBridge(char id, int hp, const pair<int,int>& pos)
+  BaseBridge(char id, int hp, const std::pair<int,int>& pos)
      : BaseMapObject(hp, pos), _mapID(id) {}
 
 

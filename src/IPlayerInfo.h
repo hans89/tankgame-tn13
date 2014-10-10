@@ -5,8 +5,6 @@
 
 #include "Command.h"
 
-using namespace std;
-
 /**
  * Interface to access player's information
  */
@@ -21,13 +19,13 @@ public:
   virtual char getPlayerMapID() const = 0;
 
   // get list of running tanks of the player
-  virtual list<ITank*> getAliveTanks() const = 0;
+  virtual std::list<ITank*> getAliveTanks() const = 0;
 
   // get list of dead tanks of the player
-  virtual list<ITank*> getDeadTanks() const = 0;
+  virtual std::list<ITank*> getDeadTanks() const = 0;
 
   // get the position of the headquarter of the player
-  virtual pair<int, int> getHeadquarterPosition() const = 0;
+  virtual std::pair<int, int> getHeadquarterPosition() const = 0;
 
   // get the last move by the player
   virtual Command getLastMove() const = 0;

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{53FBADBB-6871-EB50-A24E-69D615D21B1D}</ProjectGuid>
+    <ProjectGuid>{6959055B-CCBD-D5DA-278B-34FF61B14FB0}</ProjectGuid>
     <RootNamespace>tankgame-tn13</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -111,29 +111,54 @@
     <ClInclude Include="lib\win32\include\pnglibconf.h" />
     <ClInclude Include="lib\win32\include\zlib.h" />
     <ClInclude Include="src\AppConfig.h" />
+    <ClInclude Include="src\BaseBlock.h" />
+    <ClInclude Include="src\BaseBridge.h" />
+    <ClInclude Include="src\BaseGameModel.h" />
+    <ClInclude Include="src\BaseGameView.h" />
     <ClInclude Include="src\BaseMap.h" />
+    <ClInclude Include="src\BaseMapObject.h" />
     <ClInclude Include="src\BasePlayerInfo.h" />
     <ClInclude Include="src\BaseTank.h" />
     <ClInclude Include="src\Command.h" />
     <ClInclude Include="src\GameController.h" />
-    <ClInclude Include="src\GameModelView.h" />
-    <ClInclude Include="src\GameView.h" />
+    <ClInclude Include="src\GameCreator.h" />
+    <ClInclude Include="src\IBlock.h" />
+    <ClInclude Include="src\IBridge.h" />
+    <ClInclude Include="src\IController.h" />
     <ClInclude Include="src\IGameInfo.h" />
     <ClInclude Include="src\IMap.h" />
+    <ClInclude Include="src\IMapObject.h" />
     <ClInclude Include="src\IPlayer.h" />
     <ClInclude Include="src\IPlayerInfo.h" />
     <ClInclude Include="src\ITank.h" />
+    <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\TerrainMap.h" />
     <ClInclude Include="src\TileManager.h" />
     <ClInclude Include="src\include\CImg.h" />
     <ClInclude Include="src\include\utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BaseGameModel.cpp">
+    <ClCompile Include="src\AppConfig.cpp">
+    </ClCompile>
+    <ClCompile Include="src\BaseMap.cpp">
+    </ClCompile>
+    <ClCompile Include="src\BaseMapObject.cpp">
+    </ClCompile>
+    <ClCompile Include="src\BaseTank.cpp">
+    </ClCompile>
+    <ClCompile Include="src\GameCreator.cpp">
     </ClCompile>
     <ClCompile Include="src\GameMain.cpp">
     </ClCompile>
+    <ClCompile Include="src\IMap.cpp">
+    </ClCompile>
     <ClCompile Include="src\main.cpp">
+    </ClCompile>
+    <ClCompile Include="src\MapLoader.cpp">
+    </ClCompile>
+    <ClCompile Include="src\TileManager.cpp">
+    </ClCompile>
+    <ClCompile Include="src\include\utils.cpp">
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

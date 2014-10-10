@@ -2,13 +2,13 @@
 #define __TANKGAME_IGAMEINFO__
 
 #include <vector>
+#include <list>
 
 #include "IMap.h"
 #include "IPlayer.h"
 #include "IBlock.h"
 #include "IBridge.h"
 
-using namespace std;
 
 class IGameInfo {
 protected:
@@ -19,13 +19,13 @@ public:
 	virtual IMap* getMap() const = 0;
 
   // get the available bridges on map
-  virtual list<IBridge*> getOnMapBridges() const = 0;
+  virtual std::list<IBridge*> getOnMapBridges() const = 0;
 
   // get the available blocks on map
-  virtual list<IBlock*> getOnMapBlocks() const = 0;
+  virtual std::list<IBlock*> getOnMapBlocks() const = 0;
 
 	// get list of current players infomation
-	virtual vector<IPlayerInfo*> getPlayersInfo() const = 0;
+	virtual std::vector<IPlayerInfo*> getPlayersInfo() const = 0;
 
   // get PlayerInfo from Map ID. Return NULL if not found
   virtual IPlayerInfo* getPlayerByID(char id) const = 0;
