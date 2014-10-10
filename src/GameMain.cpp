@@ -9,8 +9,17 @@ using namespace cimg_library;
 
 int main2(void) {
   // main game flow
-  // 2. create game controller
+  // 1. create game controller
   IController* gameController = GameCreator::createGame("app.config");
+
+  CImg<unsigned char> image(gameController->getDisplayWidth(), 
+      gameController->getDisplayHeight(), 1, 3, 0);
+
+  // 2. set up display
+  CImgDisplay main_disp(image, "Run");
+
+  gameController->setDisplayImage(&image);
+  gameController->setDisplay(&main_disp);
 
   // 3. load players and bind with controller
   IPlayer* player1 =  new Player1();
@@ -18,17 +27,9 @@ int main2(void) {
 
   gameController->registerPlayer(player1);
   gameController->registerPlayer(player2);
-
-  // 4. set up display
-  CImg<unsigned char> image(gameController->getDisplayWidth(), 
-      gameController->getDisplayHeight(), 1, 3, 0);
-
-  CImgDisplay main_disp(image, "Run");
-
-  gameController->setDisplayImage(&image);
-  gameController->setDisplay(&main_disp);
-  // 5. start game
-  // 5a. inform players' onStart
+  
+  // 4. start game
+  // 4a. inform players' onStart
   gameController->start();
 
   int waitTime = Utils::parseInt(config.getConfig("delay"));

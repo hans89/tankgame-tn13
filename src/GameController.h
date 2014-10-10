@@ -6,21 +6,45 @@
 
 class GameController : public IController {
 private:
-  GameView* _view;
-  GameModel* _model;
-  CImgDisplay& _mainDisplay;
+  BaseGameView* _view;
+  BaseGameModel* _model;
+  
   vector<IPlayer*> _players;
   int _currentPlayerTurn;
+
+  #pragma region IController Data
+  AppConfig* _appConfig;
+  TileManager* _tileManager;
+  CImgDisplay* _mainDisplay;
+  CImg<unsigned char>* _displayImage;
 
   bool _autoMode;
   bool _ended;
   bool _ending;
 
+  #pragma endregion
+
+protected:
+  // prevent copy
+  GameController(const GameController& g) {}
+  GameController& operator=(const GameController& g) {}
+
 public:
-  GameController(GameView* v, GameModel* m, CImgDisplay& dis, autoM = true) 
-    : _view(v), _model(m), _mainDisplay(dis),
-      _autoMode(autoM), _ended(false), _ending(false),
-      _currentPlayerTurn(0) {}
+  #pragma region IControllerImplementation
+  void setConfig(AppConfig* config) {
+    _appConfig = config;
+  }
+
+  void setTileManager(TileManager* tileManager) {
+    _tileManager = tileManager;
+  }
+
+  void setDisplayImage(CImg<unsigned char>* image) {
+    _displayImage = image;
+  }
+  void setDisplay(CImgDisplay* display) {
+    _mainDisplay = display;
+  }
 
   bool registerPlayer(IPlayer* player) {
     IPlayer* newPlayer = _model->registerPlayer(player);
@@ -33,12 +57,28 @@ public:
     return false;
   }
 
+  ~GameController() {
+    delete _appConfig;
+    delete _tileManager;
+  }
+
+  #pragma endregion
+
+  GameController(GameView* v, GameModel* m, CImgDisplay& dis, autoM = true) 
+    : _view(v), _model(m), _mainDisplay(dis),
+      _autoMode(autoM), _ended(false), _ending(false),
+      _currentPlayerTurn(0) {}
+
   // the controller makes the next turn
   bool nextTurn() {
-  
-    IPlayer* currentPlayer = _model->getPlayer(currentPlayerTurn++);
+    
     // reduce down:
-    currentPlayerTurn %= _players.size();
+    int totalPlayer = _players.size();
+    if (currentPlayerTurn >= totalPlayer)
+        currentPlayerTurn %= totalPlayer;
+
+    IPlayer* currentPlayer = _players[currentPlayerTurn++];
+    
 
     Command nextMove = currentPlayer->nextMove();
 

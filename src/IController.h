@@ -13,10 +13,10 @@ public:
   // Controller setups
   virtual void setConfig(AppConfig* config) = 0;
   virtual void setTileManager(TileManager* tileManager) = 0;
-  virtual void setDisplayImage(CImg<unsigned char>* image) const = 0;
-  virtual void setDisplay(CImgDisplay* display) const = 0;
+  virtual void setDisplayImage(CImg<unsigned char>* image) = 0;
+  virtual void setDisplay(CImgDisplay* display) = 0;
 
-  virtual bool registerPlayer(IPlayer* player) const = 0;
+  virtual bool registerPlayer(IPlayer* player) = 0;
 
   virtual int getDisplayHeight() const = 0;
   virtual int getDisplayWidth() const = 0;
