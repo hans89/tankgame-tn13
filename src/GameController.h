@@ -1,9 +1,12 @@
 #ifndef __TANKGAME_GAMECONTROLLER__
 #define __TANKGAME_GAMECONTROLLER__
 
+using namespace std;
 #include "IController.h"
 #include "Command.h"
 #include "MapLoader.h"
+#include "BaseGameModel.h"
+#include "BaseGameView.h"
 
 class GameController : public IController {
 private:
@@ -29,9 +32,18 @@ protected:
   GameController& operator=(const GameController& g) {}
 
 public:
+  GameController() {}
   #pragma region IControllerImplementation
-  void setView(CImg<unsigned char>* image, CImgDisplay* display) {
+  void setDisplay(CImg<unsigned char>* image, CImgDisplay* display) {
     _view->setDisplay(image, display);
+  }
+
+  int getMapWidth() const {
+    return _model->getMap()->getWidth();
+  }
+
+  int getMapHeight() const {
+    return _model->getMap()->getHeight();
   }
 
   bool registerPlayer(IPlayer* player) {
@@ -50,16 +62,16 @@ public:
     
     // reduce down:
     int totalPlayer = _players.size();
-    if (currentPlayerTurn >= totalPlayer)
-        currentPlayerTurn %= totalPlayer;
+    if (_currentPlayerTurn >= totalPlayer)
+        _currentPlayerTurn %= totalPlayer;
 
-    IPlayer* currentPlayer = _players[currentPlayerTurn++];
+    IPlayer* currentPlayer = _players[_currentPlayerTurn++];
     
 
     Command nextMove = currentPlayer->nextMove();
 
     if (_model->isValidMove(currentPlayer, nextMove)) {
-      vector<pair<int,int>> changes = _model->applyMove(currentPlayer, nextMove);
+      vector<pair<int,int> > changes = _model->applyMove(currentPlayer, nextMove);
 
       _view->update(changes);
 
@@ -72,16 +84,22 @@ public:
   }
 
   bool start() {
-    for (list<IPlayer*>::iterator it = _players.begin(); it != _players.end(); ++it) {
-      (*it)->onStart();
+    // init players
+    for (int i = 0; i < _players.size(); i++) {
+      _players[i]->onStart();
     }
+
+    _currentPlayerTurn = 0;
+    // init views
+    _view->initDisplay();
+    _view->display();
     
     return true;
   }
 
   bool finish() {
-    for (list<IPlayer*>::iterator it = _players.begin(); it != _players.end(); ++it) {
-      (*it)->onFinish();
+    for (int i = 0; i < _players.size(); i++) {
+      _players[i]->onFinish();
     }
     _ended = true;
   }
@@ -103,7 +121,7 @@ public:
   }
 
   void updateDisplay() {
-    _view->updateDisplay();
+    _view->display();
   }
 
   ~GameController() {
@@ -130,16 +148,26 @@ public:
   }
 
   void createGameModel() {
+    if (_model != NULL) {
+      delete _model;
+      _model = NULL;
+    }
+
     MapInfo mapInfo;
 
     MapLoader::loadMap(_appConfig->getConfig("map"), mapInfo);
 
     _model = new BaseGameModel(mapInfo);
-
   }
 
   void createGameView() {
 
+    if (_view != NULL) {
+      delete _view;
+      _view = NULL;
+    }
+
+    _view = new BaseGameView(_tileManager, _model);
   }
 };
 #endif

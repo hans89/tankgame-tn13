@@ -2,6 +2,7 @@
 #define __TANKGAME_COMMAND__
 
 #include <utility>
+#include "IMap.h"
 #include "ITank.h"
 
 using namespace std;

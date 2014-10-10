@@ -10,7 +10,7 @@ IController* GameCreator::createGame(const char* configFile) {
   controller->setConfig(config);
 
   // 2. load resource
-  TileManager* tileManager = new TileManager(configFile);
+  TileManager* tileManager = new TileManager(config);
   controller->setTileManager(tileManager);
 
   // 3. load map and map id's, set up model

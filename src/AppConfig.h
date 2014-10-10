@@ -31,10 +31,10 @@ public:
 				configValues.insert(pair<string, string>(
 					configPair[0], configPair[1]));
 
-				#ifdef DEBUG
-					#include <iostream>
-					cout << "AppConfig: " << configPair[0] << " = " << configPair[1] << endl;
-				#endif
+				// #ifdef DEBUG
+				// 	#include <iostream>
+				// 	cout << "AppConfig: " << configPair[0] << " = " << configPair[1] << endl;
+				// #endif
 			}
 		}
 		

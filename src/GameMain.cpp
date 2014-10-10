@@ -7,7 +7,7 @@
 
 using namespace cimg_library;
 
-int main2(void) {
+int main(void) {
   // main game flow
   // 1. create game controller
   IController* gameController = GameCreator::createGame("app.config");

@@ -70,14 +70,18 @@ public:
 
   #pragma region ModelPreservedInterfaces 
   
+  bool isEndGame() {
+
+  }
+  
   const MapInfo& getMapInfo() {
     return _mapInfo;
   }
 
   IPlayer* registerPlayer(IPlayer* newPlayer) {
-    if (_nextRegisterPlayer < _mapInfo.playersID.size()) {
+    if (_nextRegisterPlayer < _mapInfo.playerIDs.size()) {
       
-      char id = _mapInfo.playersID[_nextRegisterPlayer++];
+      char id = _mapInfo.playerIDs[_nextRegisterPlayer++];
 
       BasePlayerInfo* newBaseInfo 
         = new BasePlayerInfo(id, _headquarters[id]);
@@ -201,7 +205,7 @@ public:
 
     for (int j = 0; j < h; j++) {
       for (int i = 0; i < w; i++) {
-        char c = (*_map)(i,j)
+        char c = (*_map)(i,j);
         
         if (_mapInfo.blockIDs.find(c) != string::npos) {
         // there is a block here

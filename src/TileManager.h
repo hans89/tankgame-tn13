@@ -41,7 +41,7 @@ public:
 		return tilesMap[CHAR_TILE_PREFIX + t];
 	}
 
-	string getCharTileName(char t) {
+	string getCharTileName(char t) const {
 		return CHAR_TILE_PREFIX + t;
 	}
 	static int getTileSize() {

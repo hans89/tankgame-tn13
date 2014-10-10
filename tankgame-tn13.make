@@ -64,7 +64,7 @@ ifeq ($(config),release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/BaseGameModel.o \
+	$(OBJDIR)/GameCreator.o \
 	$(OBJDIR)/GameMain.o \
 	$(OBJDIR)/main.o \
 
@@ -126,7 +126,7 @@ $(GCH): $(PCH)
 	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -MMD -MP $(DEFINES) $(INCLUDES) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
-$(OBJDIR)/BaseGameModel.o: src/BaseGameModel.cpp
+$(OBJDIR)/GameCreator.o: src/GameCreator.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
