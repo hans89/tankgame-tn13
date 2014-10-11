@@ -1,26 +1,30 @@
 #ifndef __TANKGAME_BASEMAP__
 #define __TANKGAME_BASEMAP__ 
 
-#include <string>
+
 #include <vector>
 
 #include "IMap.h"
+#include "MapInfo.h"
 #include "BaseMapObject.h"
 
 class BaseMap : public IMap {
 private:
-  std::vector<std::string> charMap;
+  MapInfo _mapInfo;
 public:
   #pragma region IMapImplementation
-  
   int getWidth() const;
-
   int getHeight() const;
 
   char operator()(int x, int y) const;
 
-  // return if the cell is on land, empty and can be occupied
   bool isEmptySpace(int x, int y) const;
+  bool isWater(int x, int y) const;
+  bool isBlock(int x, int y) const;
+  bool isBridge(int x, int y) const;
+  bool isTank(int x, int y, char playerId) const;
+  bool isHeadquarter(int x, int y, char playerId) const;
+
   #pragma endregion
 
   #pragma region ModelPreservedInterfaces
@@ -30,7 +34,7 @@ public:
 
   void move(BaseMapObject* obj, const std::pair<int,int>& newPos);
 
-  BaseMap(const std::vector<std::string>& cMap);
+  BaseMap(const MapInfo& mapInfo);
   #pragma endregion
 };
 

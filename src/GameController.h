@@ -28,151 +28,36 @@ private:
 
 protected:
   // prevent copy
-  GameController(const GameController& g) {}
-  GameController& operator=(const GameController& g) { return *this; }
+  GameController(const GameController& g);
+  GameController& operator=(const GameController& g);
 
 public:
-  GameController() {}
+  GameController();
   #pragma region IControllerImplementation
-  void setDisplay(CImg<unsigned char>* image, CImgDisplay* display) {
-    _view->setDisplay(image, display);
-  }
+  void setDisplay(CImg<unsigned char>* image, CImgDisplay* display);
+  bool registerPlayer(IPlayer* player);
 
-  int getMapWidth() const {
-    return _model->getMap()->getWidth();
-  }
+  int getMapWidth() const;
+  int getMapHeight() const;
+  string getConfig(string key) const;
 
-  int getMapHeight() const {
-    return _model->getMap()->getHeight();
-  }
+  bool start();
+  bool finish();
+  void toggleMode();
+  bool isInAutoMode() const;
+  bool isEnding() const;
+  bool isEnded() const;
+  bool nextTurn();
+  void updateDisplay();
 
-  string getConfig(string key) const {
-    return _appConfig->getConfig(key);
-  }
-
-  bool registerPlayer(IPlayer* player) {
-    IPlayer* newPlayer = _model->registerPlayer(player);
-
-    if (newPlayer != NULL) {
-      _players.push_back(newPlayer);
-      return true;
-    }
-
-    return false;
-  }
-
-  // the controller makes the next turn
-  bool nextTurn() {
-    
-    // reduce down:
-    int totalPlayer = _players.size();
-    if (_currentPlayerTurn >= totalPlayer)
-        _currentPlayerTurn %= totalPlayer;
-
-    IPlayer* currentPlayer = _players[_currentPlayerTurn++];
-    
-
-    Command nextMove = currentPlayer->nextMove();
-
-    if (_model->isValidMove(currentPlayer, nextMove)) {
-      vector<pair<int,int> > changes = _model->applyMove(currentPlayer, nextMove);
-
-      _view->update(changes);
-
-      _ending = _model->isEndGame();
-
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool start() {
-    // init players
-    for (int i = 0; i < _players.size(); i++) {
-      _players[i]->onStart();
-    }
-
-    _currentPlayerTurn = 0;
-    // init views
-    _view->initDisplay();
-    _view->display();
-    
-    return true;
-  }
-
-  bool finish() {
-    for (int i = 0; i < _players.size(); i++) {
-      _players[i]->onFinish();
-    }
-    _ended = true;
-    return _ended;
-  }
-
-  void toggleMode() {
-    _autoMode = !_autoMode;
-  }
-
-  bool isInAutoMode() const {
-    return _autoMode;
-  }
-
-  bool isEnding() const {
-    return _ending;
-  }
-
-  bool isEnded() const {
-    return _ended;
-  }
-
-  void updateDisplay() {
-    _view->display();
-  }
-
-  ~GameController() {
-    delete _appConfig;
-    delete _tileManager;
-    delete _model;
-    delete _view;
-  }
-
+  ~GameController();
   #pragma endregion
 
   #pragma region InternalPreservedInterfaces
-  // GameController(GameView* v, GameModel* m, CImgDisplay& dis, autoM = true) 
-  //   : _view(v), _model(m), _mainDisplay(dis),
-  //     _autoMode(autoM), _ended(false), _ending(false),
-  //     _currentPlayerTurn(0) {}
+  void setConfig(AppConfig* config);
+  void setTileManager(TileManager* tileManager);
 
-  void setConfig(AppConfig* config) {
-    _appConfig = config;
-  }
-
-  void setTileManager(TileManager* tileManager) {
-    _tileManager = tileManager;
-  }
-
-  void createGameModel() {
-    if (_model != NULL) {
-      delete _model;
-      _model = NULL;
-    }
-
-    MapInfo mapInfo;
-
-    MapLoader::loadMap(_appConfig->getConfig("map"), mapInfo);
-
-    _model = new BaseGameModel(mapInfo);
-  }
-
-  void createGameView() {
-
-    if (_view != NULL) {
-      delete _view;
-      _view = NULL;
-    }
-
-    _view = new BaseGameView(_tileManager, _model);
-  }
+  void createGameModel();
+  void createGameView();
 };
 #endif

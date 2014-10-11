@@ -4,18 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "MapInfo.h"
 #include "BaseMap.h"
 
-struct MapInfo {
-  std::vector<std::string> charMap;
-  int tankHP, tankAmmo, tankRange;
-  int bridgeHP, blockHP;
-  std::string bridgeIDs;
-  std::string blockIDs;
-  std::string headquarterIDs;
-  std::string playerIDs;
-  char landID, waterID;
-};
 
 class MapLoader {
 public:

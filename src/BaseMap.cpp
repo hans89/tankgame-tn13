@@ -1,30 +1,57 @@
-
+#include <string>
 #include "BaseMap.h"
 
 #pragma region IMapImplementation
 int BaseMap::getWidth() const {
-  return charMap[0].size();
+  return _mapInfo.charMap[0].size();
 }
 
 // return the height (y-coordinate) of this map
 int BaseMap::getHeight() const {
-  return charMap.size();
+  return _mapInfo.charMap.size();
 }
 
 // return the cell value as char at (x,y)
 // (0,0) is at the left-top corner
 char BaseMap::operator()(int x, int y) const {
-  return charMap[y][x];
+  return _mapInfo.charMap[y][x];
 }
 
 bool BaseMap::isEmptySpace(int x, int y) const {
-  return false;
+  return _mapInfo.charMap[y][x] == _mapInfo.landID;
 }
+
+bool BaseMap::isWater(int x, int y) const {
+  return _mapInfo.charMap[y][x] == _mapInfo.waterID;
+}
+bool BaseMap::isBlock(int x, int y) const {
+  return _mapInfo.blockIDs.find(_mapInfo.charMap[y][x]) != std::string::npos;
+}
+
+bool BaseMap::isBridge(int x, int y) const {
+  return _mapInfo.bridgeIDs.find(_mapInfo.charMap[y][x]) != std::string::npos;
+}
+
+bool BaseMap::isTank(int x, int y, char playerId) const {
+  return _mapInfo.charMap[y][x] == playerId 
+    && _mapInfo.playerIDs.find(_mapInfo.charMap[y][x]) != std::string::npos;
+}
+
+bool BaseMap::isHeadquarter(int x, int y, char playerId) const {
+
+  int playerIDindex = _mapInfo.playerIDs.find(playerId);
+
+  if (playerIDindex == std::string::npos)
+    return false;
+
+  return _mapInfo.headquarterIDs[playerIDindex] == _mapInfo.charMap[y][x];
+}
+
 #pragma endregion
 
 #pragma region ControllerImplementation
 char& BaseMap::operator()(int x, int y) {
-  return charMap[y][x];
+  return _mapInfo.charMap[y][x];
 }
 
 void BaseMap::remove(BaseMapObject* obj) {
@@ -32,16 +59,16 @@ void BaseMap::remove(BaseMapObject* obj) {
 
   obj->removeFromMap();
 
-  //(*this)(lastPos.first, lastPos.second) = IMap::LAND;
+ _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
 }
 
 void BaseMap::move(BaseMapObject* obj, const std::pair<int,int>& newPos) {
   std::pair<int,int> lastPos = obj->getPosition();
   obj->move(newPos);
 
-  //(*this)(lastPos.first, lastPos.second) = IMap::LAND;
-  (*this)(newPos.first, newPos.second) = obj->getMapID();
+  _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
+  _mapInfo.charMap[newPos.second][newPos.first] = obj->getMapID();
 }
 
-BaseMap::BaseMap(const std::vector<std::string>& cMap) : charMap(cMap) {}
+BaseMap::BaseMap(const MapInfo& mapInfo) : _mapInfo(mapInfo) {}
 #pragma endregion

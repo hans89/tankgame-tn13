@@ -6,6 +6,7 @@
 #include "IController.h"
 
 using namespace cimg_library;
+#include <iostream>
 
 int main(void) {
   // main game flow
@@ -15,6 +16,7 @@ int main(void) {
   CImg<unsigned char> image(gameController->getMapWidth(), 
       gameController->getMapHeight(), 1, 3, 0);
 
+  
   // 2. set up display
   CImgDisplay main_disp(image, "Run");
 
@@ -30,6 +32,9 @@ int main(void) {
   // 4. start game
   // 4a. inform players' onStart
   gameController->start();
+
+  std::cout << gameController->getMapWidth() << ' ' << gameController->getMapHeight()
+    << ' ' << gameController->getConfig("delay");
 
   int waitTime = Utils::parseInt(gameController->getConfig("delay"));
 

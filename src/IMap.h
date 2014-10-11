@@ -21,6 +21,21 @@ public:
 
   // return if the cell is on land, empty and can be occupied
   virtual bool isEmptySpace(int x, int y) const = 0;
+
+  // return if the cell is water
+  virtual bool isWater(int x, int y) const = 0;
+
+  // return if the cell is a block
+  virtual bool isBlock(int x, int y) const = 0;
+
+  // return if the cell is a bridge
+  virtual bool isBridge(int x, int y) const = 0;
+
+  // return if the cell is a tank of player id
+  virtual bool isTank(int x, int y, char playerId) const = 0;
+
+  // return if the cell is a headquarters of player id
+  virtual bool isHeadquarter(int x, int y, char playerId) const = 0;
 };
 
 #endif
