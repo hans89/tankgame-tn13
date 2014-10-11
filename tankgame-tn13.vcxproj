@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6959055B-CCBD-D5DA-278B-34FF61B14FB0}</ProjectGuid>
+    <ProjectGuid>{9CB30275-0604-3F44-A0C5-E579BA2528F1}</ProjectGuid>
     <RootNamespace>tankgame-tn13</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -117,6 +117,7 @@
     <ClInclude Include="src\BaseGameView.h" />
     <ClInclude Include="src\BaseMap.h" />
     <ClInclude Include="src\BaseMapObject.h" />
+    <ClInclude Include="src\BasePlayer.h" />
     <ClInclude Include="src\BasePlayerInfo.h" />
     <ClInclude Include="src\BaseTank.h" />
     <ClInclude Include="src\Command.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="src\IPlayer.h" />
     <ClInclude Include="src\IPlayerInfo.h" />
     <ClInclude Include="src\ITank.h" />
+    <ClInclude Include="src\MapInfo.h" />
     <ClInclude Include="src\MapLoader.h" />
     <ClInclude Include="src\TerrainMap.h" />
     <ClInclude Include="src\TileManager.h" />
@@ -140,11 +142,17 @@
   <ItemGroup>
     <ClCompile Include="src\AppConfig.cpp">
     </ClCompile>
+    <ClCompile Include="src\BaseGameModel.cpp">
+    </ClCompile>
     <ClCompile Include="src\BaseMap.cpp">
     </ClCompile>
     <ClCompile Include="src\BaseMapObject.cpp">
     </ClCompile>
+    <ClCompile Include="src\BasePlayer.cpp">
+    </ClCompile>
     <ClCompile Include="src\BaseTank.cpp">
+    </ClCompile>
+    <ClCompile Include="src\GameController.cpp">
     </ClCompile>
     <ClCompile Include="src\GameCreator.cpp">
     </ClCompile>

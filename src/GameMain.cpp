@@ -4,6 +4,7 @@
 #include "include/CImg.h"
 #include "GameCreator.h"
 #include "IController.h"
+#include "BasePlayer.h"
 
 using namespace cimg_library;
 #include <iostream>
@@ -23,11 +24,11 @@ int main(void) {
   gameController->setDisplay(&image, &main_disp);
 
   // 3. load players and bind with controller
-  // IPlayer* player1 =  new Player1();
-  // IPlayer* player2 =  new Player2();
+  BasePlayer* player1 =  new BasePlayer();
+  BasePlayer* player2 =  new BasePlayer();
 
-  // gameController->registerPlayer(player1);
-  // gameController->registerPlayer(player2);
+  gameController->registerPlayer(player1);
+  gameController->registerPlayer(player2);
   
   // 4. start game
   // 4a. inform players' onStart
@@ -72,6 +73,6 @@ int main(void) {
   }
 
   delete gameController;
-  // delete player1;
-  // delete player2;
+  delete player1;
+  delete player2;
 }

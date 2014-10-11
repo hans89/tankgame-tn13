@@ -1,6 +1,9 @@
 #include "GameController.h"
 
-GameController::GameController() {}
+GameController::GameController() :
+    _autoMode(true), _ended(false), _ending(false), _currentPlayerTurn(0),
+	_model(NULL), _view(NULL), _tileManager(NULL), _appConfig(NULL) {}
+
 
 GameController::GameController(const GameController& g) {}
 

@@ -34,8 +34,9 @@ public:
   Command() : 
     receivingObject(NULL), actionType(SKIP), targetPosition(IMap::npos) {}
 
-  Command(ITank* receivObj, int targetX, int targetY) : 
+  Command(ITank* receivObj, Action act, int targetX, int targetY) : 
     receivingObject(receivObj), 
+    actionType(act),
     targetPosition(std::pair<int,int>(targetX, targetY)) {}
 
   std::pair<int, int> getTargetPosition() const {

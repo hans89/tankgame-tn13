@@ -39,8 +39,8 @@ bool BaseGameModel::isEndGame() {
   return false;
 }
 
-const MapInfo& BaseGameModel::getMapInfo() {
-  return _mapInfo;
+const BaseMap* BaseGameModel::getBaseMap() const {
+  return _map;
 }
 
 IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
