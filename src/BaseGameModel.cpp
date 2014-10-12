@@ -174,24 +174,21 @@ BaseGameModel::BaseGameModel(const MapInfo& info)
     for (int i = 0; i < w; i++) {
       char c = (*_map)(i,j);
       
-      if (_mapInfo.blockIDs.find(c) != string::npos) {
-      // there is a block here
-
+      if (_map->isBlock(i, j)) {
         BaseBlock* newBlock 
             = new BaseBlock(c, _mapInfo.blockHP, pair<int,int>(i,j));
         _blocks.push_back(newBlock);
         _onMapBlocks.push_back(newBlock);
-      } else if (_mapInfo.bridgeIDs.find(c) != string::npos) {
-      // there is a bridge here
+      } 
 
+      else if (_map->isBridge(i, j)) {
         BaseBridge* newBridge 
             = new BaseBridge(c, _mapInfo.bridgeHP, pair<int,int>(i,j));
         _bridges.push_back(newBridge);
         _onMapBridges.push_back(newBridge);
-      } else if (_mapInfo.headquarterIDs.find(c) != string::npos
-          && _headquarters.find(c) == _headquarters.end()) {
-      // there is a headquarter here
+      }
 
+      else if (_map->isHeadquarter(i,j, c)) {
         _headquarters.insert(pair<char, pair<int,int> >(c, pair<int,int>(i,j)));
       }
     }

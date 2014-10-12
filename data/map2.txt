@@ -1,6 +1,6 @@
 10 10 3 // TankHP TankAmmo TankRange
 5 1     // BridgeHP BlockHP
-Ww      // BridgeIDs
+-|      // BridgeIDs
 UVXYZ   // BlockIDs
 ab      // HeadquarterIDs
 AB      // PlayerIDs (TankIDs)
@@ -8,10 +8,10 @@ AB      // PlayerIDs (TankIDs)
 000000001a
 0B11111110
 0111UU1110
-0000WW0000
+0000||0000
 0B11XX1110
 0111YY11A0
-0000WW0000
+0000||0000
 0111VV1110
 01111111A0
 b100000000

@@ -1,7 +1,6 @@
 #ifndef __TANKGAME_GAMECONTROLLER__
 #define __TANKGAME_GAMECONTROLLER__
 
-using namespace std;
 #include "IController.h"
 #include "Command.h"
 #include "MapLoader.h"
@@ -13,7 +12,7 @@ private:
   BaseGameView* _view;
   BaseGameModel* _model;
   
-  vector<IPlayer*> _players;
+  std::vector<IPlayer*> _players;
   int _currentPlayerTurn;
 
   #pragma region IController Data
@@ -39,7 +38,7 @@ public:
 
   int getMapWidth() const;
   int getMapHeight() const;
-  string getConfig(string key) const;
+  std::string getConfig(std::string key) const;
 
   bool start();
   bool finish();

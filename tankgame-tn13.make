@@ -66,8 +66,10 @@ endif
 OBJECTS := \
 	$(OBJDIR)/AppConfig.o \
 	$(OBJDIR)/BaseGameModel.o \
+	$(OBJDIR)/BaseGameView.o \
 	$(OBJDIR)/BaseMap.o \
 	$(OBJDIR)/BaseMapObject.o \
+	$(OBJDIR)/BasePlayer.o \
 	$(OBJDIR)/BaseTank.o \
 	$(OBJDIR)/GameController.o \
 	$(OBJDIR)/GameCreator.o \
@@ -144,11 +146,19 @@ $(OBJDIR)/BaseGameModel.o: src/BaseGameModel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
+$(OBJDIR)/BaseGameView.o: src/BaseGameView.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
 $(OBJDIR)/BaseMap.o: src/BaseMap.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/BaseMapObject.o: src/BaseMapObject.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/BasePlayer.o: src/BasePlayer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

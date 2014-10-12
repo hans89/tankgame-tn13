@@ -20,12 +20,10 @@ public:
 
 	CImg<unsigned char>& getCharTile(char t);
 
-	string getCharTileName(char t) const;
 	static int getTileSize();
 
 private:
 	static int tileSize;
-	static string const CHAR_TILE_PREFIX;
 	CImg<unsigned char>	tileImage;
 	map<string, CImg<unsigned char> > tilesMap;
 	

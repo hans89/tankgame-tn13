@@ -1,5 +1,6 @@
 #include "BaseGameView.h"
 
+using namespace std;
 
 void BaseGameView::blendTiles(int x, int y, const vector<string>& tileNames) {
 
@@ -33,46 +34,33 @@ BaseGameView::BaseGameView(TileManager* tileManager, const BaseGameModel* model)
     const BaseMap* baseMap = _model->getBaseMap();
 
     for (int j = 0; j < baseMap->getHeight(); j++) {
-      vector<vector<string> > tileLine;
+      vector<vector<string> > tileLine(baseMap->getWidth());
 
       for (int i = 0; i < baseMap->getWidth(); i++) {
 
-        char currentPointChar = (*baseMap)(i,j);
-
-        vector<string> tileLayers;
+        char c = (*baseMap)(i,j);
 
         if (baseMap->isEmptySpace(i, j)) {
-
+          tileLine[i].push_back("LAND");
         } else if (baseMap->isWater(i, j)) {
-
+          tileLine[i].push_back("WATER");
         } else if (baseMap->isBlock(i, j)) {
-
-        } else if (baseMap->isBridg(i, j)) {
-
-        } else if (baseMap->isTank(i, j, currentPointChar)) {
-
-        } else if (baseMap->isHeadquarter(i,j, currentPointChar)) {
-
+          tileLine[i].push_back("LAND");
+          tileLine[i].push_back("BLOCK." + c);
+        } else if (baseMap->isBridge(i, j)) {
+          tileLine[i].push_back("WATER");
+          tileLine[i].push_back("BRIDGE." + c);
+        } else if (baseMap->isTank(i, j, c)) {
+          tileLine[i].push_back("LAND");
+          tileLine[i].push_back("TANK." + c);
+        } else if (baseMap->isHeadquarter(i,j, c)) {
+          tileLine[i].push_back("LAND");
+          tileLine[i].push_back("HEAD." + c);
         }
-
-        // if (line[i] == '0' || line[i] == ' ') {
-        // } else if (line[i] == '-' || line[i] == '|' 
-        //   || line[i] == 'T' || line[i] == 'S') {
-        //   tileLayers.push_back(tileManager->getCharTileName('0'));
-        // } else if (line[i] == 'a' || line[i] == 'A' 
-        //   || line[i] == 'b' || line[i] == 'B'
-        //   || line[i] == 'U' || line[i] == 'V' || line[i] == 'W' 
-        //   || line[i] == 'X' || line[i] == 'Y' || line[i] == 'Z') {
-        //   tileLayers.push_back(tileManager->getCharTileName(' '));
-        // }
-
-        // tileLayers.push_back(_tileManager->getCharTileName(line[i]));
-        // tileLine.push_back(tileLayers);
       }
 
       _tileMap.push_back(tileLine);
 
-      //cout << line << endl;
     }
   }
 }
@@ -90,11 +78,8 @@ void BaseGameView::setDisplay(CImg<unsigned char>* image, CImgDisplay* display) 
   _display = display;
 }
 
-void BaseGameView::setModel(const BaseGameModel* model) {
-  _model = model;
-}
 
-void initDisplay() {
+void BaseGameView::initDisplay() {
   if (_model == NULL || _tileManager == NULL)
     return;
 

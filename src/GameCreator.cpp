@@ -2,6 +2,10 @@
 
 #include "GameController.h"
 
+#ifdef DEBUG
+#include <iostream>
+#include <fstream>
+#endif
 IController* GameCreator::createGame(const char* configFile) {
   GameController* controller = new GameController();
 
@@ -11,7 +15,8 @@ IController* GameCreator::createGame(const char* configFile) {
 
   // 2. load resource
   TileManager* tileManager = new TileManager(config);
-  controller->setTileManager(tileManager);
+  controller->setTileManager(tileManager);  
+  
 
   // 3. load map and map id's, set up model
   controller->createGameModel();

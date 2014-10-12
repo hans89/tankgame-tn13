@@ -1,7 +1,11 @@
 #ifndef __TANKGAME_BASEGAMEVIEW__
 #define __TANKGAME_BASEGAMEVIEW__ 
 
+#include <vector>
+#include <string>
 #include "include/CImg.h"
+#include "TileManager.h"
+#include "BaseGameModel.h"
 
 using namespace cimg_library;
 
@@ -10,12 +14,12 @@ protected:
   CImg<unsigned char>* _displayImg;
   CImgDisplay* _display;
 
-  vector<vector<vector<string> > > _tileMap;
+  std::vector<std::vector<std::vector<std::string> > > _tileMap;
 
   const BaseGameModel* _model;
   TileManager* _tileManager;
 
-  void blendTiles(int x, int y, const vector<string>& tileNames);
+  void blendTiles(int x, int y, const std::vector<std::string>& tileNames);
 
 public:
 
@@ -27,13 +31,11 @@ public:
 
   void setDisplay(CImg<unsigned char>* image, CImgDisplay* display);
 
-  void setModel(const BaseGameModel* model);
-
   void initDisplay();
 
   void display();
 
-  void update(const vector<pair<int,int> >& changes);
+  void update(const std::vector<std::pair<int,int> >& changes);
 };
 
 #endif

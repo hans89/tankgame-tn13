@@ -52,7 +52,7 @@ public:
   #pragma region ModelPreservedInterfaces 
   bool isEndGame();
 
-  const BaseMap* _map;
+  const BaseMap* getBaseMap() const;
 
   IPlayer* registerPlayer(IPlayer* newPlayer);
 

@@ -3,7 +3,7 @@
 #include <sstream>
 
 #include "MapLoader.h"
-
+#include <iostream>
 using namespace std;
 
 void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
@@ -13,7 +13,7 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     string line;
 
     if (!inStream.is_open()) {
-      // cout << "Can't load map " << mapFilePath << endl;
+      cout << "Can't load map " << mapFilePath << endl;
       return;
     }
       

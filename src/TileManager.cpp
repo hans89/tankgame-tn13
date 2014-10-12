@@ -2,16 +2,24 @@
 #include <sstream>
 #include "TileManager.h"
 
+#ifdef DEBUG
+#include <iostream>	
+#endif
+
+
 TileManager::TileManager(AppConfig* config) : 
 	tileImage(config->getConfig("tile").c_str()) {
 	
-	string tileSizeStr = config->getConfig("tile_size");
-	istringstream iss(tileSizeStr);
-	iss >> tileSize;
+	tileSize = Utils::parseInt(config->getConfig("tile_size"));
 
 	string tileResource = config->getConfig("tile_list");
 
 	vector<string> tiles = Utils::split(tileResource, ',');
+
+	#ifdef DEBUG
+		for (int i = 0; i < tiles.size(); i++)
+			cout << tiles[i] << ' ';
+	#endif
 
 	for (int i = 0; i < tiles.size(); i++) {
 		pair<int,int> offset = Utils::parseIntPair(config->getConfig(tiles[i]));
@@ -21,14 +29,6 @@ TileManager::TileManager(AppConfig* config) :
 
 CImg<unsigned char>& TileManager::getTile(string t) {
 	return tilesMap[t];
-}
-
-CImg<unsigned char>& TileManager::getCharTile(char t) {
-	return tilesMap[CHAR_TILE_PREFIX + t];
-}
-
-string TileManager::getCharTileName(char t) const {
-	return CHAR_TILE_PREFIX + t;
 }
 
 int TileManager::getTileSize() {
@@ -47,5 +47,4 @@ void TileManager::addTileMap(string t, int offsetX, int offsetY) {
 	));
 }
 
-string const TileManager::CHAR_TILE_PREFIX = "CHAR.";
 int TileManager::tileSize = 16;
