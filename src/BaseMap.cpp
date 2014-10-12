@@ -65,7 +65,7 @@ char& BaseMap::operator()(int x, int y) {
 void BaseMap::remove(BaseMapObject* obj) {
   std::pair<int,int> lastPos = obj->getPosition();
 
-  if (isBridge(lastPos))  
+  if (isBridge(lastPos.first, lastPos.second))  
     _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.waterID;
   else
     _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
@@ -76,7 +76,7 @@ void BaseMap::remove(BaseMapObject* obj) {
 void BaseMap::move(BaseMapObject* obj, const std::pair<int,int>& newPos) {
   std::pair<int,int> lastPos = obj->getPosition();
   
-  if (isBridge(lastPos))  
+  if (isBridge(lastPos.first, lastPos.second))
     _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.waterID;
   else
     _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
