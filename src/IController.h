@@ -15,8 +15,8 @@ public:
 
   virtual bool registerPlayer(IPlayer* player) = 0;
 
-  virtual int getMapHeight() const = 0;
-  virtual int getMapWidth() const = 0;
+  virtual int getDisplayWidth() const = 0;
+  virtual int getDisplayHeight() const = 0;
   virtual string getConfig(string key) const = 0;
 
   // Game controls

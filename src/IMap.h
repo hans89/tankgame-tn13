@@ -34,8 +34,11 @@ public:
   // return if the cell is a tank of player id
   virtual bool isTank(int x, int y, char playerId) const = 0;
 
-  // return if the cell is a headquarters of player id
+  // return if the cell is a headquarter of player id
   virtual bool isHeadquarter(int x, int y, char playerId) const = 0;
+
+  // return if the cell is simply a headquarter
+  virtual bool isHeadquarter(int x, int y) const = 0;
 };
 
 #endif

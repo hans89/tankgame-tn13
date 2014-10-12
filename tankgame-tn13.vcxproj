@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E80BF885-A425-6A93-60EB-D01EC3D7F50D}</ProjectGuid>
+    <ProjectGuid>{07DA7F66-8F0E-F845-A600-5937E849ED3D}</ProjectGuid>
     <RootNamespace>tankgame-tn13</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -153,6 +153,8 @@
     <ClCompile Include="src\BasePlayer.cpp">
     </ClCompile>
     <ClCompile Include="src\BaseTank.cpp">
+    </ClCompile>
+    <ClCompile Include="src\Command.cpp">
     </ClCompile>
     <ClCompile Include="src\GameController.cpp">
     </ClCompile>

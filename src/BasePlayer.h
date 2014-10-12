@@ -10,6 +10,8 @@ class BasePlayer : public IPlayer {
 protected:
   IPlayerInfo* _playerInfo;
   IGameInfo* _gameInfo;
+
+  int _currentTank;
 public:
   BasePlayer();
   ~BasePlayer();

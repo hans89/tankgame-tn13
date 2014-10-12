@@ -2,7 +2,8 @@
 #define __TANKGAME_ITANK__
 
 #include "IMapObject.h"
-#include "IPlayerInfo.h"
+
+class IPlayerInfo;
 
 class ITank : virtual public IMapObject {
 protected:

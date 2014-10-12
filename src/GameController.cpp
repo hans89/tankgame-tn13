@@ -1,5 +1,6 @@
 #include "GameController.h"
 
+#include <iostream>
 using namespace std;
 
 GameController::GameController() :
@@ -19,12 +20,12 @@ void GameController::setDisplay(CImg<unsigned char>* image,
   _view->setDisplay(image, display);
 }
 
-int GameController::getMapWidth() const {
-  return _model->getMap()->getWidth();
+int GameController::getDisplayWidth() const {
+	return _model->getMap()->getWidth() * _tileManager->getTileSize();
 }
 
-int GameController::getMapHeight() const {
-  return _model->getMap()->getHeight();
+int GameController::getDisplayHeight() const {
+  return _model->getMap()->getHeight() * _tileManager->getTileSize();
 }
 
 string GameController::getConfig(string key) const {
@@ -55,6 +56,9 @@ bool GameController::nextTurn() {
 
   Command nextMove = currentPlayer->nextMove();
 
+  string nextMoveMessage = currentPlayer->getPlayerInfo()->getPlayerMapID() 
+          + string(": ") + nextMove.toString();
+
   if (_model->isValidMove(currentPlayer, nextMove)) {
     vector<pair<int,int> > changes = _model->applyMove(currentPlayer, nextMove);
 
@@ -62,8 +66,13 @@ bool GameController::nextTurn() {
 
     _ending = _model->isEndGame();
 
+    cout << nextMoveMessage << std::endl;
+
     return true;
   } else {
+
+    cout << nextMoveMessage << " INVALID!!! - SKIP" << std::endl;
+
     return false;
   }
 }

@@ -16,11 +16,6 @@ TileManager::TileManager(AppConfig* config) :
 
 	vector<string> tiles = Utils::split(tileResource, ',');
 
-	#ifdef DEBUG
-		for (int i = 0; i < tiles.size(); i++)
-			cout << tiles[i] << ' ';
-	#endif
-
 	for (int i = 0; i < tiles.size(); i++) {
 		pair<int,int> offset = Utils::parseIntPair(config->getConfig(tiles[i]));
 		addTileMap(tiles[i], offset.first, offset.second);				

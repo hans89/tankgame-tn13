@@ -91,8 +91,13 @@ bool BaseGameModel::isValidMove(IPlayer* player, const Command& move) {
     case Command::FIRE: {
       if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive())
         return false;
-      pair<int, int> s = tank->getPosition(),
-          e = move.getTargetPosition();
+      pair<int, int> e = move.getTargetPosition();
+
+      if (e.first < 0 || e.first >= _map->getWidth() || 
+          e.second < 0 || e.second >= _map->getHeight())
+        return false;
+
+      pair<int, int> s = tank->getPosition();
       int r = tank->getRange();
 
       return ((s.first == e.first) && (abs(s.second-e.second) <= r))
@@ -102,6 +107,10 @@ bool BaseGameModel::isValidMove(IPlayer* player, const Command& move) {
     case Command::MOVE: {
       pair<int, int> e = move.getTargetPosition();
 
+      if (e.first < 0 || e.first >= _map->getWidth() || 
+          e.second < 0 || e.second >= _map->getHeight())
+        return false;
+      
       if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive()
           || !_map->isEmptySpace(e.first, e.second))
         return false;

@@ -24,6 +24,7 @@ public:
   bool isBridge(int x, int y) const;
   bool isTank(int x, int y, char playerId) const;
   bool isHeadquarter(int x, int y, char playerId) const;
+  bool isHeadquarter(int x, int y) const;
 
   #pragma endregion
 

@@ -2,9 +2,11 @@
 #define __TANKGAME_COMMAND__
 
 #include <utility>
-#include "IMap.h"
+#include <string>
 
-class ITank;
+#include "IMap.h"
+#include "ITank.h"
+
 
 /**
  * This struct defines the command the player want to make on the next move
@@ -39,17 +41,13 @@ public:
     actionType(act),
     targetPosition(std::pair<int,int>(targetX, targetY)) {}
 
-  std::pair<int, int> getTargetPosition() const {
-    return targetPosition;
-  }
+  std::pair<int, int> getTargetPosition() const;
 
-  ITank* getReceivingObject() const {
-    return receivingObject;
-  }
+  ITank* getReceivingObject() const;
 
-  Action getActionType() const {
-    return actionType;
-  }
+  Action getActionType() const;
+
+  std::string toString();
 };
 
 #endif

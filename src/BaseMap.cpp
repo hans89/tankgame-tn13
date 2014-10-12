@@ -47,6 +47,10 @@ bool BaseMap::isHeadquarter(int x, int y, char playerId) const {
   return _mapInfo.headquarterIDs[playerIDindex] == _mapInfo.charMap[y][x];
 }
 
+bool BaseMap::isHeadquarter(int x, int y) const {
+  return _mapInfo.headquarterIDs.find(_mapInfo.charMap[y][x]) != std::string::npos;
+}
+
 #pragma endregion
 
 #pragma region ControllerImplementation

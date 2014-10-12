@@ -36,8 +36,8 @@ public:
   void setDisplay(CImg<unsigned char>* image, CImgDisplay* display);
   bool registerPlayer(IPlayer* player);
 
-  int getMapWidth() const;
-  int getMapHeight() const;
+  int getDisplayWidth() const;
+  int getDisplayHeight() const;
   std::string getConfig(std::string key) const;
 
   bool start();

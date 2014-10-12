@@ -33,9 +33,9 @@ public:
     return _headquarterPosition;
   }
 
-  Command getLastMove() const {
-    return _lastMove;
-  }
+  // Command getLastMove() const {
+  //   return _lastMove;
+  // }
 
   bool isPlayable() const {
     return !_aliveTanks.empty();
@@ -75,9 +75,9 @@ public:
     return false;
   }
 
-  void updateLastMove(const Command& cmd) {
-    _lastMove = cmd;
-  }
+  // void updateLastMove(const Command& cmd) {
+  //   _lastMove = cmd;
+  // }
 
   void addTank(int hp, int ammo, int range, pair<int,int> pos) {
     BaseTank* newTank = new BaseTank(hp, ammo, range, pos, this);

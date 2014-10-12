@@ -46,16 +46,16 @@ BaseGameView::BaseGameView(TileManager* tileManager, const BaseGameModel* model)
           tileLine[i].push_back("WATER");
         } else if (baseMap->isBlock(i, j)) {
           tileLine[i].push_back("LAND");
-          tileLine[i].push_back("BLOCK." + c);
+          tileLine[i].push_back(string("BLOCK.") + c);
         } else if (baseMap->isBridge(i, j)) {
           tileLine[i].push_back("WATER");
-          tileLine[i].push_back("BRIDGE." + c);
+          tileLine[i].push_back(string("BRIDGE.") + c);
         } else if (baseMap->isTank(i, j, c)) {
           tileLine[i].push_back("LAND");
-          tileLine[i].push_back("TANK." + c);
-        } else if (baseMap->isHeadquarter(i,j, c)) {
+          tileLine[i].push_back(string("TANK.") + c);
+        } else if (baseMap->isHeadquarter(i,j)) {
           tileLine[i].push_back("LAND");
-          tileLine[i].push_back("HEAD." + c);
+          tileLine[i].push_back(string("HEAD.") + c);
         }
       }
 

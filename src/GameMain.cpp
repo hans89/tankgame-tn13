@@ -6,16 +6,20 @@
 #include "IController.h"
 #include "BasePlayer.h"
 
+#include <cstdlib>
+#include <ctime>
+
 using namespace cimg_library;
 #include <iostream>
 
 int main(void) {
+  std::srand(std::time(NULL));
   // main game flow
   // 1. create game controller
   IController* gameController = GameCreator::createGame("app.config");
 
-  CImg<unsigned char> image(gameController->getMapWidth(), 
-      gameController->getMapHeight(), 1, 3, 0);
+  CImg<unsigned char> image(gameController->getDisplayWidth(), 
+      gameController->getDisplayHeight(), 1, 3, 0);
 
   
   // 2. set up display
@@ -33,9 +37,6 @@ int main(void) {
   // 4. start game
   // 4a. inform players' onStart
   gameController->start();
-
-  std::cout << gameController->getMapWidth() << ' ' << gameController->getMapHeight()
-    << ' ' << gameController->getConfig("delay");
 
   int waitTime = Utils::parseInt(gameController->getConfig("delay"));
 
@@ -65,6 +66,7 @@ int main(void) {
       // manual-step mode
       // in manual-step mode, the controller wait for the key event "SPACE" to 
       // asks the next player to move
+      main_disp.wait();
       if (main_disp.key(cimg::keySPACE)) {
         gameController->nextTurn();
         gameController->updateDisplay();
