@@ -1,10 +1,12 @@
 #include "GameController.h"
 
 #include <iostream>
+#include "include/utils.h"
 using namespace std;
 
 GameController::GameController() :
-    _autoMode(true), _ended(false), _ending(false), _currentPlayerTurn(0),
+  _autoMode(true), _ended(false), _ending(false),
+   _currentPlayerTurn(0), _delayTime(100),
 	_model(NULL), _view(NULL), _tileManager(NULL), _appConfig(NULL) {}
 
 
@@ -52,7 +54,6 @@ bool GameController::nextTurn() {
       _currentPlayerTurn %= totalPlayer;
 
   IPlayer* currentPlayer = _players[_currentPlayerTurn++];
-  
 
   Command nextMove = currentPlayer->nextMove();
 
@@ -60,6 +61,9 @@ bool GameController::nextTurn() {
           + string(": ") + nextMove.toString();
 
   if (_model->isValidMove(currentPlayer, nextMove)) {
+
+    animateMove(currentPlayer, nextMove);
+
     vector<pair<int,int> > changes = _model->applyMove(currentPlayer, nextMove);
 
     _view->update(changes);
@@ -132,6 +136,7 @@ GameController::~GameController() {
 
 void GameController::setConfig(AppConfig* config) {
   _appConfig = config;
+  _delayTime = Utils::parseInt(_appConfig->getConfig("delay"));
 }
 
 void GameController::setTileManager(TileManager* tileManager) {
@@ -159,4 +164,23 @@ void GameController::createGameView() {
   }
 
   _view = new BaseGameView(_tileManager, _model);
+}
+
+
+void GameController::animateMove(const IPlayer* player, const Command& move) {
+  switch (move.getActionType()) {
+    case Command::SURRENDER:
+    case Command::SKIP:
+    case Command::MOVE:
+      break;
+
+    case Command::FIRE: {
+      pair<int,int> pos = move.getTargetPosition();
+      _view->addFire(pos.first, pos.second, "EFFECT.FIRE_M");
+      _view->display();
+      _view->getDisplay()->wait(_delayTime);
+      _view->removeFire(pos.first, pos.second);
+      _view->display();
+    }
+  }
 }

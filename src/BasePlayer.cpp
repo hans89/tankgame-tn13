@@ -42,11 +42,11 @@ Command BasePlayer::nextMove() {
 
     ITank* nextTank = *it;
 
-    int choice = rand() % 3; // 0: skip, 1: move, 2: fire
+    int choice = rand() % 2; // 0: move, 1: fire
     int direction = rand() % 4; //0: north, 1: south, 2: east, 3: west
 
 
-    Command::Action actchoices[3] = {Command::SKIP, Command::MOVE, Command::FIRE};
+    Command::Action actchoices[2] = {Command::MOVE, Command::FIRE};
     pair<int,int> delta[4] = {
       pair<int,int>(0,-1), // north
       pair<int,int>(0,1), // south

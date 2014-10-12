@@ -37,6 +37,10 @@ bool BaseMap::isTank(int x, int y, char playerId) const {
     && _mapInfo.playerIDs.find(_mapInfo.charMap[y][x]) != std::string::npos;
 }
 
+bool BaseMap::isTank(int x, int y) const {
+  return _mapInfo.playerIDs.find(_mapInfo.charMap[y][x]) != std::string::npos;
+}
+
 bool BaseMap::isHeadquarter(int x, int y, char playerId) const {
 
   int playerIDindex = _mapInfo.playerIDs.find(playerId);
@@ -61,17 +65,24 @@ char& BaseMap::operator()(int x, int y) {
 void BaseMap::remove(BaseMapObject* obj) {
   std::pair<int,int> lastPos = obj->getPosition();
 
+  if (isBridge(lastPos))  
+    _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.waterID;
+  else
+    _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
+     
   obj->removeFromMap();
-
- _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
 }
 
 void BaseMap::move(BaseMapObject* obj, const std::pair<int,int>& newPos) {
   std::pair<int,int> lastPos = obj->getPosition();
-  obj->move(newPos);
-
-  _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
+  
+  if (isBridge(lastPos))  
+    _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.waterID;
+  else
+    _mapInfo.charMap[lastPos.second][lastPos.first] = _mapInfo.landID;
+  
   _mapInfo.charMap[newPos.second][newPos.first] = obj->getMapID();
+  obj->move(newPos);
 }
 
 BaseMap::BaseMap(const MapInfo& mapInfo) : _mapInfo(mapInfo) {}

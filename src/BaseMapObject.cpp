@@ -27,7 +27,6 @@ void BaseMapObject::decreaseHP(int amount) {
 
 void BaseMapObject::kill() {
   _HP = 0;
-  removeFromMap();
 }
 
 void BaseMapObject::move(const std::pair<int, int>& newPost) {

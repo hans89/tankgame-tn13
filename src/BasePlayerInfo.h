@@ -3,97 +3,54 @@
 
 #include "IPlayerInfo.h"
 #include "BaseTank.h"
-#include <algorithm>
+#include <vector>
 
-using namespace std;
+
+
 class BasePlayerInfo : public IPlayerInfo {
 private:
   char _mapID;
   Command _lastMove;
-  list<ITank*> _aliveTanks;
-  list<ITank*> _deadTanks;
-  pair<int, int> _headquarterPosition;
-  vector<BaseTank*> _baseTanks;
+  std::list<ITank*> _aliveTanks;
+  std::list<ITank*> _deadTanks;
+  std::pair<int, int> _headquarterPosition;
+  std::vector<BaseTank*> _baseTanks;
 
 public:
   #pragma region IPlayerInfoImplementation
-  char getPlayerMapID() const {
-    return _mapID;
-  }
+  char getPlayerMapID() const;
 
-  list<ITank*> getAliveTanks() const {
-    return _aliveTanks;
-  }
+  std::list<ITank*> getAliveTanks() const;
 
-  list<ITank*> getDeadTanks() const {
-    return _deadTanks;
-  }
+  std::list<ITank*> getDeadTanks() const;
 
-  pair<int, int> getHeadquarterPosition() const {
-    return _headquarterPosition;
-  }
+  std::pair<int, int> getHeadquarterPosition() const;
 
   // Command getLastMove() const {
   //   return _lastMove;
   // }
 
-  bool isPlayable() const {
-    return !_aliveTanks.empty();
-  }
+  bool isPlayable() const;
 
   #pragma endregion
 
   #pragma region ModelPreservedInterface
-  bool isOwnerOf(const BaseTank* tank) const {
-    return this == tank->getOwner();
-  }
+  bool isOwnerOf(const BaseTank* tank) const;
 
-  bool removeTank(BaseTank* tank) {
-    list<ITank*>::iterator it 
-      = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
-    if (it != _aliveTanks.end()) {
-      tank->kill();
-      _deadTanks.push_back(tank);
-      _aliveTanks.erase(it);
-      return true;
-    }
-    return false;
-  }
+  bool removeTank(BaseTank* tank);
 
-  bool getHit(BaseTank* tank) {
-    list<ITank*>::iterator it 
-      = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
-
-    if (it != _aliveTanks.end()) {
-      tank->decreaseHP();
-      if (!tank->isAlive()) {
-        _deadTanks.push_back(tank);
-        _aliveTanks.erase(it);
-      }
-      return true;
-    }
-    return false;
-  }
+  bool getHit(BaseTank* tank);
+  bool getHit(const std::pair<int,int>& pos, BaseTank*& tank);
 
   // void updateLastMove(const Command& cmd) {
   //   _lastMove = cmd;
   // }
 
-  void addTank(int hp, int ammo, int range, pair<int,int> pos) {
-    BaseTank* newTank = new BaseTank(hp, ammo, range, pos, this);
+  void addTank(int hp, int ammo, int range, std::pair<int,int> pos);
 
-    _baseTanks.push_back(newTank);
-    _aliveTanks.push_back(newTank);
-  }
+  BasePlayerInfo(char id, std::pair<int,int> head);
 
-  BasePlayerInfo(char id, pair<int,int> head) :
-    _mapID(id), _headquarterPosition(head) {}
-
-  ~BasePlayerInfo() {
-    for (int i = 0; i < _baseTanks.size(); i++)
-      delete _baseTanks[i];
-  }
-
+  ~BasePlayerInfo();
   #pragma endregion
 };
 

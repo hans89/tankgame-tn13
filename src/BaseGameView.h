@@ -21,13 +21,15 @@ protected:
 
   void blendTiles(int x, int y, const std::vector<std::string>& tileNames);
 
+  void translateTile(int x, int y);
+
 public:
 
   BaseGameView(TileManager* tileManager, const BaseGameModel* model);
 
   const CImg<unsigned char>* getDisplayImage() const;
 
-  const CImgDisplay* getDisplay() const;
+  CImgDisplay* getDisplay() const;
 
   void setDisplay(CImg<unsigned char>* image, CImgDisplay* display);
 
@@ -36,6 +38,9 @@ public:
   void display();
 
   void update(const std::vector<std::pair<int,int> >& changes);
+
+  void addFire(int offsetX, int offsetY, string fire);
+  void removeFire(int offsetX, int offsetY);
 };
 
 #endif

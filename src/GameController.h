@@ -18,6 +18,7 @@ private:
   #pragma region IController Data
   AppConfig* _appConfig;
   TileManager* _tileManager;
+  int _delayTime;
 
   bool _autoMode;
   bool _ended;
@@ -58,5 +59,6 @@ public:
 
   void createGameModel();
   void createGameView();
+  void animateMove(const IPlayer* player, const Command& move);
 };
 #endif

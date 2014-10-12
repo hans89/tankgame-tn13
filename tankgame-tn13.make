@@ -70,7 +70,9 @@ OBJECTS := \
 	$(OBJDIR)/BaseMap.o \
 	$(OBJDIR)/BaseMapObject.o \
 	$(OBJDIR)/BasePlayer.o \
+	$(OBJDIR)/BasePlayerInfo.o \
 	$(OBJDIR)/BaseTank.o \
+	$(OBJDIR)/Command.o \
 	$(OBJDIR)/GameController.o \
 	$(OBJDIR)/GameCreator.o \
 	$(OBJDIR)/GameMain.o \
@@ -162,7 +164,15 @@ $(OBJDIR)/BasePlayer.o: src/BasePlayer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
+$(OBJDIR)/BasePlayerInfo.o: src/BasePlayerInfo.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
 $(OBJDIR)/BaseTank.o: src/BaseTank.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/Command.o: src/Command.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

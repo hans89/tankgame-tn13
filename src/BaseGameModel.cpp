@@ -136,8 +136,6 @@ vector<pair<int, int> > BaseGameModel::applyMove(IPlayer* player,
     case Command::SURRENDER: {
       list<ITank*> aliveTanks = playerInfo->getAliveTanks();
 
-      changes.resize(aliveTanks.size());
-
       for (list<ITank*>::iterator it = aliveTanks.begin(); 
             it != aliveTanks.end(); ++it) {
 
@@ -150,12 +148,74 @@ vector<pair<int, int> > BaseGameModel::applyMove(IPlayer* player,
       break;
 
     case Command::FIRE: {
+      pair<int,int> pos = move.getTargetPosition();
+      int i = pos.first,
+          j = pos.second;
 
+      if (_map->isEmptySpace(i, j) || _map->isHeadquarter(i,j)
+            || _map->isWater(i, j)) {
+        // skipp
+      } 
+
+      else if (_map->isBlock(i, j)) {
+        // find the block
+        list<IBlock*>::iterator it;
+
+        for (it = _onMapBlocks.begin(); it != _onMapBlocks.end(); ++it) {
+          if ((*it)->getPosition() == pos)
+            break;
+        }
+
+        if (it != _onMapBlocks.end()) {
+          BaseBlock* baseBlock = (BaseBlock*)(*it);
+          baseBlock->decreaseHP();
+          // destroy block 
+          if (baseBlock->getHP() == 0) {
+            _map->remove(baseBlock);
+            changes.push_back(pos); 
+            _onMapBlocks.erase(it);
+          } 
+        }
+      } 
+
+      else if (_map->isBridge(i, j)) {
+        // find the block
+        list<IBridge*>::iterator it;
+
+        for (it = _onMapBridges.begin(); it != _onMapBridges.end(); ++it) {
+          if ((*it)->getPosition() == pos)
+            break;
+        }
+
+        if (it != _onMapBridges.end()) {
+          BaseBridge* baseBridge = (BaseBridge*)(*it);
+          baseBridge->decreaseHP();
+          // destroy bridge 
+          if (baseBridge->getHP() == 0) {
+            _map->remove(baseBridge);
+            changes.push_back(pos); 
+            _onMapBridges.erase(it);
+          } 
+        }
+      } 
+
+      else if (_map->isTank(i, j)) {
+        BasePlayerInfo* playerInfo = _playersInfoIDMap[(*_map)(i,j)];
+
+        BaseTank* baseTank = NULL;
+
+        if (playerInfo->getHit(pos, baseTank) && baseTank != NULL) {
+          _map->remove(baseTank);
+          changes.push_back(pos); 
+        }
+      }
+      break;
     }
        
     case Command::MOVE: {
       pair<int,int> s = tank->getPosition(),
                     e = move.getTargetPosition();
+
 
       _map->move(tank, e);
 
