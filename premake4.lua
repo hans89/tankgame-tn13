@@ -22,7 +22,7 @@ solution "tankgame-tn13"
          -- buildoptions { "/MD" }
          links { "user32", "gdi32", "shell32", "libpng16", "zlib" }
          includedirs { "lib/win/include" }        
-
+      
       configuration {"windows", "Debug", "vs2010"}
          libdirs { "lib/win/vs2010-debug" }
 

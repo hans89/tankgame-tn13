@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{051F274F-755C-894A-8025-B01C330EE608}</ProjectGuid>
+    <ProjectGuid>{CB3619C8-4AA2-3E96-C22D-FFF8B6A402FE}</ProjectGuid>
     <RootNamespace>tankgame-tn13</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>

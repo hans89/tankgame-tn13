@@ -37,7 +37,7 @@ Command BasePlayer::nextMove() {
 
     list<ITank*>::iterator it;
     int j;
-    for (it = alives.begin(), j = 0; it != alives.end(), j < next; ++it, ++j)
+    for (it = alives.begin(), j = 0; it != alives.end() && j < next; ++it, ++j)
       ;
 
     ITank* nextTank = *it;

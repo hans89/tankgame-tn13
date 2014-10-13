@@ -22,16 +22,16 @@ endif
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug
   TARGETDIR  = bin
-  TARGET     = $(TARGETDIR)/tankgame-tn13.exe
+  TARGET     = $(TARGETDIR)/tankgame-tn13
   DEFINES   += -DDEBUG -Dcimg_use_png
-  INCLUDES  += -Ilib/win/include
+  INCLUDES  += -I/usr/X11R6/include
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -g
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L.
+  ALL_LDFLAGS   += $(LDFLAGS) -L/usr/X11R6/lib -L.
   LDDEPS    +=
-  LIBS      += $(LDDEPS) -luser32 -lgdi32 -lshell32 -llibpng16 -lzlib
+  LIBS      += $(LDDEPS) -lm -lpthread -lX11 -lpng -lz
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -44,16 +44,16 @@ endif
 ifeq ($(config),release)
   OBJDIR     = obj/Release
   TARGETDIR  = bin
-  TARGET     = $(TARGETDIR)/tankgame-tn13.exe
+  TARGET     = $(TARGETDIR)/tankgame-tn13
   DEFINES   += -DNDEBUG -Dcimg_use_png
-  INCLUDES  += -Ilib/win/include
+  INCLUDES  += -I/usr/X11R6/include
   ALL_CPPFLAGS  += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS    += $(CFLAGS) $(ALL_CPPFLAGS) $(ARCH) -O2
   ALL_CXXFLAGS  += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS  += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  ALL_LDFLAGS   += $(LDFLAGS) -L. -s
+  ALL_LDFLAGS   += $(LDFLAGS) -L/usr/X11R6/lib -L. -Wl,-x
   LDDEPS    +=
-  LIBS      += $(LDDEPS) -luser32 -lgdi32 -lshell32 -llibpng16 -lzlib
+  LIBS      += $(LDDEPS) -lm -lpthread -lX11 -lpng -lz
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(RESOURCES) $(ARCH) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
