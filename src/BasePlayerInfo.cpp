@@ -1,5 +1,7 @@
 #include "BasePlayerInfo.h"
 
+#include <algorithm>
+
 using namespace std;
 
 #pragma region IPlayerInfoImplementation
@@ -36,7 +38,7 @@ bool BasePlayerInfo::isOwnerOf(const BaseTank* tank) const {
 
 bool BasePlayerInfo::removeTank(BaseTank* tank) {
   list<ITank*>::iterator it 
-    = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
+    = find(_aliveTanks.begin(), _aliveTanks.end(), tank);
   if (it != _aliveTanks.end()) {
     tank->kill();
     _deadTanks.push_back(tank);
@@ -48,7 +50,7 @@ bool BasePlayerInfo::removeTank(BaseTank* tank) {
 
 bool BasePlayerInfo::getHit(BaseTank* tank) {
   list<ITank*>::iterator it 
-    = find (_aliveTanks.begin(), _aliveTanks.end(), tank);
+    = find(_aliveTanks.begin(), _aliveTanks.end(), tank);
 
   if (it != _aliveTanks.end()) {
     tank->decreaseHP();
