@@ -37,7 +37,7 @@ ipch/
 *.lai
 *.la
 *.a
-*.lib
+# *.lib
 
 # Executables
 *.exe
