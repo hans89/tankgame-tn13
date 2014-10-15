@@ -8,7 +8,7 @@ solution "tankgame-tn13"
    
    configuration "Release"
       defines "NDEBUG"
-      flags "Optimize"
+      flags "Optimize"   
 
    -- A project defines one build target
    project "tankgame-tn13"

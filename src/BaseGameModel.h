@@ -15,8 +15,6 @@
 
 using namespace std;
 
-#define STARTID 'A'
-
 class BaseGameModel : public IGameInfo {
 protected:
   BaseMap* _map;

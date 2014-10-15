@@ -7,11 +7,6 @@
 #include "Command.h"
 
 class BasePlayer : public IPlayer {
-protected:
-  IPlayerInfo* _playerInfo;
-  IGameInfo* _gameInfo;
-
-  int _currentTank;
 public:
   BasePlayer();
   ~BasePlayer();
@@ -24,5 +19,11 @@ public:
   bool onStart();
   bool onFinish();
   Command nextMove();
+
+protected:
+  IPlayerInfo* _playerInfo;
+  IGameInfo* _gameInfo;
+
+  int _currentTank;
 };
 #endif

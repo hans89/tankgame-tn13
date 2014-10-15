@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB3619C8-4AA2-3E96-C22D-FFF8B6A402FE}</ProjectGuid>
+    <ProjectGuid>{F503117C-2CEF-16EF-81B9-C27B0D9DCF50}</ProjectGuid>
     <RootNamespace>tankgame-tn13</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -136,7 +136,6 @@
     <ClInclude Include="..\src\ITank.h" />
     <ClInclude Include="..\src\MapInfo.h" />
     <ClInclude Include="..\src\MapLoader.h" />
-    <ClInclude Include="..\src\TerrainMap.h" />
     <ClInclude Include="..\src\TileManager.h" />
     <ClInclude Include="..\src\include\CImg.h" />
     <ClInclude Include="..\src\include\utils.h" />
@@ -167,8 +166,6 @@
     <ClCompile Include="..\src\GameMain.cpp">
     </ClCompile>
     <ClCompile Include="..\src\IMap.cpp">
-    </ClCompile>
-    <ClCompile Include="..\src\main.cpp">
     </ClCompile>
     <ClCompile Include="..\src\MapLoader.cpp">
     </ClCompile>

@@ -8,24 +8,6 @@
 #include "BaseGameView.h"
 
 class GameController : public IController {
-private:
-  BaseGameView* _view;
-  BaseGameModel* _model;
-  
-  std::vector<IPlayer*> _players;
-  int _currentPlayerTurn;
-
-  #pragma region IController Data
-  AppConfig* _appConfig;
-  TileManager* _tileManager;
-  int _delayTime;
-
-  bool _autoMode;
-  bool _ended;
-  bool _ending;
-
-  #pragma endregion
-
 protected:
   // prevent copy
   GameController(const GameController& g);
@@ -60,5 +42,23 @@ public:
   void createGameModel();
   void createGameView();
   void animateMove(const IPlayer* player, const Command& move);
+
+private:
+  BaseGameView* _view;
+  BaseGameModel* _model;
+  
+  std::vector<IPlayer*> _players;
+  int _currentPlayerTurn;
+
+  #pragma region IController Data
+  AppConfig* _appConfig;
+  TileManager* _tileManager;
+  int _delayTime;
+
+  bool _autoMode;
+  bool _ended;
+  bool _ending;
+
+  #pragma endregion
 };
 #endif

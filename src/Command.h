@@ -26,13 +26,6 @@ public:
     SURRENDER
   };
 
-private:
-  ITank* receivingObject;
-  Action actionType;
-  std::pair<int, int> targetPosition;
-  
-public:
-
   Command() : 
     receivingObject(NULL), actionType(SKIP), targetPosition(IMap::npos) {}
 
@@ -48,6 +41,11 @@ public:
   Action getActionType() const;
 
   std::string toString();
+
+private:
+  ITank* receivingObject;
+  Action actionType;
+  std::pair<int, int> targetPosition;
 };
 
 #endif

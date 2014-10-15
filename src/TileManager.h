@@ -26,6 +26,7 @@ private:
 	static int tileSize;
 	CImg<unsigned char>	tileImage;
 	map<string, CImg<unsigned char> > tilesMap;
+  map<char, string> charStringTileMap;
 	
 	void addTileMap(string t, int offsetX, int offsetY);
 

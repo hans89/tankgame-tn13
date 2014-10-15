@@ -6,9 +6,6 @@
 #include "BaseMapObject.h"
 
 class BaseTank : public BaseMapObject, public ITank {
-protected:
-  int _ammo, _range;
-  IPlayerInfo* _ownerInfo;
 public:
   #pragma region IMapObjectImplementation
 
@@ -18,11 +15,8 @@ public:
   #pragma region ITankImplementation
   
   int getAmmoNumber() const;
-
   int getRange() const;
-
   bool isAlive() const;
-
   IPlayerInfo* getOwner() const;
 
   #pragma endregion
@@ -35,7 +29,9 @@ public:
       const std::pair<int,int>& pos, IPlayerInfo* owner);
     
   #pragma endregion
+
+protected:
+  int _ammo, _range;
+  IPlayerInfo* _ownerInfo;
 };
-
-
 #endif

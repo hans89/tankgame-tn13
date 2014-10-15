@@ -8,22 +8,12 @@
 
 
 class BasePlayerInfo : public IPlayerInfo {
-private:
-  char _mapID;
-  Command _lastMove;
-  std::list<ITank*> _aliveTanks;
-  std::list<ITank*> _deadTanks;
-  std::pair<int, int> _headquarterPosition;
-  std::vector<BaseTank*> _baseTanks;
-
 public:
   #pragma region IPlayerInfoImplementation
   char getPlayerMapID() const;
 
   std::list<ITank*> getAliveTanks() const;
-
   std::list<ITank*> getDeadTanks() const;
-
   std::pair<int, int> getHeadquarterPosition() const;
 
   // Command getLastMove() const {
@@ -49,9 +39,16 @@ public:
   void addTank(int hp, int ammo, int range, std::pair<int,int> pos);
 
   BasePlayerInfo(char id, std::pair<int,int> head);
-
   ~BasePlayerInfo();
   #pragma endregion
+
+private:
+  char _mapID;
+  Command _lastMove;
+  std::list<ITank*> _aliveTanks;
+  std::list<ITank*> _deadTanks;
+  std::pair<int, int> _headquarterPosition;
+  std::vector<BaseTank*> _baseTanks;
 };
 
 #endif

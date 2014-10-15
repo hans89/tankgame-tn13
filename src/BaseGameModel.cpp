@@ -112,7 +112,7 @@ bool BaseGameModel::isValidMove(IPlayer* player, const Command& move) {
         return false;
       
       if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive()
-          || !_map->isEmptySpace(e.first, e.second))
+          || !(_map->isEmptySpace(e.first, e.second) || _map->isBridge(e.first, e.second)))
         return false;
 
       pair<int, int> s = tank->getPosition();

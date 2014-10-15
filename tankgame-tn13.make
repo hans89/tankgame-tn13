@@ -77,7 +77,6 @@ OBJECTS := \
 	$(OBJDIR)/GameCreator.o \
 	$(OBJDIR)/GameMain.o \
 	$(OBJDIR)/IMap.o \
-	$(OBJDIR)/main.o \
 	$(OBJDIR)/MapLoader.o \
 	$(OBJDIR)/TileManager.o \
 	$(OBJDIR)/utils.o \
@@ -189,10 +188,6 @@ $(OBJDIR)/GameMain.o: src/GameMain.cpp
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/IMap.o: src/IMap.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
-
-$(OBJDIR)/main.o: src/main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
