@@ -1,19 +1,9 @@
-!lib/**
-obj/
-bin/
-
-ipch/
-
-# Makefile
-# *.make
-
 # Visual Studio
 *.opensdf
-# *.sln
-# *.vcxproj*
 *.vcxproj.*
 *.sdf
 *.suo
+ipch/
 
 # Compiled Object files
 *.slo
@@ -28,7 +18,7 @@ ipch/
 # Compiled Dynamic libraries
 *.so
 *.dylib
-# *.dll
+*.dll
 
 # Fortran module files
 *.mod
@@ -37,9 +27,15 @@ ipch/
 *.lai
 *.la
 *.a
-# *.lib
+*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+obj/
+bin/
+
+!lib/**
+!premake4.exe

@@ -46,10 +46,10 @@ const BaseMap* BaseGameModel::getBaseMap() const {
 IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
   if (_nextRegisterPlayer < _mapInfo.playerIDs.size()) {
     
-    char id = _mapInfo.playerIDs[_nextRegisterPlayer++];
+    char id = _mapInfo.playerIDs[_nextRegisterPlayer];
 
     BasePlayerInfo* newBaseInfo 
-      = new BasePlayerInfo(id, _headquarters[id]);
+		= new BasePlayerInfo(id, _headquarters[_mapInfo.headquarterIDs[_nextRegisterPlayer++]]);
 
     // save for later uses
     _playersInfo.push_back(newBaseInfo);
@@ -257,7 +257,7 @@ BaseGameModel::BaseGameModel(const MapInfo& info)
         _onMapBridges.push_back(newBridge);
       }
 
-      else if (_map->isHeadquarter(i, j, c)) {
+      else if (_map->isHeadquarter(i, j)) {
         _headquarters.insert(pair<char, pair<int,int> >(c, pair<int,int>(i,j)));
       }
     }

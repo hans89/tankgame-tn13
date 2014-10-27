@@ -3,6 +3,15 @@ tankgame-tn13
 
 Tank game for Graph Theory and Application project TN13
 
+Usage: use premake4.exe to generate solution files for visual studio
+For example:
+premake4.exe vs2010
+premake4.exe vs2012
+premake4.exe vs2013
+
+For Unix-based (make), install premake4 and use
+premake4 gmake
+
 -------------
 No copyright infringement intended for the tile resources.
 We do not know the original authors of those resources, still
