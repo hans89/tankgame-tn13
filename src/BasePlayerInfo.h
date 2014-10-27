@@ -38,7 +38,7 @@ public:
 
   void addTank(int hp, int ammo, int range, std::pair<int,int> pos);
 
-  BasePlayerInfo(char id, std::pair<int,int> head);
+  BasePlayerInfo(char id, const std::pair<int,int>& head);
   ~BasePlayerInfo();
   #pragma endregion
 

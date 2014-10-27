@@ -176,6 +176,35 @@ void GameController::animateMove(const IPlayer* player, const Command& move) {
 
     case Command::FIRE: {
       pair<int,int> pos = move.getTargetPosition();
+      pair<int,int> from = move.getReceivingObject()->getPosition();
+
+      int deltaX = pos.first - from.first;
+      int deltaY = pos.second - from.second;
+
+      if (deltaX == 0) {
+        int dy = deltaY > 0 ? 1 : -1;
+
+        for (int i = from.second + dy; i != pos.second; i+=dy){
+          _view->addFire(pos.first, i, "EFFECT.BULLET_M");
+          _view->display();
+          _view->getDisplay()->wait(_delayTime);
+          _view->removeFire(pos.first, i);
+        }
+
+      } else if (deltaY == 0) {
+        int dx = deltaX > 0 ? 1 : -1;
+
+        for (int i = from.first + dx; i != pos.first; i+=dx){
+          _view->addFire(i, pos.second, "EFFECT.BULLET_M");
+          _view->display();
+          _view->getDisplay()->wait(_delayTime);
+          _view->removeFire(i, pos.second);
+        }
+
+      } else {
+
+      }
+
       _view->addFire(pos.first, pos.second, "EFFECT.FIRE_M");
       _view->display();
       _view->getDisplay()->wait(_delayTime);

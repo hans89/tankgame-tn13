@@ -56,9 +56,18 @@ Command BasePlayer::nextMove() {
 
     pair<int,int> curPos = nextTank->getPosition();
     
-    return Command(nextTank, actchoices[choice], 
+    int range = rand() % nextTank->getRange() + 1;
+
+    switch (actchoices[choice]) {
+      case Command::MOVE:
+        return Command(nextTank, actchoices[choice], 
           curPos.first + delta[direction].first,
           curPos.second + delta[direction].second);
+      case Command::FIRE:
+        return Command(nextTank, actchoices[choice], 
+          curPos.first + range * delta[direction].first,
+          curPos.second + range * delta[direction].second);
+    }
   }
 
   return Command();

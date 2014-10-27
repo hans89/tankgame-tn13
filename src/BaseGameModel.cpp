@@ -257,7 +257,7 @@ BaseGameModel::BaseGameModel(const MapInfo& info)
         _onMapBridges.push_back(newBridge);
       }
 
-      else if (_map->isHeadquarter(i,j, c)) {
+      else if (_map->isHeadquarter(i, j, c)) {
         _headquarters.insert(pair<char, pair<int,int> >(c, pair<int,int>(i,j)));
       }
     }

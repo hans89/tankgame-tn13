@@ -94,7 +94,7 @@ void BasePlayerInfo::addTank(int hp, int ammo, int range, pair<int,int> pos) {
   _aliveTanks.push_back(newTank);
 }
 
-BasePlayerInfo::BasePlayerInfo(char id, pair<int,int> head) :
+BasePlayerInfo::BasePlayerInfo(char id, const pair<int,int>& head) :
   _mapID(id), _headquarterPosition(head) {}
 
 BasePlayerInfo::~BasePlayerInfo() {
