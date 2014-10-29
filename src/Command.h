@@ -48,4 +48,11 @@ private:
   std::pair<int, int> targetPosition;
 };
 
+
+struct CommandInfo {
+  IPlayerInfo* commander;
+  Command originalCommand;
+  Command executedCommand;
+};
+
 #endif

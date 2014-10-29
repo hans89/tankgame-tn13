@@ -40,3 +40,7 @@ pair<int, int> Utils::parseIntPair(string intPair) {
 int Utils::parseInt(string intNum) {
   return atoi(intNum.c_str());
 }
+
+int Utils::manhattanDistance(const pair<int,int>& start, const pair<int,int>& end) {
+  return abs(start.first - end.first) + abs(start.second - end.second);
+}

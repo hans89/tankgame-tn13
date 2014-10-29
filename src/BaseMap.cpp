@@ -11,6 +11,11 @@ int BaseMap::getHeight() const {
   return _mapInfo.charMap.size();
 }
 
+bool BaseMap::isOnMap(const std::pair<int,int>& pos) const {
+  return (pos.first >= 0 && pos.first < getWidth()
+          && pos.second >= 0 && pos.second < getHeight());
+}
+
 // return the cell value as char at (x,y)
 // (0,0) is at the left-top corner
 char BaseMap::operator()(int x, int y) const {

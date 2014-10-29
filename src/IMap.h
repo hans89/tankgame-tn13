@@ -15,6 +15,8 @@ public:
   // return the height (y-coordinate) of this map
 	virtual int getHeight() const = 0;
 
+  virtual bool isOnMap(const std::pair<int,int>& pos) const = 0;
+
   // return the cell value as char at (x,y)
   // (0,0) is at the left-top corner
 	virtual char operator()(int x, int y) const = 0;

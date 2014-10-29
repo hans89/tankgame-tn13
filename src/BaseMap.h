@@ -13,6 +13,7 @@ public:
   #pragma region IMapImplementation
   int getWidth() const;
   int getHeight() const;
+  bool isOnMap(const std::pair<int,int>& pos) const;
 
   char operator()(int x, int y) const;
 

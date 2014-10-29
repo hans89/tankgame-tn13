@@ -30,6 +30,9 @@ public:
   bool isEnding() const;
   bool isEnded() const;
   bool nextTurn();
+
+  bool nextConcurrentTurn();
+
   void updateDisplay();
 
   ~GameController();
@@ -41,7 +44,8 @@ public:
 
   void createGameModel();
   void createGameView();
-  void animateMove(const IPlayer* player, const Command& move);
+
+  void animateMove(const Command& move);
 
 private:
   BaseGameView* _view;

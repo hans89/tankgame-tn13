@@ -27,6 +27,7 @@ public:
   virtual bool isInAutoMode() const = 0;
   virtual void toggleMode() = 0;
   virtual bool nextTurn() = 0;
+  virtual bool nextConcurrentTurn() = 0;
   virtual void updateDisplay() = 0;
 
   virtual ~IController() {}

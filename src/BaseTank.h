@@ -17,6 +17,7 @@ public:
   int getAmmoNumber() const;
   int getRange() const;
   bool isAlive() const;
+  bool hasAmmo() const;
   IPlayerInfo* getOwner() const;
 
   #pragma endregion

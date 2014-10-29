@@ -19,6 +19,8 @@ namespace Utils {
 	pair<int, int> parseIntPair(string intPair);
 
 	int parseInt(string intNum);
+
+  int manhattanDistance(const pair<int,int>& start, const pair<int,int>& end);
 }
 
 #endif

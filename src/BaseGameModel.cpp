@@ -1,5 +1,7 @@
 #include "BaseGameModel.h"
 
+#include "include/utils.h"
+
 #pragma region IGameInfoImplementation
 // get the map
 IMap* BaseGameModel::getMap() const {
@@ -34,7 +36,7 @@ IPlayerInfo* BaseGameModel::getPlayerByID(char id) const {
 
 #pragma region ModelPreservedInterfaces 
 
-bool BaseGameModel::isEndGame() {
+bool BaseGameModel::isEndGame() const {
   //TODO
   return false;
 }
@@ -79,8 +81,7 @@ IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
   return NULL;
 }
 
-bool BaseGameModel::isValidMove(IPlayer* player, const Command& move) {
-  IPlayerInfo* playerInfo = player->getPlayerInfo();
+bool BaseGameModel::isValidMove(IPlayerInfo* playerInfo, const Command& move) const {
   ITank* tank = move.getReceivingObject();
 
   switch (move.getActionType()) {
@@ -93,22 +94,19 @@ bool BaseGameModel::isValidMove(IPlayer* player, const Command& move) {
         return false;
       pair<int, int> e = move.getTargetPosition();
 
-      if (e.first < 0 || e.first >= _map->getWidth() || 
-          e.second < 0 || e.second >= _map->getHeight())
+      if (!_map->isOnMap(e))
         return false;
 
       pair<int, int> s = tank->getPosition();
       int r = tank->getRange();
-
-      return ((s.first == e.first) && (abs(s.second-e.second) <= r))
-        || ((s.second == e.second) && (abs(s.first-e.first) <= r));
+      int distance = Utils::manhattanDistance(s, e);
+      return  distance <= r && distance > 0 && tank->hasAmmo();
     }
        
     case Command::MOVE: {
       pair<int, int> e = move.getTargetPosition();
 
-      if (e.first < 0 || e.first >= _map->getWidth() || 
-          e.second < 0 || e.second >= _map->getHeight())
+      if (!_map->isOnMap(e))
         return false;
       
       if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive()
@@ -117,19 +115,19 @@ bool BaseGameModel::isValidMove(IPlayer* player, const Command& move) {
 
       pair<int, int> s = tank->getPosition();
 
-      return abs(s.first - e.first) + abs(s.second-e.second) <= 1;
+      return Utils::manhattanDistance(s, e) == 1;
     }
   }
 
   return false;
 }
 
-vector<pair<int, int> > BaseGameModel::applyMove(IPlayer* player, 
-      const Command& move) {
+vector<pair<int, int> > 
+BaseGameModel::applyMove(IPlayerInfo* player, const Command& move) {
 
   vector<pair<int, int> > changes;
 
-  BasePlayerInfo* playerInfo = (BasePlayerInfo*)(player->getPlayerInfo());
+  BasePlayerInfo* playerInfo = (BasePlayerInfo*)player;
   BaseTank* tank = (BaseTank*)(move.getReceivingObject());
 
   switch (move.getActionType()) {
@@ -148,6 +146,8 @@ vector<pair<int, int> > BaseGameModel::applyMove(IPlayer* player,
       break;
 
     case Command::FIRE: {
+      tank->decreaseAmmo();
+
       pair<int,int> pos = move.getTargetPosition();
       int i = pos.first,
           j = pos.second;
@@ -229,6 +229,179 @@ vector<pair<int, int> > BaseGameModel::applyMove(IPlayer* player,
 
   return changes;
 }
+
+bool BaseGameModel::isPossibleMove(IPlayerInfo* playerInfo, const Command& move) const {
+  
+  ITank* tank = move.getReceivingObject();
+
+  switch (move.getActionType()) {
+    case Command::SURRENDER:
+    case Command::SKIP:
+      return true;
+
+    case Command::FIRE: {
+      if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive())
+        return false;
+      pair<int, int> e = move.getTargetPosition();
+
+      if (!_map->isOnMap(e))
+        return false;
+
+      pair<int, int> s = tank->getPosition();
+
+      int distance = Utils::manhattanDistance(s, e);
+
+      int r = tank->getRange();
+
+      return distance <= r && distance > 0 && tank->hasAmmo();
+    }
+       
+    case Command::MOVE: {
+      pair<int, int> e = move.getTargetPosition();
+
+      if (!_map->isOnMap(e))
+        return false;
+      
+      if (tank == NULL || tank->getOwner() != playerInfo || !tank->isAlive())
+        return false;
+
+      if (_map->isBlock(e.first, e.second) || _map->isWater(e.first, e.second)
+          || _map->isTank(e.first, e.second, playerInfo->getPlayerMapID())) 
+        return false;
+
+      pair<int, int> s = tank->getPosition();
+
+      return Utils::manhattanDistance(s, e) == 1;
+    }
+  }
+
+  return false;
+}
+
+pair<CommandInfo*, CommandInfo*> 
+BaseGameModel::tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent) {
+
+  bool possible1 = isPossibleMove(move1.commander, move1.originalCommand);
+  bool possible2 = isPossibleMove(move2.commander, move2.originalCommand);
+  
+  dependent = false;
+  // executedCommand's of CommandInfo's are 
+  // approved by default
+
+  move1.executedCommand = move1.originalCommand;
+  move2.executedCommand = move2.originalCommand;
+
+
+  if (!possible1 && possible2) {
+      // player1 can't move, player2 move
+    if (isValidMove(move2.commander, move2.executedCommand)) {
+      // approve move2
+      // skip move1
+      move1.executedCommand = Command();
+      return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+    }
+  }
+
+  if (possible1 && !possible2) {
+    // player2 can't move, player1 move
+    if (isValidMove(move1.commander, move1.executedCommand)) {
+      // approve move1
+      // skip move2
+      move2.executedCommand = Command();
+      return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+    }
+  }
+
+  if (possible1 && possible2) {
+    Command::Action t1 = move1.originalCommand.getActionType(),
+                  t2 = move2.originalCommand.getActionType();
+
+    pair<int,int> s1 = move1.originalCommand.getReceivingObject()->getPosition();
+    pair<int,int> e1 = move1.originalCommand.getTargetPosition();
+    pair<int,int> s2 = move2.originalCommand.getReceivingObject()->getPosition();
+    pair<int,int> e2 = move2.originalCommand.getTargetPosition();
+
+
+    if (t1 == Command::MOVE && t2 == Command::MOVE) {
+      // can't share the same place
+      // can't switch place
+      if ((e1 == e2) || (s1 == e2 && s2 == e1)) {
+        move1.executedCommand = Command();
+        move2.executedCommand = Command();
+        return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+      }
+
+      // 1 move into old place of 2 => 2 go first
+      // approve both
+      if (e1 == s2)
+        return pair<CommandInfo*, CommandInfo*>(&move2, &move1);
+
+      // 2 move into old place of 1 => 1 go first
+      if (e2 == s1)
+        return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+    }
+
+    if (t1 == Command::FIRE && t2 == Command::MOVE) {
+      // 2 move into 1 fire => 2 move first
+      // 2 move out of 1 fire => 2 move first
+      if ((e2 == e1) || (s2 == e1))
+        return pair<CommandInfo*, CommandInfo*>(&move2, &move1);
+    }
+
+    if (t2 == Command::FIRE && t1 == Command::MOVE) {
+      // 1 move into 2 fire => 1 move first
+      // 1 move out of 2 fire => 1 move first
+      if ((e1 == e2) || (s1 == e2))
+        return pair<CommandInfo*, CommandInfo*>(&move2, &move1);
+    }
+
+    if (t1 == Command::FIRE && t2 == Command::FIRE) {
+      if (e1 == s2 && e2 == s1)
+        dependent = true;
+    }
+    // order is unimportant/unhandled
+    return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+  }
+
+  
+  // both impossible, skip all
+  move1.executedCommand = Command();
+  move2.executedCommand = Command();
+  return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+
+}
+
+vector<pair<int, int> > 
+BaseGameModel::applyMove(const CommandInfo& move1, const CommandInfo& move2) {
+
+  vector<pair<int, int> > changes;
+
+  BasePlayerInfo* playerInfo1 = (BasePlayerInfo*)move1.commander;
+  BaseTank* tank1 = (BaseTank*)(move1.executedCommand.getReceivingObject());
+
+  BasePlayerInfo* playerInfo2 = (BasePlayerInfo*)move2.commander;
+  BaseTank* tank2 = (BaseTank*)(move2.executedCommand.getReceivingObject());
+
+
+    
+    tank->decreaseAmmo();
+
+    pair<int,int> pos = move.getTargetPosition();
+    int i = pos.first,
+        j = pos.second;
+
+    if (_map->isTank(i, j)) {
+      BasePlayerInfo* playerInfo = _playersInfoIDMap[(*_map)(i,j)];
+
+      BaseTank* baseTank = NULL;
+
+      if (playerInfo->getHit(pos, baseTank) && baseTank != NULL) {
+        _map->remove(baseTank);
+        changes.push_back(pos); 
+      }
+    }
+}
+
 
 BaseGameModel::BaseGameModel(const MapInfo& info) 
   : _mapInfo(info),

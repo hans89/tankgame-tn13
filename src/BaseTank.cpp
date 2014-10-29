@@ -18,7 +18,11 @@ int BaseTank::getRange() const {
 }
 
 bool BaseTank::isAlive() const {
-  return _HP != 0;
+  return _HP > 0;
+}
+
+bool BaseTank::hasAmmo() const {
+  return _ammo > 0;
 }
 
 IPlayerInfo* BaseTank::getOwner() const {

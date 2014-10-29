@@ -19,6 +19,9 @@ public:
   // return if HP != 0
   virtual bool isAlive() const = 0;
 
+  // return if the tank still can fire
+  virtual bool hasAmmo() const = 0;
+
   // get the owner of this tank
   virtual IPlayerInfo* getOwner() const = 0;
 };
