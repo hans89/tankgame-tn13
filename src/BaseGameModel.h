@@ -57,11 +57,10 @@ public:
   bool isValidMove(IPlayerInfo* playerInfo, const Command& move) const;
   vector<pair<int, int> > applyMove(IPlayerInfo* playerInfo, const Command& move);
 
-  bool isPossibleMove(IPlayerInfo* playerInfo, const Command& move) const;
-  
+
+  bool isPossibleMove(IPlayerInfo* playerInfo, const Command& move) const;  
   pair<CommandInfo*, CommandInfo*> 
     tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent);
-
   vector<pair<int, int> > applyMove(const CommandInfo& move1, const CommandInfo& move2);
 
   BaseGameModel(const MapInfo& info);

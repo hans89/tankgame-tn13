@@ -13,12 +13,13 @@ class BaseGameView {
 public:
 
   BaseGameView(TileManager* tileManager, const BaseGameModel* model);
+  ~BaseGameView();
 
   const CImg<unsigned char>* getDisplayImage() const;
 
   CImgDisplay* getDisplay() const;
 
-  void setDisplay(CImg<unsigned char>* image, CImgDisplay* display);
+  void setDisplay(CImgDisplay* display);
 
   void initDisplay();
   void display();
@@ -29,16 +30,18 @@ public:
   void removeFire(int offsetX, int offsetY);
 
 protected:
-  CImg<unsigned char>* _displayImg;
-  CImgDisplay* _display;
-
+  
   const BaseGameModel* _model;
   TileManager* _tileManager;
-
+  CImgDisplay* _display;
+  CImg<unsigned char>* _displayImg;
+  pair<int,int> _displayOffset;
+  
   void blendTiles(int x, int y);
 
+  map<char, string> _c2StrTileMap;
   void prepareCharToStringTileMap();
-  map<char, string> c2StrTileMap;
+  pair<int,int> calculateOffset(int x, int y);
 };
 
 #endif

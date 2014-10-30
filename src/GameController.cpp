@@ -17,17 +17,8 @@ GameController& GameController::operator=(const GameController& g) {
 }
 
 #pragma region IControllerImplementation
-void GameController::setDisplay(CImg<unsigned char>* image, 
-        CImgDisplay* display) {
-  _view->setDisplay(image, display);
-}
-
-int GameController::getDisplayWidth() const {
-	return _model->getMap()->getWidth() * _tileManager->getTileSize();
-}
-
-int GameController::getDisplayHeight() const {
-  return _model->getMap()->getHeight() * _tileManager->getTileSize();
+void GameController::setDisplay(CImgDisplay* display) {
+  _view->setDisplay(display);
 }
 
 string GameController::getConfig(string key) const {
@@ -81,51 +72,7 @@ bool GameController::nextTurn() {
   }
 }
 
-// the controller makes the next turn
-bool GameController::nextConcurrentTurn() {
-  // moves
-  // tryMove will try to order (serialize) 2 moves
-  CommandInfo move1, move2;
 
-  move1.commander = _players[0]->getPlayerInfo();
-  move1.originalCommand = _players[0]->nextMove();
-
-  move2.commander = _players[1]->getPlayerInfo();
-  move2.originalCommand = _players[1]->nextMove();
-
-  bool dependent = false;
-  pair<CommandInfo*, CommandInfo*> realMoves
-    = _model->tryMove(move1, move2, dependent);
-
-  vector<pair<int,int> > changes;
-
-  // in case of both moves are firing, we can't serialize it 
-  // and will have special calculation
-  if (dependent) {
-    // special calculation for both firing
-    // we are not sure of the order, so we are forced to resolve it concurrently
-
-    animateMove(realMoves.first->executedCommand);
-    animateMove(realMoves.second->executedCommand);
-
-    changes = _model->applyMove(*(realMoves.first),*(realMoves.second));
-    _view->update(changes);  
-  } else {
-    // moves have been re-ordered by the tryMove method
-    animateMove(realMoves.first->executedCommand);
-    changes = _model->applyMove(realMoves.first->commander, realMoves.first->executedCommand);    
-    _view->update(changes);  
-
-    animateMove(realMoves.second->executedCommand);
-    changes = _model->applyMove(realMoves.second->commander, realMoves.second->executedCommand);    
-    _view->update(changes);
-  }
-  
-  _ending = _model->isEndGame();
-  // cout << nextMoveMessage << std::endl;
-  return true;
-  
-}
 
 bool GameController::start() {
   // init players

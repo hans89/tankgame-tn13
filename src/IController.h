@@ -11,12 +11,10 @@ using namespace cimg_library;
 class IController {
 public:
   // Controller setups
-  virtual void setDisplay(CImg<unsigned char>* image, CImgDisplay* display) = 0;
+  virtual void setDisplay(CImgDisplay* display) = 0;
 
   virtual bool registerPlayer(IPlayer* player) = 0;
 
-  virtual int getDisplayWidth() const = 0;
-  virtual int getDisplayHeight() const = 0;
   virtual string getConfig(string key) const = 0;
 
   // Game controls
@@ -27,7 +25,6 @@ public:
   virtual bool isInAutoMode() const = 0;
   virtual void toggleMode() = 0;
   virtual bool nextTurn() = 0;
-  virtual bool nextConcurrentTurn() = 0;
   virtual void updateDisplay() = 0;
 
   virtual ~IController() {}

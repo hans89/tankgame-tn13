@@ -16,11 +16,9 @@ protected:
 public:
   GameController();
   #pragma region IControllerImplementation
-  void setDisplay(CImg<unsigned char>* image, CImgDisplay* display);
+  void setDisplay(CImgDisplay* display);
   bool registerPlayer(IPlayer* player);
 
-  int getDisplayWidth() const;
-  int getDisplayHeight() const;
   std::string getConfig(std::string key) const;
 
   bool start();
@@ -30,12 +28,9 @@ public:
   bool isEnding() const;
   bool isEnded() const;
   bool nextTurn();
-
-  bool nextConcurrentTurn();
-
   void updateDisplay();
 
-  ~GameController();
+  virtual ~GameController();
   #pragma endregion
 
   #pragma region InternalPreservedInterfaces
@@ -47,7 +42,7 @@ public:
 
   void animateMove(const Command& move);
 
-private:
+protected:
   BaseGameView* _view;
   BaseGameModel* _model;
   

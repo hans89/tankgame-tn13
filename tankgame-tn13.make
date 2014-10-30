@@ -73,6 +73,7 @@ OBJECTS := \
 	$(OBJDIR)/BasePlayerInfo.o \
 	$(OBJDIR)/BaseTank.o \
 	$(OBJDIR)/Command.o \
+	$(OBJDIR)/ConcurrentGameController.o \
 	$(OBJDIR)/GameController.o \
 	$(OBJDIR)/GameCreator.o \
 	$(OBJDIR)/GameMain.o \
@@ -172,6 +173,10 @@ $(OBJDIR)/BaseTank.o: src/BaseTank.cpp
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/Command.o: src/Command.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/ConcurrentGameController.o: src/ConcurrentGameController.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

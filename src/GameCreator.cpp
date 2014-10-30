@@ -1,16 +1,25 @@
 #include "GameCreator.h"
 
 #include "GameController.h"
+#include "ConcurrentGameController.h"
 
 #ifdef DEBUG
 #include <iostream>
 #include <fstream>
 #endif
 IController* GameCreator::createGame(const char* configFile) {
-  GameController* controller = new GameController();
+  
 
   // 1. load config
   AppConfig* config = new AppConfig(configFile);
+
+  GameController* controller;
+
+  if (config->getConfig("turn_base") == "true")
+    controller = new GameController();
+  else
+    controller = new ConcurrentGameController();
+
   controller->setConfig(config);
 
   // 2. load resource

@@ -13,7 +13,7 @@ Command::Action Command::getActionType() const {
   return actionType;
 }
 
-std::string Command::toString() {
+std::string Command::toString() const {
   std::ostringstream act;
   switch(actionType) {
   case MOVE:

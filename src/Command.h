@@ -40,7 +40,7 @@ public:
 
   Action getActionType() const;
 
-  std::string toString();
+  std::string toString() const;
 
 private:
   ITank* receivingObject;

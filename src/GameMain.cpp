@@ -17,15 +17,12 @@ int main(void) {
   // main game flow
   // 1. create game controller
   IController* gameController = GameCreator::createGame("app.config");
-
-  CImg<unsigned char> image(gameController->getDisplayWidth(), 
-      gameController->getDisplayHeight(), 1, 3, 0);
-
   
   // 2. set up display
-  CImgDisplay main_disp(image, "Run");
+  CImgDisplay main_disp;
+  main_disp.set_title("Run");
 
-  gameController->setDisplay(&image, &main_disp);
+  gameController->setDisplay(&main_disp);
 
   // 3. load players and bind with controller
   BasePlayer* player1 =  new BasePlayer();
