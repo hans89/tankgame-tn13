@@ -1,5 +1,9 @@
 #include "BaseGameView.h"
 
+unsigned char BaseGameView::_cWhite[3] = {255, 255, 255};
+unsigned char BaseGameView::_cBlack[3] = {0, 0, 0};
+char BaseGameView::_drawString[_DRAW_STRLEN_];
+
 using namespace std;
 
 pair<int,int> BaseGameView::calculateOffset(int x, int y) {
@@ -65,13 +69,21 @@ void BaseGameView::prepareCharToStringTileMap() {
 
 BaseGameView::BaseGameView(TileManager* tileManager, const BaseGameModel* model) 
   : _tileManager(tileManager), _model(model),
-    _displayOffset(32, 32) {
+    _displayOffset(32, 32),
+    _backgroundInfoWidth(300) {
     this->prepareCharToStringTileMap();
 
-    _displayImg = new CImg<unsigned char>(
-                model->getMap()->getWidth() * tileManager->getTileSize() + _displayOffset.first, 
-                model->getMap()->getHeight() * tileManager->getTileSize() + _displayOffset.second,
-                1, 3, 0); 
+
+    int w = model->getMap()->getWidth() * tileManager->getTileSize()
+             + _displayOffset.first + _backgroundInfoWidth;
+
+    int h = model->getMap()->getHeight() * tileManager->getTileSize()
+             + _displayOffset.second;
+
+    _displayImg = new CImg<unsigned char>(w, h, 1, 3, 0); 
+
+    _infoOffsetX = _model->getMap()->getWidth() * _tileManager->getTileSize()
+             + _displayOffset.first;
 }
 
 BaseGameView::~BaseGameView() {
@@ -90,7 +102,7 @@ void BaseGameView::setDisplay(CImgDisplay* display) {
   _display = display;
 }
 
-#define __STRING_LEN__ 3
+
 void BaseGameView::initDisplay() {
   if (_model == NULL || _tileManager == NULL)
     return;
@@ -100,18 +112,19 @@ void BaseGameView::initDisplay() {
 
   // init border
   int tileSize = _tileManager->getTileSize();
-  char str[__STRING_LEN__];
-  unsigned char white[] = {255, 255, 255};
+  
 
   for (int j = tileSize + 8, i = 0; i < height; i++, j += tileSize){
-    sprintf(str, "%2d", i);
-    _displayImg->draw_text(8, j, str, white);
+    sprintf(_drawString, "%2d", i);
+    _displayImg->draw_text(8, j, _drawString, _cWhite);
   }
 
   for (int j = tileSize + 8, i = 0; i < width; i++, j += tileSize){
-    sprintf(str, "%2d", i);
-    _displayImg->draw_text(j, 8, str, white);
+    sprintf(_drawString, "%2d", i);
+    _displayImg->draw_text(j, 8, _drawString, _cWhite);
   }
+
+  updateInfo();
 
   // init main map
   // blend _tileMap
@@ -120,6 +133,59 @@ void BaseGameView::initDisplay() {
       blendTiles(i, j);
     }
   }
+}
+
+void BaseGameView::updateInfo() {
+  
+  int tileSize = _tileManager->getTileSize();
+
+  sprintf(_drawString, "HelloWorld\nHelloMe");
+  
+  int currentY = 8;
+  int currentX = _infoOffsetX + 8;
+
+  _displayImg->draw_rectangle(_infoOffsetX, 0, 
+          _infoOffsetX + _backgroundInfoWidth,
+          _model->getMap()->getHeight() * tileSize + _displayOffset.second,
+          _cBlack);
+
+  vector<IPlayerInfo*> playerInfos = _model->getPlayersInfo();
+  IPlayerInfo* cur;
+  for (int i = 0; i < playerInfos.size(); i++) {
+    cur = playerInfos[i];
+    pair<int,int> pos = cur->getHeadquarterPosition();
+
+    sprintf(_drawString, "Team %c - Head: (%d, %d)", cur->getPlayerMapID(), 
+            pos.first, pos.second);
+
+    _displayImg->draw_text(currentX, currentY, _drawString, _cWhite);
+    currentY += tileSize;
+
+    sprintf(_drawString, "Alive Tanks\tPos\t\tHP\tAmmo\tRange");
+    _displayImg->draw_text(currentX, currentY, _drawString, _cWhite);
+    currentY += tileSize;
+
+    list<ITank*> tanks = cur->getAliveTanks();
+    for (list<ITank*>::iterator it = tanks.begin(); it != tanks.end(); ++it) {
+      ITank* tank = *it;
+
+      pos = tank->getPosition();
+
+      sprintf(_drawString, "\t\t\t\t(%2d, %2d)\t%2d\t%4d\t%5d",
+            pos.first, pos.second, 
+            tank->getHP(), tank->getAmmoNumber(),
+            tank->getRange());
+
+      _displayImg->draw_text(currentX, currentY, _drawString, _cWhite);
+      currentY += tileSize;
+
+    }
+    
+    // sprintf(_drawString, "Team %c - Head: (%d, %d)", cur->getPlayerMapID(), 
+    //         head.first, head.second);
+  }
+
+
 }
 
 void BaseGameView::display() {

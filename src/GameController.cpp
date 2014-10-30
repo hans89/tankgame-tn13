@@ -56,8 +56,9 @@ bool GameController::nextTurn() {
 
     vector<pair<int,int> > changes 
       = _model->applyMove(currentPlayer->getPlayerInfo(), nextMove);
-
+      
     _view->update(changes);
+    _view->updateInfo();
 
     _ending = _model->isEndGame();
 

@@ -53,6 +53,8 @@ bool ConcurrentGameController::nextTurn() {
                                 realMoves.second->executedCommand);
     _view->update(changes);
   }
+
+  _view->updateInfo();
   
   _ending = _model->isEndGame();
   // cout << nextMoveMessage << std::endl;
