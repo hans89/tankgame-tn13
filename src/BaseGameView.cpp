@@ -166,7 +166,7 @@ void BaseGameView::initDisplay() {
 void BaseGameView::updateInfo() {
   
   int tileSize = _tileManager->getTileSize();
-  int displayHeight = _model->getMap()->getHeight() * tileSize;
+  int mapHeight = _model->getMap()->getHeight() * tileSize;
   int lineSpacing = 24;
   
   int currentY = _infoOffsetY;
@@ -174,7 +174,7 @@ void BaseGameView::updateInfo() {
 
   _displayImg->draw_rectangle(_infoOffsetX, _infoOffsetY, 
           _infoOffsetX + _backgroundInfoWidth,
-          displayHeight + _displayOffset.second - _infoOffsetY,
+          mapHeight + _displayOffset.second,
           __cBlack);
 
   sprintf(__drawString, "Current turn: %5d", _model->getCurrentTurnCount());
