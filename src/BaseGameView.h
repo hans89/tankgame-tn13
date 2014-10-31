@@ -9,8 +9,6 @@
 
 using namespace cimg_library;
 
-#define _DRAW_STRLEN_ 256
-
 class BaseGameView {
 public:
 
@@ -49,8 +47,7 @@ protected:
 
   pair<int,int> calculateOffset(int x, int y);
   int _infoOffsetX;
-  static unsigned char _cWhite[3], _cBlack[3];
-  static char _drawString[_DRAW_STRLEN_];
+  int _infoOffsetY;
 };
 
 #endif

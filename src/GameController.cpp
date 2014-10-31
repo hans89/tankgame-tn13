@@ -50,6 +50,10 @@ bool GameController::nextTurn() {
   string nextMoveMessage = currentPlayer->getPlayerInfo()->getPlayerMapID() 
           + string(": ") + nextMove.toString();
 
+  _model->nextTurnCount();
+
+  std::cout << "-- Turn " << _model->getCurrentTurnCount() << " ---" << endl;
+  
   if (_model->isValidMove(currentPlayer->getPlayerInfo(), nextMove)) {
 
     animateMove(nextMove);

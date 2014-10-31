@@ -39,8 +39,12 @@ int main(void) {
 
   // main loop
   while (!main_disp.is_closed()) {
+
+    const unsigned int keyPressed = main_disp.key();
     // check if "r" key is clicked: toggle auto-step and manual-step mode
-    if (main_disp.key(cimg::keyR)) {
+    if (keyPressed == cimg::keyR) {
+      // flush all keys
+      main_disp.set_key();
       gameController->toggleMode();
     }
     
@@ -63,8 +67,10 @@ int main(void) {
       // manual-step mode
       // in manual-step mode, the controller wait for the key event "SPACE" to 
       // asks the next player to move
-      main_disp.wait();
-      if (main_disp.key(cimg::keySPACE)) {
+      if (keyPressed == cimg::keySPACE) {
+        // flush all keys
+        main_disp.set_key();
+
         gameController->nextTurn();
         gameController->updateDisplay();
       }

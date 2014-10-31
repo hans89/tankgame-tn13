@@ -436,7 +436,8 @@ BaseGameModel::applyMove(const CommandInfo& move1, const CommandInfo& move2) {
 
 BaseGameModel::BaseGameModel(const MapInfo& info) 
   : _mapInfo(info),
-    _nextRegisterPlayer(0) {
+    _nextRegisterPlayer(0),
+    _currentTurn(0) {
 
   _map = new BaseMap(_mapInfo);
   
@@ -482,5 +483,13 @@ BaseGameModel::~BaseGameModel() {
   for (i = 0; i < _blocks.size(); i++) {
     delete _blocks[i];
   }
+}
+
+void BaseGameModel::nextTurnCount() {
+  _currentTurn++;
+}
+
+int BaseGameModel::getCurrentTurnCount() const {
+  return _currentTurn;
 }
 #pragma endregion;

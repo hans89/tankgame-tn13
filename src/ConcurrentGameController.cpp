@@ -1,8 +1,5 @@
 #include "ConcurrentGameController.h"
 
-ConcurrentGameController::ConcurrentGameController()
-        : GameController(), turnCount(0) {}
-
 // the controller makes the next turn
 bool ConcurrentGameController::nextTurn() {
   // moves
@@ -23,8 +20,9 @@ bool ConcurrentGameController::nextTurn() {
   
   // in case of both moves are firing, we can't serialize it 
   // and will have special calculation
+  _model->nextTurnCount();
 
-  std::cout << "-- Turn " << ++turnCount << " ---" << endl;
+  std::cout << "-- Turn " << _model->getCurrentTurnCount() << " ---" << endl;
   if (dependent) {
     // special calculation for both firing
     // we are not sure of the order, so we are forced to resolve it concurrently

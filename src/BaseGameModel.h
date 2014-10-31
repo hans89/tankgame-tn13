@@ -35,6 +35,8 @@ protected:
   list<IBlock*> _onMapBlocks;
   list<IBridge*> _onMapBridges;
 
+  int _currentTurn;
+
 public:
 
   #pragma region IGameInfoImplementation
@@ -62,6 +64,9 @@ public:
   pair<CommandInfo*, CommandInfo*> 
     tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent);
   vector<pair<int, int> > applyMove(const CommandInfo& move1, const CommandInfo& move2);
+
+  void nextTurnCount();
+  int getCurrentTurnCount() const; 
 
   BaseGameModel(const MapInfo& info);
 

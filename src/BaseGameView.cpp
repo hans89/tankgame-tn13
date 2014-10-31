@@ -1,8 +1,26 @@
 #include "BaseGameView.h"
 
-unsigned char BaseGameView::_cWhite[3] = {255, 255, 255};
-unsigned char BaseGameView::_cBlack[3] = {0, 0, 0};
-char BaseGameView::_drawString[_DRAW_STRLEN_];
+#define _DRAW_STRLEN_ 256
+char __drawString[_DRAW_STRLEN_];
+unsigned char 
+  __cWhite[] = {255, 255, 255}
+, __cBlack[] = {0, 0, 0}
+, __cRed[] = {255, 0, 0}
+, __cGreen[] = {0, 255, 0}
+, __cBlue[] = {0, 0, 255}
+, __cPink[] = {255, 192, 203}
+, __cYellow[] = {255, 255, 0}
+, __cOrangeRed[] = {255, 69, 0}
+, __cMagenta2[] = {238, 0, 238}
+, __cTurquoise1[] = {0, 245, 255}
+;
+
+const CImgList<unsigned char>& __bigFont 
+    = CImgList<unsigned char>::font(23);
+
+const CImgList<unsigned char>& __smallFont 
+    = CImgList<unsigned char>::font(15);
+
 
 using namespace std;
 
@@ -70,7 +88,8 @@ void BaseGameView::prepareCharToStringTileMap() {
 BaseGameView::BaseGameView(TileManager* tileManager, const BaseGameModel* model) 
   : _tileManager(tileManager), _model(model),
     _displayOffset(32, 32),
-    _backgroundInfoWidth(300) {
+    _backgroundInfoWidth(300),
+    _infoOffsetY(70) {
     this->prepareCharToStringTileMap();
 
 
@@ -115,14 +134,23 @@ void BaseGameView::initDisplay() {
   
 
   for (int j = tileSize + 8, i = 0; i < height; i++, j += tileSize){
-    sprintf(_drawString, "%2d", i);
-    _displayImg->draw_text(8, j, _drawString, _cWhite);
+    sprintf(__drawString, "%2d", i);
+    _displayImg->draw_text(8, j, __drawString, __cWhite);
   }
 
   for (int j = tileSize + 8, i = 0; i < width; i++, j += tileSize){
-    sprintf(_drawString, "%2d", i);
-    _displayImg->draw_text(j, 8, _drawString, _cWhite);
+    sprintf(__drawString, "%2d", i);
+    _displayImg->draw_text(j, 8, __drawString, __cWhite);
   }
+
+  sprintf(__drawString, 
+    "Press R/r to toggle between\nauto-run mode and manual mode.");
+  _displayImg->draw_text(_infoOffsetX + 8, 8, __drawString, 
+                          __cYellow, __cBlack, 1.0, __smallFont);
+
+  sprintf(__drawString, "In manual mode, press SPACE to step.");
+  _displayImg->draw_text(_infoOffsetX + 8, 8 + 32, __drawString, 
+                          __cYellow, __cBlack, 1.0, __smallFont);
 
   updateInfo();
 
@@ -138,16 +166,21 @@ void BaseGameView::initDisplay() {
 void BaseGameView::updateInfo() {
   
   int tileSize = _tileManager->getTileSize();
-
-  sprintf(_drawString, "HelloWorld\nHelloMe");
+  int displayHeight = _model->getMap()->getHeight() * tileSize;
+  int lineSpacing = 24;
   
-  int currentY = 8;
+  int currentY = _infoOffsetY;
   int currentX = _infoOffsetX + 8;
 
-  _displayImg->draw_rectangle(_infoOffsetX, 0, 
+  _displayImg->draw_rectangle(_infoOffsetX, _infoOffsetY, 
           _infoOffsetX + _backgroundInfoWidth,
-          _model->getMap()->getHeight() * tileSize + _displayOffset.second,
-          _cBlack);
+          displayHeight + _displayOffset.second - _infoOffsetY,
+          __cBlack);
+
+  sprintf(__drawString, "Current turn: %5d", _model->getCurrentTurnCount());
+  _displayImg->draw_text(currentX, currentY, __drawString,
+                          __cTurquoise1, __cBlack, 1.0, __smallFont);
+  currentY += lineSpacing;
 
   vector<IPlayerInfo*> playerInfos = _model->getPlayersInfo();
   IPlayerInfo* cur;
@@ -155,15 +188,17 @@ void BaseGameView::updateInfo() {
     cur = playerInfos[i];
     pair<int,int> pos = cur->getHeadquarterPosition();
 
-    sprintf(_drawString, "Team %c - Head: (%d, %d)", cur->getPlayerMapID(), 
+    sprintf(__drawString, "Team %c - Head: (%d, %d)", cur->getPlayerMapID(), 
             pos.first, pos.second);
 
-    _displayImg->draw_text(currentX, currentY, _drawString, _cWhite);
-    currentY += tileSize;
+    _displayImg->draw_text(currentX, currentY, __drawString, 
+                            __cGreen, __cBlack, 1.0, __bigFont);
+    currentY += lineSpacing;
 
-    sprintf(_drawString, "Alive Tanks\tPos\t\tHP\tAmmo\tRange");
-    _displayImg->draw_text(currentX, currentY, _drawString, _cWhite);
-    currentY += tileSize;
+    sprintf(__drawString, "Pos\t\tHP\tAmmo\tRange");
+    _displayImg->draw_text(currentX, currentY, __drawString, 
+                          __cPink, __cBlack, 1.0, __smallFont);
+    currentY += lineSpacing;
 
     list<ITank*> tanks = cur->getAliveTanks();
     for (list<ITank*>::iterator it = tanks.begin(); it != tanks.end(); ++it) {
@@ -171,21 +206,17 @@ void BaseGameView::updateInfo() {
 
       pos = tank->getPosition();
 
-      sprintf(_drawString, "\t\t\t\t(%2d, %2d)\t%2d\t%4d\t%5d",
+      sprintf(__drawString, "(%2d, %2d)\t%2d\t%4d\t%5d",
             pos.first, pos.second, 
             tank->getHP(), tank->getAmmoNumber(),
             tank->getRange());
 
-      _displayImg->draw_text(currentX, currentY, _drawString, _cWhite);
-      currentY += tileSize;
+      _displayImg->draw_text(currentX, currentY, __drawString, 
+                              __cWhite, __cBlack, 1.0, __smallFont);
+      currentY += lineSpacing;
 
     }
-    
-    // sprintf(_drawString, "Team %c - Head: (%d, %d)", cur->getPlayerMapID(), 
-    //         head.first, head.second);
   }
-
-
 }
 
 void BaseGameView::display() {

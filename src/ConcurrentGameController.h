@@ -9,10 +9,7 @@ public:
   #pragma region IControllerImplementation
   bool nextTurn();
   #pragma endregion
-  ConcurrentGameController();
   void logMove(const CommandInfo& cmd, ostream& out = std::cout) const;
-private:
-  int turnCount;
 };
 
 #endif
