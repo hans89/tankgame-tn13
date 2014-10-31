@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tankgame-tn13", "tankgame-tn13.vcxproj", "{D89D1F8A-5C07-54C5-9DCD-EF49484BAFDE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tankgame-tn13", "tankgame-tn13.vcxproj", "{336C6C86-632B-AC59-4106-FEFAE9E92014}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D89D1F8A-5C07-54C5-9DCD-EF49484BAFDE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D89D1F8A-5C07-54C5-9DCD-EF49484BAFDE}.Debug|Win32.Build.0 = Debug|Win32
-		{D89D1F8A-5C07-54C5-9DCD-EF49484BAFDE}.Release|Win32.ActiveCfg = Release|Win32
-		{D89D1F8A-5C07-54C5-9DCD-EF49484BAFDE}.Release|Win32.Build.0 = Release|Win32
+		{336C6C86-632B-AC59-4106-FEFAE9E92014}.Debug|Win32.ActiveCfg = Debug|Win32
+		{336C6C86-632B-AC59-4106-FEFAE9E92014}.Debug|Win32.Build.0 = Debug|Win32
+		{336C6C86-632B-AC59-4106-FEFAE9E92014}.Release|Win32.ActiveCfg = Release|Win32
+		{336C6C86-632B-AC59-4106-FEFAE9E92014}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

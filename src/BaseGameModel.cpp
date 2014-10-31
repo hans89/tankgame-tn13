@@ -333,17 +333,31 @@ BaseGameModel::tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent) 
 
       // 1 move into old place of 2 => 2 go first
       // approve both
-      if (e1 == s2)
+      if (e1 == s2) {
+        if (!isValidMove(move2.commander, move2.executedCommand)) {
+          move1.executedCommand = Command();
+          move2.executedCommand = Command();
+        }
         return pair<CommandInfo*, CommandInfo*>(&move2, &move1);
+      }
 
       // 2 move into old place of 1 => 1 go first
-      if (e2 == s1)
+      if (e2 == s1) {
+        if (!isValidMove(move1.commander, move1.executedCommand)) {
+          move1.executedCommand = Command();
+          move2.executedCommand = Command();
+        }
         return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
+      }
     }
 
     if (t1 == Command::FIRE && t2 == Command::MOVE) {
       // 2 move into 1 fire => 2 move first
       // 2 move out of 1 fire => 2 move first
+
+      if (!isValidMove(move2.commander, move2.executedCommand))
+        move2.executedCommand = Command();
+
       if ((e2 == e1) || (s2 == e1))
         return pair<CommandInfo*, CommandInfo*>(&move2, &move1);
     }
@@ -351,15 +365,22 @@ BaseGameModel::tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent) 
     if (t2 == Command::FIRE && t1 == Command::MOVE) {
       // 1 move into 2 fire => 1 move first
       // 1 move out of 2 fire => 1 move first
+
+      if (!isValidMove(move1.commander, move1.executedCommand))
+        move1.executedCommand = Command();
+
       if ((e1 == e2) || (s1 == e2))
-        return pair<CommandInfo*, CommandInfo*>(&move2, &move1);
+        return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
     }
 
-    if (t1 == Command::FIRE && t2 == Command::FIRE) {
-      if (e1 == s2 && e2 == s1)
-        dependent = true;
+    if (t1 == Command::FIRE && t2 == Command::FIRE && e1 == s2 && e2 == s1) {
+      dependent = true;
     }
     // order is unimportant/unhandled
+    if (!isValidMove(move1.commander, move1.executedCommand))
+      move1.executedCommand = Command();
+    if (!isValidMove(move2.commander, move2.executedCommand))
+      move2.executedCommand = Command();
     return pair<CommandInfo*, CommandInfo*>(&move1, &move2);
   }
 
