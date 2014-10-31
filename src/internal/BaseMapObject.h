@@ -1,7 +1,7 @@
 #ifndef __TANKGAME_BASEOBJECT__
 #define __TANKGAME_BASEOBJECT__ 
 
-#include "IMapObject.h"
+#include "../IMapObject.h"
 
 class BaseMapObject : virtual public IMapObject {
 public:

@@ -2,7 +2,7 @@
 #define __TANKGAME_GAMECONTROLLER__
 
 #include "IController.h"
-#include "Command.h"
+#include "../Command.h"
 #include "MapLoader.h"
 #include "BaseGameModel.h"
 #include "BaseGameView.h"

@@ -1,7 +1,7 @@
 #ifndef __TANKGAME_BASEPLAYERINFO__
 #define __TANKGAME_BASEPLAYERINFO__
 
-#include "IPlayerInfo.h"
+#include "../IPlayerInfo.h"
 #include "BaseTank.h"
 #include <vector>
 

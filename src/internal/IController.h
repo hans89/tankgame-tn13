@@ -1,10 +1,10 @@
 #ifndef __TANKGAME_ICONTROLLER__
 #define __TANKGAME_ICONTROLLER__ 
 
-#include "include/CImg.h"
+#include "../include/CImg.h"
 #include "AppConfig.h"
 #include "TileManager.h"
-#include "IPlayer.h"
+#include "../IPlayer.h"
 
 using namespace cimg_library;
 

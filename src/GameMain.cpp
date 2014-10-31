@@ -2,8 +2,8 @@
 // #include "player2.h"
 
 #include "include/CImg.h"
-#include "GameCreator.h"
-#include "IController.h"
+#include "internal/GameCreator.h"
+#include "internal/IController.h"
 #include "BasePlayer.h"
 
 #include <cstdlib>

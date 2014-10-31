@@ -4,8 +4,8 @@
 #include <string>
 #include <map>
 
-#include "include/CImg.h"
-#include "include/utils.h"
+#include "../include/CImg.h"
+#include "../include/utils.h"
 #include "AppConfig.h"
 
 

@@ -1,6 +1,6 @@
 #include "BaseGameModel.h"
 
-#include "include/utils.h"
+#include "../include/utils.h"
 
 #pragma region IGameInfoImplementation
 // get the map

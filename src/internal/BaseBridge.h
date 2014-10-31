@@ -1,11 +1,11 @@
-#ifndef __TANKGAME_BASEBLOCK__
-#define __TANKGAME_BASEBLOCK__
+#ifndef __TANKGAME_BASEBRIGE__
+#define __TANKGAME_BASEBRIGE__
 
 #include <utility>
 #include "BaseMapObject.h"
-#include "IBlock.h"
+#include "../IBridge.h"
 
-class BaseBlock : public BaseMapObject, public IBlock {
+class BaseBridge : public BaseMapObject, public IBridge {
 protected:
   char _mapID;
 public:
@@ -19,8 +19,9 @@ public:
 
   #pragma region ModelPreservedInterfaces 
 
-  BaseBlock(char id, int hp, const std::pair<int,int>& pos) 
-    : BaseMapObject(hp, pos), _mapID(id) {}
+  BaseBridge(char id, int hp, const std::pair<int,int>& pos)
+     : BaseMapObject(hp, pos), _mapID(id) {}
+
 
   #pragma endregion
 };

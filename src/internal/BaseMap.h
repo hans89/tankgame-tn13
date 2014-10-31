@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "IMap.h"
+#include "../IMap.h"
 #include "MapInfo.h"
 #include "BaseMapObject.h"
 

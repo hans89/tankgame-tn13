@@ -6,7 +6,7 @@
 #include <map>
 #include <cstdlib>
 
-#include "IGameInfo.h"
+#include "../IGameInfo.h"
 #include "BaseMap.h"
 #include "BasePlayerInfo.h"
 #include "BaseTank.h"

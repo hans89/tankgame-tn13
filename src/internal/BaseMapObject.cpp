@@ -1,5 +1,5 @@
 #include "BaseMapObject.h"
-#include "IMap.h"
+#include "../IMap.h"
 
 #pragma region IMapObjectImplementation
 int BaseMapObject::getHP() const {
@@ -12,7 +12,7 @@ std::pair<int, int> BaseMapObject::getPosition() const {
 
 // return if the Object in on map
 bool BaseMapObject::isOnMap() const {
-  return _pos == IMap::npos;
+  return _pos != IMap::npos;
 }
 #pragma endregion
 

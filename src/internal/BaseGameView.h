@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "include/CImg.h"
+#include "../include/CImg.h"
 #include "TileManager.h"
 #include "BaseGameModel.h"
 

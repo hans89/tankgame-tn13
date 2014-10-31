@@ -1,8 +1,8 @@
 #ifndef __TANKGAME_BASETANK__
 #define __TANKGAME_BASETANK__ 
 
-#include "ITank.h"
-#include "IPlayerInfo.h"
+#include "../ITank.h"
+#include "../IPlayerInfo.h"
 #include "BaseMapObject.h"
 
 class BaseTank : public BaseMapObject, public ITank {
