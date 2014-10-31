@@ -28,7 +28,7 @@ public:
   virtual std::pair<int, int> getHeadquarterPosition() const = 0;
 
   // get the last move by the player
-  // virtual Command getLastMove() const = 0;
+  virtual CommandInfo getLastMove() const = 0;
 
   // is this player playable
   virtual bool isPlayable() const = 0;

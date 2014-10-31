@@ -48,6 +48,7 @@ protected:
   pair<int,int> calculateOffset(int x, int y);
   int _infoOffsetX;
   int _infoOffsetY;
+  int _lineSpacing;
 };
 
 #endif

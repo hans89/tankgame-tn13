@@ -38,7 +38,7 @@ IPlayerInfo* BaseGameModel::getPlayerByID(char id) const {
 
 bool BaseGameModel::isEndGame() const {
   //TODO
-  return false;
+  return _currentTurn >= _mapInfo.maxStep || _totalAmmo <= 0;
 }
 
 const BaseMap* BaseGameModel::getBaseMap() const {
@@ -66,6 +66,7 @@ IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
         if ((*_map)(i,j) == id) {
           newBaseInfo->addTank(_mapInfo.tankHP, _mapInfo.tankAmmo, 
                       _mapInfo.tankRange, pair<int,int>(i,j));
+          _totalAmmo += _mapInfo.tankAmmo;
         }
       }
     }
@@ -147,6 +148,7 @@ BaseGameModel::applyMove(IPlayerInfo* player, const Command& move) {
 
     case Command::FIRE: {
       tank->decreaseAmmo();
+      _totalAmmo--;
 
       pair<int,int> pos = move.getTargetPosition();
       int i = pos.first,
@@ -416,6 +418,7 @@ BaseGameModel::applyMove(const CommandInfo& move1, const CommandInfo& move2) {
 
     tank1->decreaseAmmo();
     tank2->decreaseAmmo();
+    _totalAmmo -= 2;
 
     pair<int,int> pos = tank1->getPosition();
     if (playerInfo1->getHit(tank1)) {
@@ -437,7 +440,8 @@ BaseGameModel::applyMove(const CommandInfo& move1, const CommandInfo& move2) {
 BaseGameModel::BaseGameModel(const MapInfo& info) 
   : _mapInfo(info),
     _nextRegisterPlayer(0),
-    _currentTurn(0) {
+    _currentTurn(0),
+    _totalAmmo(0) {
 
   _map = new BaseMap(_mapInfo);
   

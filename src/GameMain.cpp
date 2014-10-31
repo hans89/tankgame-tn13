@@ -54,6 +54,7 @@ int main(void) {
         // inform players" onFinish
         gameController->finish();
         // and report result
+        // TODO: report result
       }
     } else if (gameController->isInAutoMode()) {
     // check if auto-step or manual-step
@@ -70,7 +71,6 @@ int main(void) {
       if (keyPressed == cimg::keySPACE) {
         // flush all keys
         main_disp.set_key();
-
         gameController->nextTurn();
         gameController->updateDisplay();
       }

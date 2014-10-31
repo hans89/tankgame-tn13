@@ -13,6 +13,7 @@ struct MapInfo {
   std::string headquarterIDs;
   std::string playerIDs;
   char landID, waterID;
+  int maxStep;
 };
 
 #endif

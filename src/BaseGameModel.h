@@ -36,6 +36,7 @@ protected:
   list<IBridge*> _onMapBridges;
 
   int _currentTurn;
+  int _totalAmmo;
 
 public:
 

@@ -52,6 +52,11 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     info.landID = line[0];
     info.waterID = line[1];
 
+    // line 8: Maximum no of steps
+    getline(inStream, line);
+    iss.str(line);
+    iss >> info.maxStep;
+
     // get the map from the rest
     while (getline(inStream, line).good()) {
       if (!line.empty())

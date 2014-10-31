@@ -52,9 +52,11 @@ bool ConcurrentGameController::nextTurn() {
     _view->update(changes);
   }
 
-  _view->updateInfo();
-  
+  _view->updateInfo();  
   _ending = _model->isEndGame();
+
+  ((BasePlayerInfo*)move1.commander)->updateLastMove(move1);
+  ((BasePlayerInfo*)move2.commander)->updateLastMove(move2);
   // cout << nextMoveMessage << std::endl;
   return true;
 }

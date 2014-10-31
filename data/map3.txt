@@ -5,6 +5,7 @@ UVWXYZST  // BlockIDs
 ab      // HeadquarterIDs
 AB      // PlayerIDs (TankIDs)
 10      // LandID WaterID
+1000    // Maximum numer of steps
 B111111111111111111A
 1SSSSSSSS11SSSSSSSS1
 0T0000000||0000000T0
