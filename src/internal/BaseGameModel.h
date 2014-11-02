@@ -48,6 +48,7 @@ public:
 
   vector<IPlayerInfo*> getPlayersInfo() const;
   IPlayerInfo* getPlayerByID(char id) const;
+  int getMaximumNumberOfTurn() const;
   #pragma endregion
 
   #pragma region ModelPreservedInterfaces 

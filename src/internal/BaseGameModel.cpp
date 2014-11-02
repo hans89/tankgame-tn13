@@ -38,12 +38,19 @@ IPlayerInfo* BaseGameModel::getPlayerByID(char id) const {
 
 bool BaseGameModel::isEndGame() const {
   //TODO
-  return _currentTurn >= _mapInfo.maxStep || _totalAmmo <= 0;
+  return _currentTurn >= _mapInfo.maxStep 
+      // || _totalAmmo <= 0
+      ;
 }
 
 const BaseMap* BaseGameModel::getBaseMap() const {
   return _map;
 }
+
+int BaseGameModel::getMaximumNumberOfTurn() const {
+  return _mapInfo.maxStep;
+}
+
 
 IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
   if (_nextRegisterPlayer < _mapInfo.playerIDs.size()) {
@@ -318,11 +325,18 @@ BaseGameModel::tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent) 
     Command::Action t1 = move1.originalCommand.getActionType(),
                   t2 = move2.originalCommand.getActionType();
 
-    pair<int,int> s1 = move1.originalCommand.getReceivingObject()->getPosition();
+    
     pair<int,int> e1 = move1.originalCommand.getTargetPosition();
-    pair<int,int> s2 = move2.originalCommand.getReceivingObject()->getPosition();
     pair<int,int> e2 = move2.originalCommand.getTargetPosition();
 
+    pair<int,int> s1;
+    pair<int,int> s2;
+
+    if (t1 == Command::MOVE || t1 == Command::FIRE)
+        s1 = move1.originalCommand.getReceivingObject()->getPosition();
+
+    if (t2 == Command::MOVE || t2 == Command::FIRE)
+        s2 = move2.originalCommand.getReceivingObject()->getPosition();
 
     if (t1 == Command::MOVE && t2 == Command::MOVE) {
       // can't share the same place
@@ -397,39 +411,39 @@ BaseGameModel::tryMove(CommandInfo& move1, CommandInfo& move2, bool& dependent) 
 vector<pair<int, int> > 
 BaseGameModel::applyMove(const CommandInfo& move1, const CommandInfo& move2) {
 
+  vector<pair<int, int> > changes;
   Command::Action t1 = move1.originalCommand.getActionType(),
                   t2 = move2.originalCommand.getActionType();
 
-  pair<int,int> s1 = move1.originalCommand.getReceivingObject()->getPosition();
-  pair<int,int> e1 = move1.originalCommand.getTargetPosition();
-  pair<int,int> s2 = move2.originalCommand.getReceivingObject()->getPosition();
-  pair<int,int> e2 = move2.originalCommand.getTargetPosition();
+  if (t1 == Command::FIRE && t2 == Command::FIRE) {
 
-  vector<pair<int, int> > changes;
+    pair<int,int> s1 = move1.originalCommand.getReceivingObject()->getPosition();
+    pair<int,int> e1 = move1.originalCommand.getTargetPosition();
+    pair<int,int> s2 = move2.originalCommand.getReceivingObject()->getPosition();
+    pair<int,int> e2 = move2.originalCommand.getTargetPosition();
 
-  if (t1 == Command::FIRE && t2 == Command::FIRE
-      && e1 == s2 && e2 == s1) {
+    if (e1 == s2 && e2 == s1) {
+      BasePlayerInfo* playerInfo1 = (BasePlayerInfo*)move1.commander;
+      BaseTank* tank1 = (BaseTank*)(move1.executedCommand.getReceivingObject());
 
-    BasePlayerInfo* playerInfo1 = (BasePlayerInfo*)move1.commander;
-    BaseTank* tank1 = (BaseTank*)(move1.executedCommand.getReceivingObject());
+      BasePlayerInfo* playerInfo2 = (BasePlayerInfo*)move2.commander;
+      BaseTank* tank2 = (BaseTank*)(move2.executedCommand.getReceivingObject());
 
-    BasePlayerInfo* playerInfo2 = (BasePlayerInfo*)move2.commander;
-    BaseTank* tank2 = (BaseTank*)(move2.executedCommand.getReceivingObject());
+      tank1->decreaseAmmo();
+      tank2->decreaseAmmo();
+      _totalAmmo -= 2;
 
-    tank1->decreaseAmmo();
-    tank2->decreaseAmmo();
-    _totalAmmo -= 2;
+      pair<int,int> pos = tank1->getPosition();
+      if (playerInfo1->getHit(tank1)) {
+        _map->remove(tank1);
+        changes.push_back(pos); 
+      }
 
-    pair<int,int> pos = tank1->getPosition();
-    if (playerInfo1->getHit(tank1)) {
-      _map->remove(tank1);
-      changes.push_back(pos); 
-    }
-
-    pos = tank2->getPosition();
-    if (playerInfo2->getHit(tank2)) {
-      _map->remove(tank2);
-      changes.push_back(pos);
+      pos = tank2->getPosition();
+      if (playerInfo2->getHit(tank2)) {
+        _map->remove(tank2);
+        changes.push_back(pos);
+      }
     }
   }
 

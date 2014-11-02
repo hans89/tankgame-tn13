@@ -29,5 +29,7 @@ public:
 
   // get PlayerInfo from Map ID. Return NULL if not found
   virtual IPlayerInfo* getPlayerByID(char id) const = 0;
+
+  virtual int getMaximumNumberOfTurn() const = 0;
 }; 
 #endif
