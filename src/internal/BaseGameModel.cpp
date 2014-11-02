@@ -122,7 +122,9 @@ int BaseGameModel::getGameFinalResult(const vector<PlayerEndGameInfo>& egInfos) 
 
 bool BaseGameModel::isEndGame() const {
   //TODO
-  return _currentTurn >= _mapInfo.maxStep && _totalAmmo <= 0;
+  return _currentTurn >= _mapInfo.maxStep
+    //&& _totalAmmo <= 0
+  ;
 }
 
 const BaseMap* BaseGameModel::getBaseMap() const {
