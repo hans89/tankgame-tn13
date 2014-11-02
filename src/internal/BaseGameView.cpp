@@ -268,7 +268,7 @@ void BaseGameView::updateInfo(bool endgame) {
 
     int gameResult = _model->getGameFinalResult(egInfos);
 
-    if (gameResult > 0)
+    if (gameResult >= 0)
       sprintf(__drawString, "WINNER IS %c!!!",
             playerInfos[gameResult]->getPlayerMapID());
     else
