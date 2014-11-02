@@ -8,6 +8,17 @@
 /**
  * Interface to access player's information
  */
+
+struct PlayerEndGameInfo
+{
+  int totalTanks;
+  int totalHP;
+  int totalDistance;
+
+  PlayerEndGameInfo(int t = 0, int h = 0, int d = 0) 
+    : totalTanks(t), totalHP(h), totalDistance(d) {}
+};
+
 class IPlayerInfo
 {
 protected:
@@ -33,4 +44,5 @@ public:
   // is this player playable
   virtual bool isPlayable() const = 0;
 };
+
 #endif

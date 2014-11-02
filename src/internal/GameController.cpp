@@ -84,7 +84,10 @@ bool GameController::nextTurn() {
   }
 }
 
-
+void GameController::reportResult() {
+  if (_ended)
+    _view->updateInfo(true);
+}
 
 bool GameController::start() {
   // init players
@@ -110,6 +113,7 @@ bool GameController::finish() {
 
 void GameController::toggleMode() {
   _autoMode = !_autoMode;
+  _view->updateInfo();
 }
 
 bool GameController::isInAutoMode() const {
@@ -168,7 +172,7 @@ void GameController::createGameView() {
     _view = NULL;
   }
 
-  _view = new BaseGameView(_tileManager, _model);
+  _view = new BaseGameView(_tileManager, _model, this);
 }
 
 

@@ -6,13 +6,15 @@
 #include "../include/CImg.h"
 #include "TileManager.h"
 #include "BaseGameModel.h"
+#include "IController.h"
 
 using namespace cimg_library;
 
 class BaseGameView {
 public:
 
-  BaseGameView(TileManager* tileManager, const BaseGameModel* model);
+  BaseGameView(TileManager* tileManager, const BaseGameModel* model,
+      const IController* controller);
   ~BaseGameView();
 
   const CImg<unsigned char>* getDisplayImage() const;
@@ -24,7 +26,7 @@ public:
   void initDisplay();
   void display();
 
-  void updateInfo();
+  void updateInfo(bool endgame = false);
   void update(const std::vector<std::pair<int,int> >& changes);
 
   void addFire(int offsetX, int offsetY, string fire);
@@ -32,12 +34,13 @@ public:
 
 protected:
   
+  const IController* _controller;
   const BaseGameModel* _model;
   TileManager* _tileManager;
   CImgDisplay* _display;
   CImg<unsigned char>* _displayImg;
   pair<int,int> _displayOffset;
-  int _backgroundInfoWidth;
+  int _backgroundInfoWidth, _backgroundInfoHeight;
   
   void blendTiles(int x, int y);
 

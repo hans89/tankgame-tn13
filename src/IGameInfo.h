@@ -8,6 +8,7 @@
 #include "IPlayer.h"
 #include "IBlock.h"
 #include "IBridge.h"
+#include "IPlayerInfo.h"
 
 
 class IGameInfo {
@@ -31,5 +32,8 @@ public:
   virtual IPlayerInfo* getPlayerByID(char id) const = 0;
 
   virtual int getMaximumNumberOfTurn() const = 0;
+
+  // get the player end-game info
+  virtual PlayerEndGameInfo getPlayerEndGameInfo(IPlayerInfo* player) const = 0;
 }; 
 #endif

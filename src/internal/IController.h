@@ -27,6 +27,8 @@ public:
   virtual bool nextTurn() = 0;
   virtual void updateDisplay() = 0;
 
+  virtual void reportResult() = 0;
+  
   virtual ~IController() {}
 };
 #endif

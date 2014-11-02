@@ -1,6 +1,7 @@
 #include "BaseGameModel.h"
 
 #include "../include/utils.h"
+#include <queue>
 
 #pragma region IGameInfoImplementation
 // get the map
@@ -32,15 +33,96 @@ IPlayerInfo* BaseGameModel::getPlayerByID(char id) const {
   return NULL;
 }
 
+PlayerEndGameInfo BaseGameModel::getPlayerEndGameInfo(IPlayerInfo* player) const {
+  
+  // calculate distance map, from headquarter to all the map positions
+  const int dx[] = { -1, 1, 0, 0 };
+  const int dy[] = { 0, 0, -1, 1 };
+
+  vector<vector<int> > dis;
+
+  dis.resize(_map->getWidth());
+  for (int i = 0; i < dis.size(); ++i)
+    dis[i].resize(_map->getHeight(), -1);
+
+  queue<pair<int, int> > q;
+  pair<int, int> start = player->getHeadquarterPosition();
+
+  dis[start.first][start.second] = 0;
+  q.push(start);
+
+  while (!q.empty())
+  {
+    pair<int, int> u = q.front();
+    q.pop();
+
+    for (int i = 0; i < 4; ++i)
+    {
+      pair<int, int> v(u.first + dx[i], u.second + dy[i]);
+      
+      if (!_map->isOnMap(v))
+        continue;
+      
+      //if this position is not available, ignore this
+      if (dis[v.first][v.second] != -1)
+        continue;
+  
+      char id = (*_map)(v.first, v.second);
+
+      if (!_map->isEmptySpace(id) && this->getPlayerByID(id) != player)
+        //if this object is an obstacle or enemy's tank, ignore this
+          continue;
+
+      dis[v.first][v.second] = dis[u.first][u.second] + 1;
+      q.push(v);
+    }
+  }
+
+  // calculate end-game info
+  PlayerEndGameInfo egInfo;
+
+  list<ITank*> alive = player->getAliveTanks();
+
+  for (list<ITank*>::iterator it = alive.begin(); it != alive.end(); ++it)
+  {
+    pair<int, int> pos = (*it)->getPosition();
+    if (dis[pos.first][pos.second] == -1)
+      continue;
+
+    egInfo.totalDistance += dis[pos.first][pos.second];
+    egInfo.totalHP += (*it)->getHP();
+    ++egInfo.totalTanks;
+  }
+  return egInfo;
+}
+
+
+int BaseGameModel::getGameFinalResult(const vector<PlayerEndGameInfo>& egInfos) const {
+  int max = 0;
+  for (int i = 0; i < egInfos.size(); i++) {
+    if (egInfos[i].totalHP > egInfos[max].totalHP)
+      max = i;
+
+    if (egInfos[i].totalHP == egInfos[max].totalHP 
+        && egInfos[i].totalDistance < egInfos[max].totalDistance)
+      max = i;
+  }
+
+  if (max == 0 && egInfos.size() > 1
+      && egInfos[0].totalHP == egInfos[1].totalHP
+      && egInfos[0].totalDistance == egInfos[1].totalDistance)
+    return -1;
+
+  return max;
+}
+
 #pragma endregion
 
 #pragma region ModelPreservedInterfaces 
 
 bool BaseGameModel::isEndGame() const {
   //TODO
-  return _currentTurn >= _mapInfo.maxStep 
-      // || _totalAmmo <= 0
-      ;
+  return _currentTurn >= _mapInfo.maxStep && _totalAmmo <= 0;
 }
 
 const BaseMap* BaseGameModel::getBaseMap() const {

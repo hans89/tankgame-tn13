@@ -46,6 +46,7 @@ int main(void) {
       // flush all keys
       main_disp.set_key();
       gameController->toggleMode();
+      gameController->updateDisplay();
     }
     
     if (gameController->isEnding() || gameController->isEnded()) {
@@ -55,6 +56,8 @@ int main(void) {
         gameController->finish();
         // and report result
         // TODO: report result
+        gameController->reportResult();
+        gameController->updateDisplay();
       }
     } else if (gameController->isInAutoMode()) {
     // check if auto-step or manual-step

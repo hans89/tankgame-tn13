@@ -85,10 +85,14 @@ void BaseGameView::prepareCharToStringTileMap() {
   }
 }
 
-BaseGameView::BaseGameView(TileManager* tileManager, const BaseGameModel* model) 
-  : _tileManager(tileManager), _model(model),
+BaseGameView::BaseGameView(
+      TileManager* tileManager, 
+      const BaseGameModel* model,
+      const IController* controller) 
+  : _tileManager(tileManager), _model(model), _controller(controller),
     _displayOffset(32, 32),
     _backgroundInfoWidth(300),
+    _backgroundInfoHeight(600),
     _infoOffsetY(90),
     _lineSpacing(24) {
     this->prepareCharToStringTileMap();
@@ -99,6 +103,8 @@ BaseGameView::BaseGameView(TileManager* tileManager, const BaseGameModel* model)
 
     int h = model->getMap()->getHeight() * tileManager->getTileSize()
              + _displayOffset.second;
+
+    h = h > _backgroundInfoHeight ? h : _backgroundInfoHeight;
 
     _displayImg = new CImg<unsigned char>(w, h, 1, 3, 0); 
 
@@ -170,7 +176,7 @@ void BaseGameView::initDisplay() {
   }
 }
 
-void BaseGameView::updateInfo() {
+void BaseGameView::updateInfo(bool endgame) {
   
   int tileSize = _tileManager->getTileSize();
   int mapHeight = _model->getMap()->getHeight() * tileSize;
@@ -182,6 +188,15 @@ void BaseGameView::updateInfo() {
           _infoOffsetX + _backgroundInfoWidth,
           mapHeight + _displayOffset.second,
           __cBlack);
+
+  if (_controller->isInAutoMode())
+    sprintf(__drawString, "Current mode: AUTO");
+  else 
+    sprintf(__drawString, "Current mode: MANUAL");
+  
+  _displayImg->draw_text(currentX, currentY, __drawString,
+                          __cPink, __cBlack, 1.0, __smallFont);
+  currentY += _lineSpacing;
 
   sprintf(__drawString, "Current turn: %5d", _model->getCurrentTurnCount());
   _displayImg->draw_text(currentX, currentY, __drawString,
@@ -222,6 +237,45 @@ void BaseGameView::updateInfo() {
       currentY += _lineSpacing;
 
     }
+  }
+
+  if (endgame) {
+    sprintf(__drawString, "--- END GAME ---");
+
+    _displayImg->draw_text(currentX, currentY, __drawString, 
+                            __cPink, __cBlack, 1.0, __bigFont);
+    currentY += _lineSpacing;
+
+    vector<PlayerEndGameInfo> egInfos(playerInfos.size());
+
+    for (int i = 0; i < playerInfos.size(); i++) {
+      cur = playerInfos[i];
+      egInfos[i] = _model->getPlayerEndGameInfo(cur);
+
+      sprintf(__drawString, "Team %c",cur->getPlayerMapID());
+      _displayImg->draw_text(currentX, currentY, __drawString, 
+                            __cGreen, __cBlack, 1.0, __smallFont);
+      currentY += _lineSpacing;
+
+      sprintf(__drawString, "Tanks: %2d Tot.HP: %3d Tot.Dist.: %3d",
+            egInfos[i].totalTanks,
+            egInfos[i].totalHP,
+            egInfos[i].totalDistance);
+      _displayImg->draw_text(currentX, currentY, __drawString, 
+                            __cGreen, __cBlack, 1.0, __smallFont);
+      currentY += _lineSpacing;
+    }
+
+    int gameResult = _model->getGameFinalResult(egInfos);
+
+    if (gameResult > 0)
+      sprintf(__drawString, "WINNER IS %c!!!",
+            playerInfos[gameResult]->getPlayerMapID());
+    else
+      sprintf(__drawString, "): TIE GAME :(");
+
+    _displayImg->draw_text(currentX, currentY, __drawString, 
+                            __cPink, __cBlack, 1.0, __bigFont);
   }
 }
 

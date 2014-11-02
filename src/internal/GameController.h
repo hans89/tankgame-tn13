@@ -30,6 +30,8 @@ public:
   bool nextTurn();
   void updateDisplay();
 
+  void reportResult();
+
   virtual ~GameController();
   #pragma endregion
 

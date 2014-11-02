@@ -5,8 +5,6 @@
 #include "BaseTank.h"
 #include <vector>
 
-
-
 class BasePlayerInfo : public IPlayerInfo {
 public:
   #pragma region IPlayerInfoImplementation
@@ -21,7 +19,6 @@ public:
   }
 
   bool isPlayable() const;
-
   #pragma endregion
 
   #pragma region ModelPreservedInterface
