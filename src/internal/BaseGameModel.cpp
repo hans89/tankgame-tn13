@@ -70,7 +70,7 @@ PlayerEndGameInfo BaseGameModel::getPlayerEndGameInfo(IPlayerInfo* player) const
       char id = (*_map)(v.first, v.second);
 
       if (!_map->isEmptySpace(id) 
-        && !_map->isEmptyBridge(id)
+        && !_map->isBridge(id)
         && this->getPlayerByID(id) != player)
         //if this object is an obstacle or enemy's tank, ignore this
           continue;
