@@ -31,7 +31,12 @@ int main(int argc, char* argv[]) {
 
   // main game flow
   // 1. create game controller
-  IController* gameController = GameCreator::createGame("app.config");
+  IController* gameController;
+
+  if (argc >= 4)
+    gameController = GameCreator::createGame("app.config", argv[3]);
+  else
+    gameController = GameCreator::createGame("app.config");
   
   // 2. set up display
   CImgDisplay main_disp;

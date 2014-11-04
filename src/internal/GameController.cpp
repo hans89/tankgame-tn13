@@ -146,6 +146,7 @@ GameController::~GameController() {
 void GameController::setConfig(AppConfig* config) {
   _appConfig = config;
   _delayTime = Utils::parseInt(_appConfig->getConfig("delay"));
+  _autoMode = _appConfig->getConfig("auto") == "true" ? true : false;
 }
 
 void GameController::setTileManager(TileManager* tileManager) {

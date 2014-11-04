@@ -7,11 +7,14 @@
 #include <iostream>
 #include <fstream>
 #endif
-IController* GameCreator::createGame(const char* configFile) {
-  
+IController* GameCreator::createGame(const char* configFile, 
+                                      const char* mapFile) {
 
   // 1. load config
   AppConfig* config = new AppConfig(configFile);
+  
+  if (mapFile != NULL)
+    config->setConfig("map", mapFile);
 
   GameController* controller;
 

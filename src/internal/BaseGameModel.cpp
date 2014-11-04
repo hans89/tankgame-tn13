@@ -157,9 +157,16 @@ IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
       for (int i = 0; i < w; i++) {
         // there is a tank here for id
         if ((*_map)(i,j) == id) {
-          newBaseInfo->addTank(_mapInfo.tankHP, _mapInfo.tankAmmo, 
-                      _mapInfo.tankRange, pair<int,int>(i,j));
-          _totalAmmo += _mapInfo.tankAmmo;
+
+          pair<int,int> pos(i,j);
+          map<pair<int,int>,TankInfo>::const_iterator
+              it = _mapInfo.tankMap.find(pos);
+
+          TankInfo tankInfo = 
+              it != _mapInfo.tankMap.end() ? it->second : _mapInfo.defaultTank;
+
+          newBaseInfo->addTank(tankInfo.HP, tankInfo.Ammo, tankInfo.Range, pos);
+          _totalAmmo += tankInfo.Ammo;
         }
       }
     }

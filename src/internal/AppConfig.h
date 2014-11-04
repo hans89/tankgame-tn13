@@ -19,6 +19,8 @@ public:
 	static void loadConfig(const char* configFile);
 
 	static string getConfig(string configKey);
+
+  static void setConfig(string key, string value);
 };
 
 

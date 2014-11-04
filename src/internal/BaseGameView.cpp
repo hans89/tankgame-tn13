@@ -13,7 +13,11 @@ unsigned char
 , __cOrangeRed[] = {255, 69, 0}
 , __cMagenta2[] = {238, 0, 238}
 , __cTurquoise1[] = {0, 245, 255}
+, __cDodgerblue2[] = {28, 134, 238}
 ;
+
+unsigned char* __colors[] 
+  = {__cGreen, __cDodgerblue2, __cMagenta2, __cTurquoise1};
 
 const CImgList<unsigned char>& __bigFont 
     = CImgList<unsigned char>::font(23);
@@ -205,6 +209,7 @@ void BaseGameView::updateInfo(bool endgame) {
 
   vector<IPlayerInfo*> playerInfos = _model->getPlayersInfo();
   IPlayerInfo* cur;
+
   for (int i = 0; i < playerInfos.size(); i++) {
     cur = playerInfos[i];
     pair<int,int> pos = cur->getHeadquarterPosition();
@@ -213,7 +218,7 @@ void BaseGameView::updateInfo(bool endgame) {
             pos.first, pos.second);
 
     _displayImg->draw_text(currentX, currentY, __drawString, 
-                            __cGreen, __cBlack, 1.0, __bigFont);
+                            __colors[i], __cBlack, 1.0, __bigFont);
     currentY += _lineSpacing;
 
     sprintf(__drawString, "Pos\t\tHP\tAmmo\tRange");

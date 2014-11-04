@@ -20,7 +20,7 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     // line 1: TankHP TankAmmo TankRange
     getline(inStream, line);
     iss.str(line);
-    iss >> info.tankHP >> info.tankAmmo >> info.tankRange;
+    iss >> info.defaultTank.HP >> info.defaultTank.Ammo >> info.defaultTank.Range;
 
     // line 2: BridgeHP BlockHP
     getline(inStream, line);
@@ -56,6 +56,23 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     getline(inStream, line);
     iss.str(line);
     iss >> info.maxStep;
+
+    // line 9: number of custom tanks
+    getline(inStream, line);
+    iss.str(line);
+    int noTank = 0;
+    iss >> noTank;
+
+    TankInfo tankInf;
+    pair<int,int> pos;
+
+    for (int k = 0; k < noTank; k++) {
+        getline(inStream, line);
+        iss.str(line);
+        iss >> pos.first >> pos.second
+            >> tankInf.HP >> tankInf.Ammo >> tankInf.Range;
+        info.tankMap.insert(pair<pair<int,int>, TankInfo>(pos, tankInf));
+    }
 
     // get the map from the rest
     while (getline(inStream, line).good()) {

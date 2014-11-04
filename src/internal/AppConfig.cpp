@@ -25,9 +25,13 @@ void AppConfig::loadConfig(const char* configFile) {
   inStream.close();
 }
 
-string AppConfig::getConfig(string configKey) {
+string AppConfig::getConfig(string configKey){
   if (configValues.find(configKey) != configValues.end())
     return configValues[configKey];
   else
     return "";
+}
+
+void AppConfig::setConfig(string key, string value){
+  configValues[key] = value;
 }
