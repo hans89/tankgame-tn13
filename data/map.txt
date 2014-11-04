@@ -6,6 +6,7 @@ ab      // HeadquarterIDs
 AB      // PlayerIDs (TankIDs)
 10      // LandID WaterID
 100     // Maximum numer of steps
+0       // all use default tanks
 000000001a
 0B11111110
 0111UU1110
