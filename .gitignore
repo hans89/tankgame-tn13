@@ -36,6 +36,7 @@ ipch/
 
 obj/
 bin/
+src/players/
 
 !lib/**
 !premake4.exe

@@ -13,9 +13,9 @@ class IGameInfo;
 class IPlayer
 {
 protected:
+public:
   // prevent deletion through this interface
   virtual ~IPlayer() {}
-public:
   // The framework provides the info structure that the player will control
   // Player must save this info for further reference to the assets
   // Player must implement this method
