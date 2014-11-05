@@ -5,12 +5,15 @@ bool ConcurrentGameController::nextTurn() {
   // moves
   // tryMove will try to order (serialize) 2 moves
   CommandInfo move1, move2;
+  std::cout << "-- Turn " << _model->getCurrentTurnCount() << " ---" << endl;
 
   move1.commander = _players[0]->getPlayerInfo();
   move1.originalCommand = _players[0]->nextMove();
-
+  cout << "Player " << 0 << endl;
+  
   move2.commander = _players[1]->getPlayerInfo();
   move2.originalCommand = _players[1]->nextMove();
+  cout << "Player " << 1 << endl;
 
   bool dependent = false;
   pair<CommandInfo*, CommandInfo*> realMoves
@@ -22,7 +25,7 @@ bool ConcurrentGameController::nextTurn() {
   // and will have special calculation
   _model->nextTurnCount();
 
-  std::cout << "-- Turn " << _model->getCurrentTurnCount() << " ---" << endl;
+  
   if (dependent) {
     // special calculation for both firing
     // we are not sure of the order, so we are forced to resolve it concurrently

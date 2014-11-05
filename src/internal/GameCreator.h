@@ -6,7 +6,8 @@
 
 class GameCreator {
 public:
-  static IController* createGame(const char* configFile, const char* mapFile = NULL);
+  static IController* createGame(const char* configFile, 
+                                  const char* mapFile = NULL);
 };
 
 #endif

@@ -1,0 +1,28 @@
+3 10 3 // TankHP TankAmmo TankRange
+2 1     // BridgeHP BlockHP
+-|      // BridgeIDs
+UVWXYZST   // BlockIDs
+ab      // HeadquarterIDs
+AB      // PlayerIDs (TankIDs)
+10      // LandID WaterID
+100     // Maximum numer of steps
+4       // 4 different tanks
+0 7 15 10 3 
+8 0 10 14 4 
+8 14 10 14 4 
+16 7 15 10 3 
+00000000A00000000
+0|||||||T|||||||0
+0-0-0-0-0-0-0-0-0
+0||||||Y|Y||||||0
+0-0-0-00000-0-0-0
+0||||X||U||X||||0
+0-0-0-0UbU0-0-0-0
+A||S||00000||S||B
+0-0-0-0UaU0-0-0-0
+0||||X||U||X||||0
+0-0-0-00000-0-0-0
+0||||||Y|Y||||||0
+0-0-0-0-0-0-0-0-0
+0|||||||T|||||||0
+00000000B00000000

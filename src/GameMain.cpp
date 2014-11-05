@@ -5,19 +5,21 @@
 #include "internal/GameCreator.h"
 #include "internal/IController.h"
 #include "BasePlayer.h"
-// #include "players/Nhom01/Nhom01Player.h"
+
+#include "players/Nhom01/Nhom01Player.h"
 #include "players/Nhom02/Nhom02Player.h"
 #include "players/Nhom03/Nhom03Player.h"
 #include "players/Nhom04/Nhom04Player.h"
 #include "players/Nhom05/Nhom05Player.h"
 #include "players/Nhom06/Nhom06Player.h"
-// #include "players/Nhom07/Nhom07Player.h"
+#include "players/Nhom07/Nhom07Player.h"
 #include "players/Nhom08/Nhom08Player.h"
 #include "players/Nhom09/Nhom09Player.h"
 #include "players/Nhom10/Nhom10Player.h"
-// #include "players/Nhom11/Nhom11Player.h"
+#include "players/Nhom11/Nhom11Player.h"
 #include "players/Nhom12/Nhom12Player.h"
 #include "players/Nhom13/Nhom13Player.h"
+#include "players/Nhom14/Nhom14Player.h"
 #include "players/Nhom15/Nhom15Player.h"
 
 #include <cstdlib>
@@ -46,20 +48,20 @@ int main(int argc, char* argv[]) {
 
   // 3. load players and bind with controller
   std::vector<IPlayer*> players(16, NULL);
-  // players[1] = new Nhom01::Nhom01Player();
+  players[1] = new Nhom01::Nhom01Player();
   players[2] = new Nhom02::Nhom02Player();
   players[3] = new Nhom03::Nhom03Player();
   players[4] = new Nhom04::Nhom04Player();
   players[5] = new Nhom05::Nhom05Player();
   players[6] = new Nhom06::Nhom06Player();
-  //players[7] = new Nhom07::Nhom07Player();
-  // players[8] = new Nhom08::Nhom08Player();
+  players[7] = new Nhom07::Nhom07Player();
+  players[8] = new Nhom08Player();
   players[9] = new Nhom09::Nhom09Player();
   players[10] = new Nhom10::Nhom10Player();
-  //players[11] = new Nhom11::Nhom11Player();
+  players[11] = new Nhom11::Nhom11Player();
   players[12] = new Nhom12::Nhom12Player();
   players[13] = new Nhom13::Nhom13Player();
-  // players[14] = new Nhom14::Nhom14Player();
+  players[14] = new Nhom14::Nhom14Player();
   players[15] = new Nhom15::Nhom15Player();
 
   int player1Idx = atoi(argv[1]),
@@ -123,10 +125,17 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  delete gameController;
+  if (!gameController->isEnded()) {
+    // if ending:
+    // inform players" onFinish
+    gameController->finish();
+  }
+  
   for (int i = 0 ; i < players.size(); i++)
     if (players[i] != NULL)
       delete players[i];
 
+  delete gameController;
+  
   return 0;
 }

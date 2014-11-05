@@ -81,17 +81,20 @@ OBJECTS := \
 	$(OBJDIR)/GameCreator.o \
 	$(OBJDIR)/MapLoader.o \
 	$(OBJDIR)/TileManager.o \
+	$(OBJDIR)/Nhom01Player.o \
 	$(OBJDIR)/Nhom02Player.o \
 	$(OBJDIR)/Nhom03Player.o \
 	$(OBJDIR)/Nhom04Player.o \
 	$(OBJDIR)/Nhom05Player.o \
 	$(OBJDIR)/Nhom06Player.o \
+	$(OBJDIR)/Nhom07Player.o \
 	$(OBJDIR)/Nhom08Player.o \
 	$(OBJDIR)/FirstStrategy.o \
 	$(OBJDIR)/Matrix.o \
 	$(OBJDIR)/Nhom09Player.o \
 	$(OBJDIR)/SecondStrategy.o \
 	$(OBJDIR)/Nhom10Player.o \
+	$(OBJDIR)/Nhom11Player.o \
 	$(OBJDIR)/MY_IStage.o \
 	$(OBJDIR)/MY_Special1.o \
 	$(OBJDIR)/MY_Stage1.o \
@@ -228,6 +231,10 @@ $(OBJDIR)/TileManager.o: src/internal/TileManager.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
+$(OBJDIR)/Nhom01Player.o: src/players/Nhom01/Nhom01Player.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
 $(OBJDIR)/Nhom02Player.o: src/players/Nhom02/Nhom02Player.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
@@ -245,6 +252,10 @@ $(OBJDIR)/Nhom05Player.o: src/players/Nhom05/Nhom05Player.cpp
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/Nhom06Player.o: src/players/Nhom06/Nhom06Player.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/Nhom07Player.o: src/players/Nhom07/Nhom07Player.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
@@ -269,6 +280,10 @@ $(OBJDIR)/SecondStrategy.o: src/players/Nhom09/SecondStrategy.cpp
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/Nhom10Player.o: src/players/Nhom10/Nhom10Player.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/Nhom11Player.o: src/players/Nhom11/Nhom11Player.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 

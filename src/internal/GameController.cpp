@@ -85,8 +85,10 @@ bool GameController::nextTurn() {
 }
 
 void GameController::reportResult() {
-  if (_ended)
+  if (_ended) {
     _view->updateInfo(true);
+    // cout << nextMoveMessage << " INVALID!!! - SKIP" << std::endl;
+  }
 }
 
 bool GameController::start() {
