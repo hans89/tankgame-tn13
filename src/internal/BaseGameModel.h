@@ -24,6 +24,10 @@ public:
   list<IBridge*> getOnMapBridges() const;
   list<IBlock*> getOnMapBlocks() const;
 
+  IBridge* getBridge(int x, int y) const;
+  IBlock* getBlock(int x, int y) const;
+  ITank* getTank(int x, int y) const;
+  
   vector<IPlayerInfo*> getPlayersInfo() const;
   IPlayerInfo* getPlayerByID(char id) const;
   int getMaximumNumberOfTurn() const;

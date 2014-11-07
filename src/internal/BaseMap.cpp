@@ -24,7 +24,7 @@ char BaseMap::operator()(int x, int y) const {
 }
 
 bool BaseMap::isEmptySpace(int x, int y) const {
-  return isEmptySpace((*this)(x,y));
+  return isOnMap(std::pair<int,int>(x,y)) && isEmptySpace((*this)(x,y));
 }
 
 bool BaseMap::isEmptySpace(char id) const {
@@ -32,7 +32,7 @@ bool BaseMap::isEmptySpace(char id) const {
 }
 
 bool BaseMap::isWater(int x, int y) const {
-  return isWater((*this)(x,y));
+  return isOnMap(std::pair<int,int>(x,y)) && isWater((*this)(x,y));
 }
 
 bool BaseMap::isWater(char id) const {
@@ -40,7 +40,7 @@ bool BaseMap::isWater(char id) const {
 }
 
 bool BaseMap::isBlock(int x, int y) const {
-  return isBlock((*this)(x,y));
+  return isOnMap(std::pair<int,int>(x,y)) && isBlock((*this)(x,y));
 }
 
 bool BaseMap::isBlock(char id) const {
@@ -48,7 +48,7 @@ bool BaseMap::isBlock(char id) const {
 }
 
 bool BaseMap::isBridge(int x, int y) const {
-  return isBridge((*this)(x,y));
+  return isOnMap(std::pair<int,int>(x,y)) && isBridge((*this)(x,y));
 }
 
 bool BaseMap::isBridge(char id) const {
@@ -56,12 +56,13 @@ bool BaseMap::isBridge(char id) const {
 }
 
 bool BaseMap::isTank(int x, int y, char playerId) const {
-  char c = (*this)(x,y);
-  return c == playerId && isTank(c);
+  char c;
+  return isOnMap(std::pair<int,int>(x,y)) && (c = (*this)(x,y)) == playerId
+      && isTank(c);
 }
 
 bool BaseMap::isTank(int x, int y) const {
-  return isTank((*this)(x,y));
+  return isOnMap(std::pair<int,int>(x,y)) && isTank((*this)(x,y));
 }
 
 bool BaseMap::isTank(char id) const {
@@ -75,16 +76,18 @@ bool BaseMap::isHeadquarter(int x, int y, char playerId) const {
   if (playerIDindex == std::string::npos)
     return false;
 
-  return _mapInfo.headquarterIDs[playerIDindex] == (*this)(x,y);
+  return isOnMap(std::pair<int,int>(x,y)) 
+      && _mapInfo.headquarterIDs[playerIDindex] == (*this)(x,y);
 }
 
 bool BaseMap::isHeadquarter(int x, int y) const {
-  return isHeadquarter((*this)(x,y));
+  return isOnMap(std::pair<int,int>(x,y)) && isHeadquarter((*this)(x,y));
 }
 
 bool BaseMap::isHeadquarter(char id) const {
  return _mapInfo.headquarterIDs.find(id) != std::string::npos; 
 }
+
 
 #pragma endregion
 
@@ -125,7 +128,6 @@ void BaseMap::move(BaseMapObject* obj, const std::pair<int,int>& newPos) {
   
   obj->move(newPos);
 }
-
 
 const MapInfo& BaseMap::getMapInfo() const {
   return _mapInfo;

@@ -19,6 +19,50 @@ list<IBlock*> BaseGameModel::getOnMapBlocks() const {
   return _onMapBlocks;
 }
 
+IBridge* BaseGameModel::getBridge(int x, int y) const {
+  if (_map->isBridge(x,y)) {
+    pair<int,int> pos(x,y);
+    for (int i = 0; i < _bridges.size(); i++) {
+      if (_bridges[i]->getPosition() == pos)
+        return _bridges[i];
+    }
+  }
+
+  return NULL;
+}
+
+IBlock* BaseGameModel::getBlock(int x, int y) const {
+  if (_map->isBlock(x,y)) {
+    pair<int,int> pos(x,y);
+    for (int i = 0; i < _blocks.size(); i++) {
+      if (_blocks[i]->getPosition() == pos)
+        return _blocks[i];
+    }
+  }
+
+  return NULL;
+}
+
+ITank* BaseGameModel::getTank(int x, int y) const {
+  if (_map->isTank(x,y)) {
+    char id = (*_map)(x,y);
+
+    IPlayerInfo* player = getPlayerByID(id);
+
+    if (player != NULL) {
+      pair<int,int> pos(x,y);
+      list<ITank*> aliveTanks = player->getAliveTanks();
+
+      for (list<ITank*>::const_iterator it = aliveTanks.begin(); 
+        it != aliveTanks.end(); it++) {
+        if ((*it)->getPosition() == pos)
+          return *it;
+      }  
+    }
+  }
+
+  return NULL;
+}
 // get list of current players information
 vector<IPlayerInfo*> BaseGameModel::getPlayersInfo() const {
   return _iPlayersInfo;
