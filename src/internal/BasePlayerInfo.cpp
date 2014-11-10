@@ -9,6 +9,10 @@ char BasePlayerInfo::getPlayerMapID() const {
   return _mapID;
 }
 
+CommandInfo BasePlayerInfo::getLastMove() const {
+  return _lastMove;
+}
+
 list<ITank*> BasePlayerInfo::getAliveTanks() const {
   return _aliveTanks;
 }
@@ -18,12 +22,12 @@ list<ITank*> BasePlayerInfo::getDeadTanks() const {
 }
 
 pair<int, int> BasePlayerInfo::getHeadquarterPosition() const {
-  return _headquarterPosition;
+  return _headquarter->getPosition();
 }
 
-// Command getLastMove() const {
-//   return _lastMove;
-// }
+IHeadquarter* BasePlayerInfo::getHeadquarter() const {
+  return _headquarter;
+}
 
 bool BasePlayerInfo::isPlayable() const {
   return !_aliveTanks.empty();
@@ -83,9 +87,13 @@ bool BasePlayerInfo::getHit(const pair<int,int>& pos, BaseTank*& tank) {
   return false;
 }
 
-// void updateLastMove(const Command& cmd) {
-//   _lastMove = cmd;
-// }
+void BasePlayerInfo::updateLastMove(const CommandInfo& cmd) {
+  _lastMove = cmd;
+}
+
+void BasePlayerInfo::addHeadquarter(BaseHeadquarter* head) {
+  _headquarter = head;
+}
 
 void BasePlayerInfo::addTank(int hp, int ammo, int range, pair<int,int> pos) {
   BaseTank* newTank = new BaseTank(hp, ammo, range, pos, this);
@@ -94,8 +102,7 @@ void BasePlayerInfo::addTank(int hp, int ammo, int range, pair<int,int> pos) {
   _aliveTanks.push_back(newTank);
 }
 
-BasePlayerInfo::BasePlayerInfo(char id, const pair<int,int>& head) :
-  _mapID(id), _headquarterPosition(head) {}
+BasePlayerInfo::BasePlayerInfo(char id) :_mapID(id) {}
 
 BasePlayerInfo::~BasePlayerInfo() {
   for (int i = 0; i < _baseTanks.size(); i++)

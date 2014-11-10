@@ -79,6 +79,7 @@ protected:
 
   vector<BasePlayerInfo*> _playersInfo;
   map<char, BasePlayerInfo*> _playersInfoIDMap;
+  map<char, BaseHeadquarter*> _headquarterMap;
 
   // maintaining public interfaces to internal objects
   // to support IGameInfo interfaces

@@ -16,6 +16,9 @@ public:
   // return the maximum range, in range [0, MAXRANGE]
   virtual int getRange() const = 0;
 
+  // return the maximum HP this tank can have
+  virtual int getMaxHP() const = 0;
+
   // return if HP != 0
   virtual bool isAlive() const = 0;
 

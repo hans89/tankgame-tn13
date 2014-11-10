@@ -66,6 +66,7 @@ void BaseGameView::prepareCharToStringTileMap() {
 
   _c2StrTileMap.insert(pair<char,string>(mapInfo.landID, "LAND"));
   _c2StrTileMap.insert(pair<char,string>(mapInfo.waterID, "WATER"));
+  _c2StrTileMap.insert(pair<char,string>(mapInfo.springID, "SPRING"));
 
   int i;
   for (i = 0; i < mapInfo.bridgeIDs.size(); i++) {
@@ -212,10 +213,13 @@ void BaseGameView::updateInfo(bool endgame) {
 
   for (int i = 0; i < playerInfos.size(); i++) {
     cur = playerInfos[i];
-    pair<int,int> pos = cur->getHeadquarterPosition();
+    
+    IHeadquarter* head = cur->getHeadquarter();
 
-    sprintf(__drawString, "Team %c - Head: (%d, %d)", cur->getPlayerMapID(), 
-            pos.first, pos.second);
+    pair<int,int> pos = head->getPosition();
+
+    sprintf(__drawString, "Team %c - Head: (%d, %d), HP %d", cur->getPlayerMapID(), 
+            pos.first, pos.second, head->getHP());
 
     _displayImg->draw_text(currentX, currentY, __drawString, 
                             __colors[i], __cBlack, 1.0, __bigFont);

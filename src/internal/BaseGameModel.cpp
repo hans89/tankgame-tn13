@@ -78,7 +78,12 @@ IPlayerInfo* BaseGameModel::getPlayerByID(char id) const {
 }
 
 PlayerEndGameInfo BaseGameModel::getPlayerEndGameInfo(IPlayerInfo* player) const {
-  
+
+  int headHP = player->getHeadquarter()->getHP();
+
+  if (headHP <= 0 || !player->getHeadquarter()->isOnMap())
+    return PlayerEndGameInfo();
+
   // calculate distance map, from headquarter to all the map positions
   const int dx[] = { -1, 1, 0, 0 };
   const int dy[] = { 0, 0, -1, 1 };
@@ -127,6 +132,8 @@ PlayerEndGameInfo BaseGameModel::getPlayerEndGameInfo(IPlayerInfo* player) const
   // calculate end-game info
   PlayerEndGameInfo egInfo;
 
+  egInfo.headquarterHP = headHP;
+
   list<ITank*> alive = player->getAliveTanks();
 
   for (list<ITank*>::iterator it = alive.begin(); it != alive.end(); ++it)
@@ -145,6 +152,18 @@ PlayerEndGameInfo BaseGameModel::getPlayerEndGameInfo(IPlayerInfo* player) const
 
 int BaseGameModel::getGameFinalResult(const vector<PlayerEndGameInfo>& egInfos) const {
   int max = 0;
+
+  if (egInfos.size() == 2) {
+    if (egInfos[0].headquarterHP <= 0 && egInfos[1].headquarterHP <= 0)
+      return -1;
+
+    if (egInfos[0].headquarterHP > 0 && egInfos[1].headquarterHP <= 0)
+      return 0;
+
+    if (egInfos[0].headquarterHP <= 0 && egInfos[1].headquarterHP > 0)
+      return 1;
+  }
+
   for (int i = 0; i < egInfos.size(); i++) {
     if (egInfos[i].totalHP > egInfos[max].totalHP)
       max = i;
@@ -168,7 +187,15 @@ int BaseGameModel::getGameFinalResult(const vector<PlayerEndGameInfo>& egInfos) 
 
 bool BaseGameModel::isEndGame() const {
   //TODO
-  return _currentTurn >= _mapInfo.maxStep
+  bool ultimateEnd = false;
+
+  for (int i = 0; i < _playersInfo.size(); i++) {
+    if (_playersInfo[i]->getHeadquarter()->getHP() <= 0) {
+      ultimateEnd = true;
+      break;
+    }
+  }
+  return _currentTurn >= _mapInfo.maxStep || ultimateEnd
     //&& _totalAmmo <= 0
   ;
 }
@@ -188,7 +215,20 @@ IPlayer* BaseGameModel::registerPlayer(IPlayer* newPlayer) {
     char id = _mapInfo.playerIDs[_nextRegisterPlayer];
 
     BasePlayerInfo* newBaseInfo 
-		= new BasePlayerInfo(id, _headquarters[_mapInfo.headquarterIDs[_nextRegisterPlayer++]]);
+		= new BasePlayerInfo(id);
+
+    char headID = _mapInfo.headquarterIDs[_nextRegisterPlayer++];
+
+    BaseHeadquarter* head;
+    if (_headquarterMap.find(headID) != _headquarterMap.end()) {
+      head = _headquarterMap[headID];
+    }
+    else {
+      head = new BaseHeadquarter(headID, _mapInfo.headHP, _headquarters[headID]);
+      _headquarterMap.insert(pair<char, BaseHeadquarter*>(headID, head));
+    }
+    
+    newBaseInfo->addHeadquarter(head);
 
     // save for later uses
     _playersInfo.push_back(newBaseInfo);
@@ -298,10 +338,27 @@ BaseGameModel::applyMove(IPlayerInfo* player, const Command& move) {
       int i = pos.first,
           j = pos.second;
 
-      if (_map->isEmptySpace(i, j) || _map->isHeadquarter(i,j)
-            || _map->isWater(i, j)) {
+      if (_map->isEmptySpace(i, j) || _map->isWater(i, j)) {
         // skipp
       } 
+
+      else if (_map->isHeadquarter(i,j)) {
+        map<char, BaseHeadquarter*>::const_iterator 
+          it = _headquarterMap.find((*_map)(i,j));
+
+        if (it != _headquarterMap.end()) {
+          BaseHeadquarter* head = it->second;
+          
+          if (head->getHP() > 0) {
+            head->decreaseHP();
+          }
+
+          if (head->getHP() == 0) {
+            _map->remove(head);
+            changes.push_back(pos); 
+          }
+        }
+      }
 
       else if (_map->isBlock(i, j)) {
         // find the block
@@ -412,6 +469,7 @@ bool BaseGameModel::isPossibleMove(IPlayerInfo* playerInfo, const Command& move)
         return false;
 
       if (_map->isBlock(e.first, e.second) || _map->isWater(e.first, e.second)
+          || _map->isSpring(e.first, e.second)
           || _map->isTank(e.first, e.second, playerInfo->getPlayerMapID())) 
         return false;
 
@@ -638,6 +696,11 @@ BaseGameModel::~BaseGameModel() {
   for (i = 0; i < _blocks.size(); i++) {
     delete _blocks[i];
   }
+
+  // remove headquarters
+  map<char, BaseHeadquarter*>::iterator it = _headquarterMap.begin();
+  for (; it != _headquarterMap.end(); it++)
+    delete it->second;
 }
 
 void BaseGameModel::nextTurnCount() {

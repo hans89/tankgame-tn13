@@ -61,6 +61,12 @@ public:
 
   // return if the character is a presentation of a headquarter
   virtual bool isHeadquarter(char id) const = 0;
+
+  // return if the cell is a spring (a HP regen source)
+  virtual bool isSpring(int x, int y) const = 0;
+
+  // return if the character represents a spring (a HP regen source)
+  virtual bool isSpring(char id) const = 0;
 };
 
 #endif

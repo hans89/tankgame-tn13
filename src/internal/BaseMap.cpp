@@ -88,6 +88,13 @@ bool BaseMap::isHeadquarter(char id) const {
  return _mapInfo.headquarterIDs.find(id) != std::string::npos; 
 }
 
+bool BaseMap::isSpring(int x, int y) const {
+  return isOnMap(std::pair<int,int>(x,y)) && isSpring((*this)(x,y));
+}
+
+bool BaseMap::isSpring(char id) const {
+  return id == _mapInfo.springID;
+}
 
 #pragma endregion
 
@@ -151,7 +158,7 @@ BaseMap::BaseMap(const MapInfo& mapInfo) : _mapInfo(mapInfo) {
         // add the non-top layers
         if (isEmptySpace(c) || isWater(c)) {
           // is land or water
-        } else if (isBlock(c) || isTank(c) || isHeadquarter(c)) {
+        } else if (isBlock(c) || isTank(c) || isHeadquarter(c) || isSpring(c)) {
           currentLayers += _mapInfo.landID;
         } else if (isBridge(c)) {
           currentLayers += _mapInfo.waterID;

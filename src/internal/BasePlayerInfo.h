@@ -3,6 +3,7 @@
 
 #include "../IPlayerInfo.h"
 #include "BaseTank.h"
+#include "BaseHeadquarter.h"
 #include <vector>
 
 class BasePlayerInfo : public IPlayerInfo {
@@ -13,10 +14,9 @@ public:
   std::list<ITank*> getAliveTanks() const;
   std::list<ITank*> getDeadTanks() const;
   std::pair<int, int> getHeadquarterPosition() const;
+  IHeadquarter* getHeadquarter() const;
 
-  CommandInfo getLastMove() const {
-    return _lastMove;
-  }
+  CommandInfo getLastMove() const;
 
   bool isPlayable() const;
   #pragma endregion
@@ -29,13 +29,12 @@ public:
   bool getHit(BaseTank* tank);
   bool getHit(const std::pair<int,int>& pos, BaseTank*& tank);
 
-  void updateLastMove(const CommandInfo& cmd) {
-    _lastMove = cmd;
-  }
+  void updateLastMove(const CommandInfo& cmd);
 
+  void addHeadquarter(BaseHeadquarter* head);
   void addTank(int hp, int ammo, int range, std::pair<int,int> pos);
 
-  BasePlayerInfo(char id, const std::pair<int,int>& head);
+  BasePlayerInfo(char id);
   ~BasePlayerInfo();
   #pragma endregion
 
@@ -44,8 +43,8 @@ private:
   CommandInfo _lastMove;
   std::list<ITank*> _aliveTanks;
   std::list<ITank*> _deadTanks;
-  std::pair<int, int> _headquarterPosition;
   std::vector<BaseTank*> _baseTanks;
+  BaseHeadquarter* _headquarter;
 };
 
 #endif

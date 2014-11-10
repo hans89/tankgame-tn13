@@ -22,10 +22,10 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     iss.str(line);
     iss >> info.defaultTank.HP >> info.defaultTank.Ammo >> info.defaultTank.Range;
 
-    // line 2: BridgeHP BlockHP
+    // line 2: BridgeHP BlockHP HeadHP
     getline(inStream, line);
     iss.str(line);
-    iss >> info.bridgeHP >> info.blockHP;
+    iss >> info.bridgeHP >> info.blockHP >> info.headHP;
 
     // line 3: BridgeIDs
     getline(inStream, line);
@@ -51,6 +51,7 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     getline(inStream, line);
     info.landID = line[0];
     info.waterID = line[1];
+    info.springID = line[2];
 
     // line 8: Maximum no of steps
     getline(inStream, line);

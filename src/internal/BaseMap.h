@@ -31,6 +31,8 @@ public:
   bool isHeadquarter(int x, int y, char playerId) const;
   bool isHeadquarter(int x, int y) const;
   bool isHeadquarter(char id) const;
+  bool isSpring(int x, int y) const;
+  bool isSpring(char id) const;
 
   #pragma endregion
 

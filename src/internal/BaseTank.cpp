@@ -17,6 +17,10 @@ int BaseTank::getRange() const {
   return _range;
 }
 
+int BaseTank::getMaxHP() const {
+  return _maxHP;
+}
+
 bool BaseTank::isAlive() const {
   return _HP > 0;
 }
@@ -32,6 +36,16 @@ IPlayerInfo* BaseTank::getOwner() const {
 
 #pragma region ModelPreservedInterface
 
+void BaseTank::increaseHP(int amount) {
+
+  if (_HP < _maxHP) {
+    _HP += amount;
+    
+    if (_HP > _maxHP)
+      _HP = _maxHP;
+  }
+}
+
 void BaseTank::decreaseAmmo() {
   if (_ammo > 0)
     _ammo--;
@@ -39,6 +53,7 @@ void BaseTank::decreaseAmmo() {
 
 BaseTank::BaseTank(int hp, int ammo, int range, 
     const std::pair<int,int>& pos, IPlayerInfo* owner)
-  : BaseMapObject(hp, pos), _ammo(ammo), _range(range), _ownerInfo(owner) {}
+  : BaseMapObject(hp, pos), _ammo(ammo), _range(range),
+    _ownerInfo(owner), _maxHP(hp) {}
   
 #pragma endregion

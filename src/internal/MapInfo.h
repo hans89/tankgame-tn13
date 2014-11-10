@@ -18,14 +18,14 @@ struct MapInfo {
   TankInfo defaultTank;
   std::map<std::pair<int,int>, TankInfo> tankMap;
 
-  int bridgeHP, blockHP;
+  int bridgeHP, blockHP, headHP;
 
   std::string bridgeIDs;
   std::string blockIDs;
   std::string headquarterIDs;
   std::string playerIDs;
 
-  char landID, waterID;
+  char landID, waterID, springID;
   int maxStep;
 };
 

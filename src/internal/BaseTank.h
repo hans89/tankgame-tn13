@@ -16,6 +16,7 @@ public:
   
   int getAmmoNumber() const;
   int getRange() const;
+  int getMaxHP() const;
   bool isAlive() const;
   bool hasAmmo() const;
   IPlayerInfo* getOwner() const;
@@ -25,7 +26,7 @@ public:
   #pragma region ModelPreservedInterface
 
   void decreaseAmmo();
-  
+  void increaseHP(int amount = 1); 
   BaseTank(int hp, int ammo, int range, 
       const std::pair<int,int>& pos, IPlayerInfo* owner);
     
@@ -33,6 +34,7 @@ public:
 
 protected:
   int _ammo, _range;
+  const int _maxHP;
   IPlayerInfo* _ownerInfo;
 };
 #endif

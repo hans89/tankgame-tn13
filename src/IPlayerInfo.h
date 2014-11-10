@@ -4,6 +4,7 @@
 #include <list>
 
 #include "Command.h"
+#include "IHeadquarter.h"
 
 /**
  * Interface to access player's information
@@ -14,9 +15,10 @@ struct PlayerEndGameInfo
   int totalTanks;
   int totalHP;
   int totalDistance;
+  int headquarterHP;
 
-  PlayerEndGameInfo(int t = 0, int h = 0, int d = 0) 
-    : totalTanks(t), totalHP(h), totalDistance(d) {}
+  PlayerEndGameInfo(int t = 0, int h = 0, int d = 0, int headHP = 0) 
+    : totalTanks(t), totalHP(h), totalDistance(d), headquarterHP(headHP) {}
 };
 
 class IPlayerInfo
@@ -37,6 +39,8 @@ public:
 
   // get the position of the headquarter of the player
   virtual std::pair<int, int> getHeadquarterPosition() const = 0;
+
+  virtual IHeadquarter* getHeadquarter() const = 0;
 
   // get the last move by the player
   virtual CommandInfo getLastMove() const = 0;
