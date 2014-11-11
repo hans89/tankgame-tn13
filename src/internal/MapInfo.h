@@ -18,7 +18,7 @@ struct MapInfo {
   TankInfo defaultTank;
   std::map<std::pair<int,int>, TankInfo> tankMap;
 
-  int bridgeHP, blockHP, headHP;
+  int bridgeHP, blockHP, headHP, springHP, springIncHP;
 
   std::string bridgeIDs;
   std::string blockIDs;

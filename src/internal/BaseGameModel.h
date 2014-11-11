@@ -12,6 +12,7 @@
 #include "BaseTank.h"
 #include "BaseBlock.h"
 #include "BaseBridge.h"
+#include "BaseSpring.h"
 
 using namespace std;
 
@@ -23,9 +24,11 @@ public:
 
   list<IBridge*> getOnMapBridges() const;
   list<IBlock*> getOnMapBlocks() const;
+  list<ISpring*> getOnMapSprings() const;
 
   IBridge* getBridge(int x, int y) const;
   IBlock* getBlock(int x, int y) const;
+  ISpring* getSpring(int x, int y) const;
   ITank* getTank(int x, int y) const;
   
   vector<IPlayerInfo*> getPlayersInfo() const;
@@ -62,6 +65,8 @@ public:
   void nextTurnCount();
   int getCurrentTurnCount() const; 
 
+  void applyNewTurnAutoEffects();
+
   BaseGameModel(const MapInfo& info);
 
   ~BaseGameModel();
@@ -71,6 +76,7 @@ protected:
   BaseMap* _map;
   vector<BaseBlock*> _blocks;
   vector<BaseBridge*> _bridges;
+  vector<BaseSpring*> _springs;
 
   const MapInfo _mapInfo;
   
@@ -86,6 +92,7 @@ protected:
   vector<IPlayerInfo*> _iPlayersInfo;
   list<IBlock*> _onMapBlocks;
   list<IBridge*> _onMapBridges;
+  list<ISpring*> _onMapSprings;
 
   int _currentTurn;
   int _totalAmmo;

@@ -38,6 +38,8 @@ bool GameController::registerPlayer(IPlayer* player) {
 
 bool GameController::nextTurn() {
   
+  _model->applyNewTurnAutoEffects();
+  
   // reduce down:
   int totalPlayer = _players.size();
   if (_currentPlayerTurn >= totalPlayer)

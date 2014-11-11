@@ -19,6 +19,11 @@ list<IBlock*> BaseGameModel::getOnMapBlocks() const {
   return _onMapBlocks;
 }
 
+// get the available springs on map
+list<ISpring*> BaseGameModel::getOnMapSprings() const {
+  return _onMapSprings;
+}
+
 IBridge* BaseGameModel::getBridge(int x, int y) const {
   if (_map->isBridge(x,y)) {
     pair<int,int> pos(x,y);
@@ -37,6 +42,18 @@ IBlock* BaseGameModel::getBlock(int x, int y) const {
     for (int i = 0; i < _blocks.size(); i++) {
       if (_blocks[i]->getPosition() == pos)
         return _blocks[i];
+    }
+  }
+
+  return NULL;
+}
+
+ISpring* BaseGameModel::getSpring(int x, int y) const {
+  if (_map->isSpring(x,y)) {
+    pair<int,int> pos(x,y);
+    for (int i = 0; i < _springs.size(); i++) {
+      if (_springs[i]->getPosition() == pos)
+        return _springs[i];
     }
   }
 
@@ -402,6 +419,27 @@ BaseGameModel::applyMove(IPlayerInfo* player, const Command& move) {
         }
       } 
 
+      else if (_map->isSpring(i, j)) {
+        // find the block
+        list<ISpring*>::iterator it;
+
+        for (it = _onMapSprings.begin(); it != _onMapSprings.end(); ++it) {
+          if ((*it)->getPosition() == pos)
+            break;
+        }
+
+        if (it != _onMapSprings.end()) {
+          BaseSpring* baseSpring = (BaseSpring*)(*it);
+          baseSpring->decreaseHP();
+          // destroy bridge 
+          if (baseSpring->getHP() == 0) {
+            _map->remove(baseSpring);
+            changes.push_back(pos); 
+            _onMapSprings.erase(it);
+          } 
+        }
+      } 
+
       else if (_map->isTank(i, j)) {
         BasePlayerInfo* playerInfo = _playersInfoIDMap[(*_map)(i,j)];
 
@@ -675,10 +713,26 @@ BaseGameModel::BaseGameModel(const MapInfo& info)
         _onMapBridges.push_back(newBridge);
       }
 
+      else if (_map->isSpring(i, j)) {
+        BaseSpring* newSpring
+          = new BaseSpring(c, _mapInfo.springHP, pair<int,int>(i,j), _mapInfo.springIncHP);
+        _springs.push_back(newSpring);
+        _onMapSprings.push_back(newSpring);
+      }
+
       else if (_map->isHeadquarter(i, j)) {
         _headquarters.insert(pair<char, pair<int,int> >(c, pair<int,int>(i,j)));
       }
     }
+  }
+}
+
+void BaseGameModel::applyNewTurnAutoEffects() {
+  list<ISpring*>::iterator it;
+
+  for (it = _onMapSprings.begin(); it != _onMapSprings.end(); ++it) {
+    BaseSpring* spring = (BaseSpring*)*it;
+    spring->regen(this);
   }
 }
 
@@ -695,6 +749,10 @@ BaseGameModel::~BaseGameModel() {
 
   for (i = 0; i < _blocks.size(); i++) {
     delete _blocks[i];
+  }
+
+  for (i = 0; i < _springs.size(); i++) {
+    delete _springs[i];
   }
 
   // remove headquarters

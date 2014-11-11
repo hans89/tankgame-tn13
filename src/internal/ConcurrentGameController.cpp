@@ -2,6 +2,8 @@
 
 // the controller makes the next turn
 bool ConcurrentGameController::nextTurn() {
+
+  _model->applyNewTurnAutoEffects();
   // moves
   // tryMove will try to order (serialize) 2 moves
   CommandInfo move1, move2;

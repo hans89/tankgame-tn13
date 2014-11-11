@@ -1,5 +1,5 @@
 3 10 3  // TankHP TankAmmo TankRange
-2 1 10 // BridgeHP BlockHP HeadHP
+2 1 10 3 2 // BridgeHP BlockHP HeadHP SpringHP SpringIncHP
 -|      // BridgeIDs
 UVWXYZST  // BlockIDs
 ab      // HeadquarterIDs

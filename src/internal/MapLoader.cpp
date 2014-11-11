@@ -22,10 +22,11 @@ void MapLoader::loadMap(const string& mapFilePath, MapInfo& info) {
     iss.str(line);
     iss >> info.defaultTank.HP >> info.defaultTank.Ammo >> info.defaultTank.Range;
 
-    // line 2: BridgeHP BlockHP HeadHP
+    // line 2: BridgeHP BlockHP HeadHP SpringHP SpringIncHP
     getline(inStream, line);
     iss.str(line);
-    iss >> info.bridgeHP >> info.blockHP >> info.headHP;
+    iss >> info.bridgeHP >> info.blockHP >> info.headHP 
+        >> info.springHP >> info.springIncHP;
 
     // line 3: BridgeIDs
     getline(inStream, line);

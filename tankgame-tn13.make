@@ -75,6 +75,7 @@ OBJECTS := \
 	$(OBJDIR)/BaseMap.o \
 	$(OBJDIR)/BaseMapObject.o \
 	$(OBJDIR)/BasePlayerInfo.o \
+	$(OBJDIR)/BaseSpring.o \
 	$(OBJDIR)/BaseTank.o \
 	$(OBJDIR)/ConcurrentGameController.o \
 	$(OBJDIR)/GameController.o \
@@ -204,6 +205,10 @@ $(OBJDIR)/BaseMapObject.o: src/internal/BaseMapObject.cpp
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
 $(OBJDIR)/BasePlayerInfo.o: src/internal/BasePlayerInfo.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
+
+$(OBJDIR)/BaseSpring.o: src/internal/BaseSpring.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF $(@:%.o=%.d) -c "$<"
 
