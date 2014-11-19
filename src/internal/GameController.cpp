@@ -219,7 +219,7 @@ void GameController::animateMove(const Command& move) {
 
       }
 
-      _view->addFire(pos.first, pos.second, "EFFECT.FIRE_L");
+      _view->addFire(pos.first, pos.second, "EFFECT.FIRE_M");
       _view->display();
       _view->getDisplay()->wait(_delayTime);
       _view->removeFire(pos.first, pos.second);
